@@ -5,9 +5,9 @@
 
     "use strict";
 
-    awaxa.sentinel.config.ApplicationConfig = awaxa.sentinel.config.ApplicationConfig ||
+    awaxa.sentinel.configs.ApplicationConfig = awaxa.sentinel.configs.ApplicationConfig ||
     {
 
-    }
+    };
 
 }());

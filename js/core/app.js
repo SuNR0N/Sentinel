@@ -6,7 +6,7 @@
     "use strict";
 
     angular.module('sentinel.services', [])
-        .contant('serviceConfig', awaxa.sentinel.configs.ServiceConfig)
+        .constant('serviceConfig', awaxa.sentinel.configs.ServiceConfig)
         .service('queryService', ['$http', '$log', 'serviceConfig', awaxa.sentinel.services.QueryService])
         .service('updateService', ['$http', '$log', 'serviceConfig', awaxa.sentinel.services.UpdateService])
         .service('entitlementService', ['$http', '$log', 'serviceConfig', awaxa.sentinel.services.EntitlementService])

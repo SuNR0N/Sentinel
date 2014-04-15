@@ -12,12 +12,24 @@
             isSuperUser : false,
             isAdmin : false,
             isAgent : false,
-            isAssistant : false
+            isAssistant : false,
+            userName : null,
+            isLoggedIn : false
         }
 
         $scope.init = function()
         {
 
+        }
+
+        $scope.login = function()
+        {
+            $scope.sentinelModel.isLoggedIn = true;
+        }
+
+        $scope.logout = function()
+        {
+            $scope.sentinelModel.isLoggedIn = false;
         }
     }
 
