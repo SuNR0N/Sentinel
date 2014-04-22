@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Sentinel - Register</title>
+</head>
+<body>
+<div class="container login">
+    <div class="row">
+        <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><strong>Register</strong></h3>
+                </div>
+                <div class="panel-body">
+                    <form name="registerForm" accept-charset="UTF-8" role="form">
+                        <fieldset>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-6 col-md-6">
+                                    <div class="form-group" ng-class="registerForm.first_name.$error.required ? 'has-error' : ''">
+                                        <input type="text" ng-model="newUser.firstName" name="first_name" id="first_name" class="form-control input-lg" placeholder="First Name" tabindex="1" required="">
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-6 col-md-6">
+                                    <div class="form-group" ng-class="registerForm.last_name.$error.required ? 'has-error' : ''">
+                                        <input type="text" ng-model="newUser.lastName" name="last_name" id="last_name" class="form-control input-lg" placeholder="Last Name" tabindex="2" required="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-class="registerForm.user_name.$error.required ? 'has-error' : ''">
+                                <input type="text" ng-model="newUser.userName" name="user_name" id="user_name" class="form-control input-lg" placeholder="Username" tabindex="3" required="">
+                            </div>
+                            <div class="form-group" ng-class="(registerForm.client_code.$error.pattern || registerForm.client_code.$error.maxlength) ? 'has-error' : ''">
+                                <input type="text" ng-model="newUser.clientCode" ng-pattern="/^\d*$/" ng-maxlength="11" name="client_code" id="client_code" class="form-control input-lg" placeholder="Client Code" tabindex="4">
+                            </div>
+                            <div class="alert alert-danger" ng-show="registerForm.client_code.$error.maxlength || registerForm.client_code.$error.pattern">
+                                <span ng-show="registerForm.client_code.$error.maxlength">
+                                    <strong>
+                                        Max length 11 digits
+                                    </strong>
+                                </span>
+                                <span ng-show="registerForm.client_code.$error.pattern">
+                                    <strong>
+                                        Client code must be numeric
+                                    </strong>
+                                </span>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-6 col-md-6">
+                                    <div class="form-group" ng-class="(registerForm.password.$error.required || registerForm.password_confirmation.$error.strmatch) ? 'has-error' : ''">
+                                        <input type="password" ng-model="newUser.password" name="password" id="password" class="form-control input-lg" placeholder="Password" tabindex="5" required="">
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-6 col-md-6">
+                                    <div class="form-group" ng-class="(registerForm.password_confirmation.$error.required || registerForm.password_confirmation.$error.strmatch) ? 'has-error' : ''">
+                                        <input type="password" ng-model="newUser.password_confirmation" name="password_confirmation" id="password_confirmation" str-match="password" class="form-control input-lg" placeholder="Confirm Password" tabindex="6" required="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="alert alert-danger" ng-show="registerForm.password_confirmation.$error.strmatch">
+                                <strong>
+                                    Passwords don't match.
+                                </strong>
+                            </div>
+                            <div ng-show="registrationErrorMessage != null" class="alert alert-danger">
+                                <strong>{{registrationErrorMessage}}</strong>
+                            </div>
+                            <input class="btn btn-lg btn-primary btn-block" ng-disabled="registerForm.$invalid" ng-click="register()" value="Register" tabindex="7">
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

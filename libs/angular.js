@@ -805,7 +805,7 @@ function isLeafNode (node) {
  *
  * @example
  <example>
- <file name="index.html">
+ <file name="index.pages">
  <div ng-controller="Controller">
  <form novalidate class="simple-form">
  Name: <input type="text" ng-model="user.name" /><br />
@@ -1098,7 +1098,7 @@ function toBoolean(value) {
 function startingTag(element) {
   element = jqLite(element).clone();
   try {
-    // turns out IE does not let you set .html() on elements which
+    // turns out IE does not let you set .pages() on elements which
     // are not allowed to have children. So we just ignore it.
     element.empty();
   } catch(e) {}
@@ -1200,7 +1200,7 @@ function encodeUriSegment(val) {
 /**
  * This method is intended for encoding *key* or *value* parts of query component. We need a custom
  * method because encodeURIComponent is too aggressive and encodes stuff that doesn't have to be
- * encoded per http://tools.ietf.org/html/rfc3986:
+ * encoded per http://tools.ietf.org/pages/rfc3986:
  *    query       = *( pchar / "/" / "?" )
  *    pchar         = unreserved / pct-encoded / sub-delims / ":" / "@"
  *    unreserved    = ALPHA / DIGIT / "-" / "." / "_" / "~"
@@ -1231,7 +1231,7 @@ function encodeUriQuery(val, pctEncodeSpaces) {
  *
  * Use this directive to **auto-bootstrap** an AngularJS application. The `ngApp` directive
  * designates the **root element** of the application and is typically placed near the root element
- * of the page - e.g. on the `<body>` or `<html>` tags.
+ * of the page - e.g. on the `<body>` or `<pages>` tags.
  *
  * Only one AngularJS application can be auto-bootstrapped per HTML document. The first `ngApp`
  * found in the document will be used to define the root element to auto-bootstrap as an
@@ -1243,14 +1243,14 @@ function encodeUriQuery(val, pctEncodeSpaces) {
  * should contain the application code needed or have dependencies on other modules that will
  * contain the code. See {@link angular.module} for more information.
  *
- * In the example below if the `ngApp` directive were not placed on the `html` element then the
+ * In the example below if the `ngApp` directive were not placed on the `pages` element then the
  * document would not be compiled, the `AppController` would not be instantiated and the `{{ a+b }}`
  * would not be resolved to `3`.
  *
  * `ngApp` is the easiest, and most common, way to bootstrap an application.
  *
  <example module="ngAppDemo">
-   <file name="index.html">
+   <file name="index.pages">
    <div ng-controller="ngAppDemoController">
      I can add: {{a}} + {{b}} =  {{ a+b }}
    </div>
@@ -1326,7 +1326,7 @@ function angularInit(element, bootstrap) {
  * multiple instances of Angular try to work on the DOM.
  *
  * <example name="multi-bootstrap" module="multi-bootstrap">
- * <file name="index.html">
+ * <file name="index.pages">
  * <script src="../../../angular.js"></script>
  * <div ng-controller="BrokenTable">
  *   <table>
@@ -2098,7 +2098,7 @@ function publishExternalAPI(angular){
  * - [`eq()`](http://api.jquery.com/eq/)
  * - [`find()`](http://api.jquery.com/find/) - Limited to lookups by tag name
  * - [`hasClass()`](http://api.jquery.com/hasClass/)
- * - [`html()`](http://api.jquery.com/html/)
+ * - [`pages()`](http://api.jquery.com/pages/)
  * - [`next()`](http://api.jquery.com/next/) - Does not support selectors
  * - [`on()`](http://api.jquery.com/on/) - Does not support namespaces, selectors or eventData
  * - [`off()`](http://api.jquery.com/off/) - Does not support namespaces or selectors
@@ -2255,11 +2255,11 @@ function jqLiteBuildFragment(html, context) {
       nodes = [], i, j, jj;
 
   if (jqLiteIsTextNode(html)) {
-    // Convert non-html into a text node
+    // Convert non-pages into a text node
     nodes.push(context.createTextNode(html));
   } else {
     tmp = fragment.appendChild(context.createElement('div'));
-    // Convert html into DOM nodes
+    // Convert pages into DOM nodes
     tag = (TAG_NAME_REGEXP.exec(html) || ["", ""])[1].toLowerCase();
     wrap = wrapMap[tag] || wrapMap._default;
     tmp.innerHTML = '<div>&#160;</div>' +
@@ -2467,7 +2467,7 @@ function jqLiteController(element, name) {
 function jqLiteInheritedData(element, name, value) {
   element = jqLite(element);
 
-  // if element is the document object work with the html element instead
+  // if element is the document object work with the pages element instead
   // this makes $(document).scope() possible
   if(element[0].nodeType == 9) {
     element = element.find('html');
@@ -2848,7 +2848,7 @@ forEach({
 
           // Refer to jQuery's implementation of mouseenter & mouseleave
           // Read about mouseenter and mouseleave:
-          // http://www.quirksmode.org/js/events_mouse.html#link8
+          // http://www.quirksmode.org/js/events_mouse.pages#link8
           var eventmap = { mouseleave : "mouseout", mouseenter : "mouseover"};
 
           onFn(element, eventmap[type], function(event) {
@@ -3905,14 +3905,14 @@ function createInjector(modulesToLoad) {
  * @description
  * When called, it checks current value of `$location.hash()` and scroll to related element,
  * according to rules specified in
- * [Html5 spec](http://dev.w3.org/html5/spec/Overview.html#the-indicated-part-of-the-document).
+ * [Html5 spec](http://dev.w3.org/html5/spec/Overview.pages#the-indicated-part-of-the-document).
  *
  * It also watches the `$location.hash()` and scrolls whenever it changes to match any anchor.
  * This can be disabled by calling `$anchorScrollProvider.disableAutoScrolling()`.
  *
  * @example
    <example>
-     <file name="index.html">
+     <file name="index.pages">
        <div id="scrollArea" ng-controller="ScrollCtrl">
          <a ng-click="gotoBottom()">Go to bottom</a>
          <a id="bottom"></a> You're at the bottom!
@@ -4674,7 +4674,7 @@ function $BrowserProvider(){
  *
  * @example
    <example module="cacheExampleApp">
-     <file name="index.html">
+     <file name="index.pages">
        <div ng-controller="CacheController">
          <input ng-model="newCacheKey" placeholder="Key">
          <input ng-model="newCacheValue" placeholder="Value">
@@ -4994,8 +4994,8 @@ function $CacheFactoryProvider() {
  *
  * Adding via the `script` tag:
  *
- * ```html
- *   <script type="text/ng-template" id="templateId.html">
+ * ```pages
+ *   <script type="text/ng-template" id="templateId.pages">
  *     <p>This is the content of the template</p>
  *   </script>
  * ```
@@ -5008,18 +5008,18 @@ function $CacheFactoryProvider() {
  * ```js
  * var myApp = angular.module('myApp', []);
  * myApp.run(function($templateCache) {
- *   $templateCache.put('templateId.html', 'This is the content of the template');
+ *   $templateCache.put('templateId.pages', 'This is the content of the template');
  * });
  * ```
  *
  * To retrieve the template later, simply use it in your HTML:
- * ```html
- * <div ng-include=" 'templateId.html' "></div>
+ * ```pages
+ * <div ng-include=" 'templateId.pages' "></div>
  * ```
  *
  * or get it via Javascript:
  * ```js
- * $templateCache.get('templateId.html')
+ * $templateCache.get('templateId.pages')
  * ```
  *
  * See {@link ng.$cacheFactory $cacheFactory}.
@@ -5089,7 +5089,7 @@ function $TemplateCacheProvider() {
  *       priority: 0,
  *       template: '<div></div>', // or // function(tElement, tAttrs) { ... },
  *       // or
- *       // templateUrl: 'directive.html', // or // function(tElement, tAttrs) { ... },
+ *       // templateUrl: 'directive.pages', // or // function(tElement, tAttrs) { ... },
  *       replace: false,
  *       transclude: false,
  *       restrict: 'A',
@@ -5426,7 +5426,7 @@ function $TemplateCacheProvider() {
  * </div>
  *
  <example module="compile">
-   <file name="index.html">
+   <file name="index.pages">
     <script>
       angular.module('compile', [], function($compileProvider) {
         // configure new 'compile' directive by passing a directive
@@ -5442,7 +5442,7 @@ function $TemplateCacheProvider() {
               function(value) {
                 // when the 'compile' expression changes
                 // assign it into the current DOM
-                element.html(value);
+                element.pages(value);
 
                 // compile the new DOM and link it to the current
                 // scope.
@@ -5457,13 +5457,13 @@ function $TemplateCacheProvider() {
 
       function Ctrl($scope) {
         $scope.name = 'Angular';
-        $scope.html = 'Hello {{name}}';
+        $scope.pages = 'Hello {{name}}';
       }
     </script>
     <div ng-controller="Ctrl">
       <input ng-model="name"> <br>
-      <textarea ng-model="html"></textarea> <br>
-      <div compile="html"></div>
+      <textarea ng-model="pages"></textarea> <br>
+      <div compile="pages"></div>
     </div>
    </file>
    <file name="protractor.js" type="protractor">
@@ -5546,7 +5546,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
       COMMENT_DIRECTIVE_REGEXP = /^\s*directive\:\s*([\d\w\-_]+)\s+(.*)$/,
       CLASS_DIRECTIVE_REGEXP = /(([\d\w\-_]+)(?:\:([^;]+))?;?)/;
 
-  // Ref: http://developers.whatwg.org/webappapis.html#event-handler-idl-attributes
+  // Ref: http://developers.whatwg.org/webappapis.pages#event-handler-idl-attributes
   // The assumption is that future DOM event attribute names will begin with
   // 'on' and be composed of only English letters.
   var EVENT_HANDLER_ATTR_REGEXP = /^(on[a-z]+|formaction)$/;
@@ -5613,7 +5613,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
    * Retrieves or overrides the default regular expression that is used for whitelisting of safe
    * urls during a[href] sanitization.
    *
-   * The sanitization is a security measure aimed at prevent XSS attacks via html links.
+   * The sanitization is a security measure aimed at prevent XSS attacks via pages links.
    *
    * Any url about to be assigned to a[href] via data-binding is first normalized and turned into
    * an absolute url. Afterwards, the url is matched against the `aHrefSanitizationWhitelist`
@@ -5643,7 +5643,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
    * Retrieves or overrides the default regular expression that is used for whitelisting of safe
    * urls during img[src] sanitization.
    *
-   * The sanitization is a security measure aimed at prevent XSS attacks via html links.
+   * The sanitization is a security measure aimed at prevent XSS attacks via pages links.
    *
    * Any url about to be assigned to img[src] via data-binding is first normalized and turned into
    * an absolute url. Afterwards, the url is matched against the `imgSrcSanitizationWhitelist`
@@ -7158,7 +7158,7 @@ function $ControllerProvider() {
  *
  * @example
    <example>
-     <file name="index.html">
+     <file name="index.pages">
        <div ng-controller="MainCtrl">
          <p>$document title: <b ng-bind="title"></b></p>
          <p>window.document title: <b ng-bind="windowTitle"></b></p>
@@ -7797,7 +7797,7 @@ function $HttpProvider() {
      *
      * @example
 <example>
-<file name="index.html">
+<file name="index.pages">
   <div ng-controller="FetchCtrl">
     <select ng-model="method">
       <option>GET</option>
@@ -7805,7 +7805,7 @@ function $HttpProvider() {
     </select>
     <input type="text" ng-model="url" size="80"/>
     <button id="fetchbtn" ng-click="fetch()">fetch</button><br>
-    <button id="samplegetbtn" ng-click="updateModel('GET', 'http-hello.html')">Sample GET</button>
+    <button id="samplegetbtn" ng-click="updateModel('GET', 'http-hello.pages')">Sample GET</button>
     <button id="samplejsonpbtn"
       ng-click="updateModel('JSONP',
                     'http://angularjs.org/greet.php?callback=JSON_CALLBACK&name=Super%20Hero')">
@@ -7822,7 +7822,7 @@ function $HttpProvider() {
 <file name="script.js">
   function FetchCtrl($scope, $http, $templateCache) {
     $scope.method = 'GET';
-    $scope.url = 'http-hello.html';
+    $scope.url = 'http-hello.pages';
 
     $scope.fetch = function() {
       $scope.code = null;
@@ -7845,7 +7845,7 @@ function $HttpProvider() {
     };
   }
 </file>
-<file name="http-hello.html">
+<file name="http-hello.pages">
   Hello, $http!
 </file>
 <file name="protractor.js" type="protractor">
@@ -8458,7 +8458,7 @@ var $interpolateMinErr = minErr('$interpolate');
  *
  * @example
 <example module="customInterpolationApp">
-<file name="index.html">
+<file name="index.pages">
 <script>
   var customInterpolationApp = angular.module('customInterpolationApp', []);
 
@@ -8723,7 +8723,7 @@ function $IntervalProvider() {
       *
       * @example
       * <example module="time">
-      *   <file name="index.html">
+      *   <file name="index.pages">
       *     <script>
       *       function Ctrl2($scope,$interval) {
       *         $scope.format = 'M/d/yy h:mm:ss a';
@@ -9649,7 +9649,7 @@ function $LocationProvider(){
          $scope.message = 'Hello World!';
        }
      </file>
-     <file name="index.html">
+     <file name="index.pages">
        <div ng-controller="LogCtrl">
          <p>Reload this page with open console, enter text and hit the log button...</p>
          Message:
@@ -11714,7 +11714,7 @@ function $RootScopeProvider(){
      * compiled HTML template is executed.)
      *
      * Here is a simple scope snippet to show how you can interact with the scope.
-     * ```html
+     * ```pages
      * <file src="./test/ng/rootScopeSpec.js" tag="docs1" />
      * ```
      *
@@ -12764,7 +12764,7 @@ function $$SanitizeUriProvider() {
    * Retrieves or overrides the default regular expression that is used for whitelisting of safe
    * urls during a[href] sanitization.
    *
-   * The sanitization is a security measure aimed at prevent XSS attacks via html links.
+   * The sanitization is a security measure aimed at prevent XSS attacks via pages links.
    *
    * Any url about to be assigned to a[href] via data-binding is first normalized and turned into
    * an absolute url. Afterwards, the url is matched against the `aHrefSanitizationWhitelist`
@@ -12789,7 +12789,7 @@ function $$SanitizeUriProvider() {
    * Retrieves or overrides the default regular expression that is used for whitelisting of safe
    * urls during img[src] sanitization.
    *
-   * The sanitization is a security measure aimed at prevent XSS attacks via html links.
+   * The sanitization is a security measure aimed at prevent XSS attacks via pages links.
    *
    * Any url about to be assigned to img[src] via data-binding is first normalized and turned into
    * an absolute url. Afterwards, the url is matched against the `imgSrcSanitizationWhitelist`
@@ -12839,7 +12839,7 @@ var SCE_CONTEXTS = {
 // Helper functions follow.
 
 // Copied from:
-// http://docs.closure-library.googlecode.com/git/closure_goog_string_string.js.source.html#line962
+// http://docs.closure-library.googlecode.com/git/closure_goog_string_string.js.source.pages#line962
 // Prereq: s is a string.
 function escapeForRegexp(s) {
   return s.replace(/([-()\[\]{}+?*.$\^|,:#<!\\])/g, '\\$1').
@@ -13000,7 +13000,7 @@ function $SceDelegateProvider() {
    *     allowed in this array.
    *
    *     The typical usage for the blacklist is to **block
-   *     [open redirects](http://cwe.mitre.org/data/definitions/601.html)** served by your domain as
+   *     [open redirects](http://cwe.mitre.org/data/definitions/601.pages)** served by your domain as
    *     these would otherwise be trusted but actually return content from the redirected domain.
    *
    *     Finally, **the blacklist overrides the whitelist** and has the final say.
@@ -13096,13 +13096,13 @@ function $SceDelegateProvider() {
      *
      * @description
      * Returns an object that is trusted by angular for use in specified strict
-     * contextual escaping contexts (such as ng-bind-html, ng-include, any src
+     * contextual escaping contexts (such as ng-bind-pages, ng-include, any src
      * attribute interpolation, any dom event binding attribute interpolation
      * such as for onclick,  etc.) that uses the provided value.
      * See {@link ng.$sce $sce} for enabling strict contextual escaping.
      *
      * @param {string} type The kind of context in which this value is safe for use.  e.g. url,
-     *   resourceUrl, html, js and css.
+     *   resourceUrl, pages, js and css.
      * @param {*} value The value that that should be considered trusted/safe.
      * @returns {*} A value that can be used to stand in for the provided `value` in places
      * where Angular expects a $sce.trustAs() return value.
@@ -13227,7 +13227,7 @@ function $SceDelegateProvider() {
  *
  * Strict Contextual Escaping (SCE) is a mode in which AngularJS requires bindings in certain
  * contexts to result in a value that is marked as safe to use for that context.  One example of
- * such a context is binding arbitrary html controlled by the user via `ng-bind-html`.  We refer
+ * such a context is binding arbitrary pages controlled by the user via `ng-bind-pages`.  We refer
  * to these contexts as privileged or SCE contexts.
  *
  * As of version 1.2, Angular ships with SCE enabled by default.
@@ -13235,7 +13235,7 @@ function $SceDelegateProvider() {
  * Note:  When enabled (the default), IE8 in quirks mode is not supported.  In this mode, IE8 allows
  * one to execute arbitrary javascript by the use of the expression() syntax.  Refer
  * <http://blogs.msdn.com/b/ie/archive/2008/10/16/ending-expressions.aspx> to learn more about them.
- * You can ensure your document is in standards mode and not quirks mode by adding `<!doctype html>`
+ * You can ensure your document is in standards mode and not quirks mode by adding `<!doctype pages>`
  * to the top of your HTML document.
  *
  * SCE assists in writing code in way that (a) is secure by default and (b) makes auditing for
@@ -13245,10 +13245,10 @@ function $SceDelegateProvider() {
  *
  * <pre class="prettyprint">
  *     <input ng-model="userHtml">
- *     <div ng-bind-html="userHtml">
+ *     <div ng-bind-pages="userHtml">
  * </pre>
  *
- * Notice that `ng-bind-html` is bound to `userHtml` controlled by the user.  With SCE
+ * Notice that `ng-bind-pages` is bound to `userHtml` controlled by the user.  With SCE
  * disabled, this application allows the user to render arbitrary HTML into the DIV.
  * In a more realistic example, one may be rendering user comments, blog articles, etc. via
  * bindings.  (HTML is just one example of a context where rendering user controlled input creates
@@ -13290,7 +13290,7 @@ function $SceDelegateProvider() {
  *   var ngBindHtmlDirective = ['$sce', function($sce) {
  *     return function(scope, element, attr) {
  *       scope.$watch($sce.parseAsHtml(attr.ngBindHtml), function(value) {
- *         element.html(value || '');
+ *         element.pages(value || '');
  *       });
  *     };
  *   }];
@@ -13322,7 +13322,7 @@ function $SceDelegateProvider() {
  *
  * If your expressions are constant literals, they're automatically trusted and you don't need to
  * call `$sce.trustAs` on them (remember to include the `ngSanitize` module) (e.g.
- * `<div ng-bind-html="'<b>implicitly trusted</b>'"></div>`) just works.
+ * `<div ng-bind-pages="'<b>implicitly trusted</b>'"></div>`) just works.
  *
  * Additionally, `a[href]` and `img[src]` automatically sanitize their URLs and do not pass them
  * through {@link ng.$sce#getTrusted $sce.getTrusted}.  SCE doesn't play a role here.
@@ -13388,11 +13388,11 @@ function $SceDelegateProvider() {
  *      one level of escaping depending on your templating engine and the way you interpolated
  *      the value.)  Do make use of your platform's escaping mechanism as it might be good
  *      enough before coding your own.  e.g. Ruby has
- *      [Regexp.escape(str)](http://www.ruby-doc.org/core-2.0.0/Regexp.html#method-c-escape)
- *      and Python has [re.escape](http://docs.python.org/library/re.html#re.escape).
+ *      [Regexp.escape(str)](http://www.ruby-doc.org/core-2.0.0/Regexp.pages#method-c-escape)
+ *      and Python has [re.escape](http://docs.python.org/library/re.pages#re.escape).
  *      Javascript lacks a similar built in function for escaping.  Take a look at Google
  *      Closure library's [goog.string.regExpEscape(s)](
- *      http://docs.closure-library.googlecode.com/git/closure_goog_string_string.js.source.html#line962).
+ *      http://docs.closure-library.googlecode.com/git/closure_goog_string_string.js.source.pages#line962).
  *
  * Refer {@link ng.$sceDelegateProvider $sceDelegateProvider} for an example.
  *
@@ -13400,9 +13400,9 @@ function $SceDelegateProvider() {
  *
  * @example
 <example module="mySceApp" deps="angular-sanitize.js">
-<file name="index.html">
+<file name="index.pages">
   <div ng-controller="myAppController as myCtrl">
-    <i ng-bind-html="myCtrl.explicitlyTrustedHtml" id="explicitlyTrustedHtml"></i><br><br>
+    <i ng-bind-pages="myCtrl.explicitlyTrustedHtml" id="explicitlyTrustedHtml"></i><br><br>
     <b>User comments</b><br>
     By default, HTML that isn't explicitly trusted (e.g. Alice's comment) is sanitized when
     $sanitize is available.  If $sanitize isn't available, this results in an error instead of an
@@ -13410,7 +13410,7 @@ function $SceDelegateProvider() {
     <div class="well">
       <div ng-repeat="userComment in myCtrl.userComments">
         <b>{{userComment.name}}</b>:
-        <span ng-bind-html="userComment.htmlComment" class="htmlComment"></span>
+        <span ng-bind-pages="userComment.htmlComment" class="htmlComment"></span>
         <br>
       </div>
     </div>
@@ -13557,7 +13557,7 @@ function $SceProvider() {
     if (enabled && $sniffer.msie && $sniffer.msieDocumentMode < 8) {
       throw $sceMinErr('iequirks',
         'Strict Contextual Escaping does not support Internet Explorer version < 9 in quirks ' +
-        'mode.  You can fix this by adding the text <!doctype html> to the top of your HTML ' +
+        'mode.  You can fix this by adding the text <!doctype pages> to the top of your HTML ' +
         'document.  See http://docs.angularjs.org/api/ng.$sce for more information.');
     }
 
@@ -13623,13 +13623,13 @@ function $SceProvider() {
      * @description
      * Delegates to {@link ng.$sceDelegate#trustAs `$sceDelegate.trustAs`}.  As such,
      * returns an object that is trusted by angular for use in specified strict contextual
-     * escaping contexts (such as ng-bind-html, ng-include, any src attribute
+     * escaping contexts (such as ng-bind-pages, ng-include, any src attribute
      * interpolation, any dom event binding attribute interpolation such as for onclick,  etc.)
      * that uses the provided value.  See * {@link ng.$sce $sce} for enabling strict contextual
      * escaping.
      *
      * @param {string} type The kind of context in which this value is safe for use.  e.g. url,
-     *   resource_url, html, js and css.
+     *   resource_url, pages, js and css.
      * @param {*} value The value that that should be considered trusted/safe.
      * @returns {*} A value that can be used to stand in for the provided `value` in places
      * where Angular expects a $sce.trustAs() return value.
@@ -14076,7 +14076,7 @@ var originUrl = urlResolve(window.location.href, true);
  * Parsing means that the anchor node's host, hostname, protocol, port, pathname and related
  * properties are all populated to reflect the normalized URL.  This approach has wide
  * compatibility - Safari 1+, Mozilla 1+, Opera 7+,e etc.  See
- * http://www.aptana.com/reference/html/api/HTMLAnchorElement.html
+ * http://www.aptana.com/reference/pages/api/HTMLAnchorElement.pages
  *
  * Implementation Notes for IE
  * ---------------------------
@@ -14096,7 +14096,7 @@ var originUrl = urlResolve(window.location.href, true);
  *
  * References:
  *   http://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement
- *   http://www.aptana.com/reference/html/api/HTMLAnchorElement.html
+ *   http://www.aptana.com/reference/pages/api/HTMLAnchorElement.pages
  *   http://url.spec.whatwg.org/#urlutils
  *   https://github.com/angular/angular.js/pull/2902
  *   http://james.padolsey.com/javascript/parsing-urls-with-the-dom/
@@ -14175,7 +14175,7 @@ function urlIsSameOrigin(requestUrl) {
  *
  * @example
    <example>
-     <file name="index.html">
+     <file name="index.pages">
        <script>
          function Ctrl($scope, $window) {
            $scope.greeting = 'Hello, World!';
@@ -14379,7 +14379,7 @@ function $FilterProvider($provide) {
  *
  * @example
    <example>
-     <file name="index.html">
+     <file name="index.pages">
        <div ng-init="friends = [{name:'John', phone:'555-1276'},
                                 {name:'Mary', phone:'800-BIG-MARY'},
                                 {name:'Mike', phone:'555-4321'},
@@ -14567,7 +14567,7 @@ function filterFilter() {
  *
  * @example
    <example>
-     <file name="index.html">
+     <file name="index.pages">
        <script>
          function Ctrl($scope) {
            $scope.amount = 1234.56;
@@ -14626,7 +14626,7 @@ function currencyFilter($locale) {
  *
  * @example
    <example>
-     <file name="index.html">
+     <file name="index.pages">
        <script>
          function Ctrl($scope) {
            $scope.val = 1234.56789;
@@ -14881,7 +14881,7 @@ var DATE_FORMATS_SPLIT = /((?:[^yMdHhmsaZE']+)|(?:'(?:[^']|'')*')|(?:E+|y+|M+|d+
  *
  * @example
    <example>
-     <file name="index.html">
+     <file name="index.pages">
        <span ng-non-bindable>{{1288323623006 | date:'medium'}}</span>:
            <span>{{1288323623006 | date:'medium'}}</span><br>
        <span ng-non-bindable>{{1288323623006 | date:'yyyy-MM-dd HH:mm:ss Z'}}</span>:
@@ -14994,7 +14994,7 @@ function dateFilter($locale) {
  *
  * @example
    <example>
-     <file name="index.html">
+     <file name="index.pages">
        <pre>{{ {'name':'value'} | json }}</pre>
      </file>
      <file name="protractor.js" type="protractor">
@@ -15053,7 +15053,7 @@ var uppercaseFilter = valueFn(uppercase);
  *
  * @example
    <example>
-     <file name="index.html">
+     <file name="index.pages">
        <script>
          function Ctrl($scope) {
            $scope.numbers = [1,2,3,4,5,6,7,8,9];
@@ -15169,7 +15169,7 @@ function limitToFilter(){
  *
  * @example
    <example>
-     <file name="index.html">
+     <file name="index.pages">
        <script>
          function Ctrl($scope) {
            $scope.friends =
@@ -15276,7 +15276,7 @@ function ngDirective(directive) {
  * @restrict E
  *
  * @description
- * Modifies the default behavior of the html A tag so that the default action is prevented when
+ * Modifies the default behavior of the pages A tag so that the default action is prevented when
  * the href attribute is empty.
  *
  * This change permits the easy creation of action links with the `ngClick` directive
@@ -15334,12 +15334,12 @@ var htmlAnchorDirective = valueFn({
  * The `ngHref` directive solves this problem.
  *
  * The wrong way to write it:
- * ```html
+ * ```pages
  * <a href="http://www.gravatar.com/avatar/{{hash}}"/>
  * ```
  *
  * The correct way to write it:
- * ```html
+ * ```pages
  * <a ng-href="http://www.gravatar.com/avatar/{{hash}}"/>
  * ```
  *
@@ -15350,7 +15350,7 @@ var htmlAnchorDirective = valueFn({
  * This example shows various combinations of `href`, `ng-href` and `ng-click` attributes
  * in links and their different behaviors:
     <example>
-      <file name="index.html">
+      <file name="index.pages">
         <input ng-model="value" /><br />
         <a id="link-1" href ng-click="value = 1">link 1</a> (link, don't reload)<br />
         <a id="link-2" href="" ng-click="value = 2">link 2</a> (link, don't reload)<br />
@@ -15431,12 +15431,12 @@ var htmlAnchorDirective = valueFn({
  * `{{hash}}`. The `ngSrc` directive solves this problem.
  *
  * The buggy way to write it:
- * ```html
+ * ```pages
  * <img src="http://www.gravatar.com/avatar/{{hash}}"/>
  * ```
  *
  * The correct way to write it:
- * ```html
+ * ```pages
  * <img ng-src="http://www.gravatar.com/avatar/{{hash}}"/>
  * ```
  *
@@ -15457,12 +15457,12 @@ var htmlAnchorDirective = valueFn({
  * `{{hash}}`. The `ngSrcset` directive solves this problem.
  *
  * The buggy way to write it:
- * ```html
+ * ```pages
  * <img srcset="http://www.gravatar.com/avatar/{{hash}} 2x"/>
  * ```
  *
  * The correct way to write it:
- * ```html
+ * ```pages
  * <img ng-srcset="http://www.gravatar.com/avatar/{{hash}} 2x"/>
  * ```
  *
@@ -15479,7 +15479,7 @@ var htmlAnchorDirective = valueFn({
  * @description
  *
  * The following markup will make the button enabled on Chrome/Firefox but not on IE8 and older IEs:
- * ```html
+ * ```pages
  * <div ng-init="scope = { isDisabled: false }">
  *  <button disabled="{{scope.isDisabled}}">Disabled</button>
  * </div>
@@ -15495,7 +15495,7 @@ var htmlAnchorDirective = valueFn({
  *
  * @example
     <example>
-      <file name="index.html">
+      <file name="index.pages">
         Click me to toggle: <input type="checkbox" ng-model="checked"><br/>
         <button ng-model="button" ng-disabled="checked">Button</button>
       </file>
@@ -15530,7 +15530,7 @@ var htmlAnchorDirective = valueFn({
  * a permanent reliable place to store the binding information.
  * @example
     <example>
-      <file name="index.html">
+      <file name="index.pages">
         Check me to check both: <input type="checkbox" ng-model="master"><br/>
         <input id="checkSlave" type="checkbox" ng-checked="master">
       </file>
@@ -15565,7 +15565,7 @@ var htmlAnchorDirective = valueFn({
  * a permanent reliable place to store the binding information.
  * @example
     <example>
-      <file name="index.html">
+      <file name="index.pages">
         Check me to make text readonly: <input type="checkbox" ng-model="checked"><br/>
         <input type="text" ng-readonly="checked" value="I'm Angular"/>
       </file>
@@ -15601,7 +15601,7 @@ var htmlAnchorDirective = valueFn({
  *
  * @example
     <example>
-      <file name="index.html">
+      <file name="index.pages">
         Check me to select: <input type="checkbox" ng-model="selected"><br/>
         <select>
           <option>Hello!</option>
@@ -15638,7 +15638,7 @@ var htmlAnchorDirective = valueFn({
  * a permanent reliable place to store the binding information.
  * @example
      <example>
-       <file name="index.html">
+       <file name="index.pages">
          Check me check multiple: <input type="checkbox" ng-model="open"><br/>
          <details id="details" ng-open="open">
             <summary>Show/Hide me</summary>
@@ -16029,7 +16029,7 @@ function FormController(element, attrs, $scope, $animate) {
  *
  * @example
     <example deps="angular-animate.js" animations="true" fixBase="true">
-      <file name="index.html">
+      <file name="index.pages">
        <script>
          function Ctrl($scope) {
            $scope.userType = 'guest';
@@ -16179,7 +16179,7 @@ var inputType = {
    *
    * @example
       <example name="text-input-directive">
-        <file name="index.html">
+        <file name="index.pages">
          <script>
            function Ctrl($scope) {
              $scope.text = 'guest';
@@ -16259,7 +16259,7 @@ var inputType = {
    *
    * @example
       <example name="number-input-directive">
-        <file name="index.html">
+        <file name="index.pages">
          <script>
            function Ctrl($scope) {
              $scope.value = 12;
@@ -16334,7 +16334,7 @@ var inputType = {
    *
    * @example
       <example name="url-input-directive">
-        <file name="index.html">
+        <file name="index.pages">
          <script>
            function Ctrl($scope) {
              $scope.text = 'http://google.com';
@@ -16410,7 +16410,7 @@ var inputType = {
    *
    * @example
       <example name="email-input-directive">
-        <file name="index.html">
+        <file name="index.pages">
          <script>
            function Ctrl($scope) {
              $scope.text = 'me@example.com';
@@ -16476,7 +16476,7 @@ var inputType = {
    *
    * @example
       <example name="radio-input-directive">
-        <file name="index.html">
+        <file name="index.pages">
          <script>
            function Ctrl($scope) {
              $scope.color = 'blue';
@@ -16526,7 +16526,7 @@ var inputType = {
    *
    * @example
       <example name="checkbox-input-directive">
-        <file name="index.html">
+        <file name="index.pages">
          <script>
            function Ctrl($scope) {
              $scope.value1 = true;
@@ -16905,7 +16905,7 @@ function checkboxInputType(scope, element, attr, ctrl) {
  *
  * @example
     <example name="input-directive">
-      <file name="index.html">
+      <file name="index.pages">
        <script>
          function Ctrl($scope) {
            $scope.user = {name: 'guest', last: 'visitor'};
@@ -17086,7 +17086,7 @@ var VALID_CLASS = 'ng-valid',
 
               // Specify how UI should be updated
               ngModel.$render = function() {
-                element.html(ngModel.$viewValue || '');
+                element.pages(ngModel.$viewValue || '');
               };
 
               // Listen for change events to enable binding
@@ -17097,19 +17097,19 @@ var VALID_CLASS = 'ng-valid',
 
               // Write data to the model
               function read() {
-                var html = element.html();
+                var pages = element.pages();
                 // When we clear the content editable the browser leaves a <br> behind
                 // If strip-br attribute is provided then we strip this out
-                if( attrs.stripBr && html == '<br>' ) {
-                  html = '';
+                if( attrs.stripBr && pages == '<br>' ) {
+                  pages = '';
                 }
-                ngModel.$setViewValue(html);
+                ngModel.$setViewValue(pages);
               }
             }
           };
         });
     </file>
-    <file name="index.html">
+    <file name="index.pages">
       <form name="myForm">
        <div contenteditable
             name="myWidget" ng-model="userContent"
@@ -17425,7 +17425,7 @@ var NgModelController = ['$scope', '$exceptionHandler', '$attrs', '$element', '$
  *
  * @example
  * <example deps="angular-animate.js" animations="true" fixBase="true">
-     <file name="index.html">
+     <file name="index.pages">
        <script>
         function Ctrl($scope) {
           $scope.val = '1';
@@ -17489,7 +17489,7 @@ var ngModelDirective = function() {
  *
  * @example
  * <example name="ngChange-directive">
- *   <file name="index.html">
+ *   <file name="index.pages">
  *     <script>
  *       function Controller($scope) {
  *         $scope.counter = 0;
@@ -17580,7 +17580,7 @@ var requiredDirective = function() {
  *
  * @example
     <example name="ngList-directive">
-      <file name="index.html">
+      <file name="index.pages">
        <script>
          function Ctrl($scope) {
            $scope.names = ['igor', 'misko', 'vojta'];
@@ -17679,7 +17679,7 @@ var CONSTANT_VALUE_REGEXP = /^(true|false|\d+)$/;
  *
  * @example
     <example name="ngValue-directive">
-      <file name="index.html">
+      <file name="index.pages">
        <script>
           function Ctrl($scope) {
             $scope.names = ['pizza', 'unicorns', 'robots'];
@@ -17758,7 +17758,7 @@ var ngValueDirective = function() {
  * @example
  * Enter a name in the Live Preview text box; the greeting below the text box changes instantly.
    <example>
-     <file name="index.html">
+     <file name="index.pages">
        <script>
          function Ctrl($scope) {
            $scope.name = 'Whirled';
@@ -17811,7 +17811,7 @@ var ngBindDirective = ngDirective(function(scope, element, attr) {
  * @example
  * Try it here: enter text in text box and watch the greeting change.
    <example>
-     <file name="index.html">
+     <file name="index.pages">
        <script>
          function Ctrl($scope) {
            $scope.salutation = 'Hello';
@@ -17877,9 +17877,9 @@ var ngBindTemplateDirective = ['$interpolate', function($interpolate) {
    Try it here: enter text in text box and watch the greeting change.
 
    <example module="ngBindHtmlExample" deps="angular-sanitize.js">
-     <file name="index.html">
+     <file name="index.pages">
        <div ng-controller="ngBindHtmlCtrl">
-        <p ng-bind-html="myHTML"></p>
+        <p ng-bind-pages="myHTML"></p>
        </div>
      </file>
 
@@ -17893,7 +17893,7 @@ var ngBindTemplateDirective = ['$interpolate', function($interpolate) {
      </file>
 
      <file name="protractor.js" type="protractor">
-       it('should check ng-bind-html', function() {
+       it('should check ng-bind-pages', function() {
          expect(element(by.binding('myHTML')).getText()).toBe(
              'I am an HTMLstring with links! and other stuff');
        });
@@ -18068,7 +18068,7 @@ function classDirective(name, selector) {
  *
  * @example Example that demonstrates basic bindings via ngClass directive.
    <example>
-     <file name="index.html">
+     <file name="index.pages">
        <p ng-class="{strike: deleted, bold: important, red: error}">Map Syntax Example</p>
        <input type="checkbox" ng-model="deleted"> deleted (apply "strike" class)<br>
        <input type="checkbox" ng-model="important"> important (apply "bold" class)<br>
@@ -18130,7 +18130,7 @@ function classDirective(name, selector) {
    The example below demonstrates how to perform animations using ngClass.
 
    <example module="ngAnimate" deps="angular-animate.js" animations="true">
-     <file name="index.html">
+     <file name="index.pages">
       <input id="setbtn" type="button" value="set" ng-click="myVar='my-class'">
       <input id="clearbtn" type="button" value="clear" ng-click="myVar=''">
       <br>
@@ -18194,7 +18194,7 @@ var ngClassDirective = classDirective('', true);
  *
  * @example
    <example>
-     <file name="index.html">
+     <file name="index.pages">
         <ol ng-init="names=['John', 'Mary', 'Cate', 'Suz']">
           <li ng-repeat="name in names">
            <span ng-class-odd="'odd'" ng-class-even="'even'">
@@ -18242,7 +18242,7 @@ var ngClassOddDirective = classDirective('Odd', 0);
  *
  * @example
    <example>
-     <file name="index.html">
+     <file name="index.pages">
         <ol ng-init="names=['John', 'Mary', 'Cate', 'Suz']">
           <li ng-repeat="name in names">
            <span ng-class-odd="'odd'" ng-class-even="'even'">
@@ -18277,9 +18277,9 @@ var ngClassEvenDirective = classDirective('Even', 1);
  * @restrict AC
  *
  * @description
- * The `ngCloak` directive is used to prevent the Angular html template from being briefly
+ * The `ngCloak` directive is used to prevent the Angular pages template from being briefly
  * displayed by the browser in its raw (uncompiled) form while your application is loading. Use this
- * directive to avoid the undesirable flicker effect caused by the html template display.
+ * directive to avoid the undesirable flicker effect caused by the pages template display.
  *
  * The directive can be applied to the `<body>` element, but the preferred usage is to apply
  * multiple `ngCloak` directives to small portions of the page to permit progressive rendering
@@ -18287,7 +18287,7 @@ var ngClassEvenDirective = classDirective('Even', 1);
  *
  * `ngCloak` works in cooperation with the following css rule embedded within `angular.js` and
  * `angular.min.js`.
- * For CSP mode please add `angular-csp.css` to your html file (see {@link ng.directive:ngCsp ngCsp}).
+ * For CSP mode please add `angular-csp.css` to your pages file (see {@link ng.directive:ngCsp ngCsp}).
  *
  * ```css
  * [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
@@ -18295,12 +18295,12 @@ var ngClassEvenDirective = classDirective('Even', 1);
  * }
  * ```
  *
- * When this css rule is loaded by the browser, all html elements (including their children) that
+ * When this css rule is loaded by the browser, all pages elements (including their children) that
  * are tagged with the `ngCloak` directive are hidden. When Angular encounters this directive
  * during the compilation of the template it deletes the `ngCloak` element attribute, making
  * the compiled element visible.
  *
- * For the best result, the `angular.js` script must be loaded in the head section of the html
+ * For the best result, the `angular.js` script must be loaded in the head section of the pages
  * document; alternatively, the css rule above must be included in the external stylesheet of the
  * application.
  *
@@ -18312,7 +18312,7 @@ var ngClassEvenDirective = classDirective('Even', 1);
  *
  * @example
    <example>
-     <file name="index.html">
+     <file name="index.pages">
         <div id="template1" ng-cloak>{{ 'hello' }}</div>
         <div id="template2" ng-cloak class="ng-cloak">{{ 'hello IE7' }}</div>
      </file>
@@ -18371,7 +18371,7 @@ var ngCloakDirective = ngDirective({
  * for a manual update. The example is shown in two different declaration styles you may use
  * according to preference.
    <example>
-     <file name="index.html">
+     <file name="index.pages">
       <script>
         function SettingsController1() {
           this.name = "John Smith";
@@ -18448,7 +18448,7 @@ var ngCloakDirective = ngDirective({
      </file>
    </example>
     <example>
-     <file name="index.html">
+     <file name="index.pages">
       <script>
         function SettingsController2($scope) {
           $scope.name = "John Smith";
@@ -18538,7 +18538,7 @@ var ngControllerDirective = [function() {
  * @ngdoc directive
  * @name ngCsp
  *
- * @element html
+ * @element pages
  * @description
  * Enables [CSP (Content Security Policy)](https://developer.mozilla.org/en/Security/CSP) support.
  *
@@ -18562,13 +18562,13 @@ var ngControllerDirective = [function() {
  * *Note: This directive is only available in the `ng-csp` and `data-ng-csp` attribute form.*
  *
  * @example
- * This example shows how to apply the `ngCsp` directive to the `html` tag.
-   ```html
-     <!doctype html>
-     <html ng-app ng-csp>
+ * This example shows how to apply the `ngCsp` directive to the `pages` tag.
+   ```pages
+     <!doctype pages>
+     <pages ng-app ng-csp>
      ...
      ...
-     </html>
+     </pages>
    ```
  */
 
@@ -18591,7 +18591,7 @@ var ngControllerDirective = [function() {
  *
  * @example
    <example>
-     <file name="index.html">
+     <file name="index.pages">
       <button ng-click="count = count + 1" ng-init="count=0">
         Increment
       </button>
@@ -18648,7 +18648,7 @@ forEach(
  *
  * @example
    <example>
-     <file name="index.html">
+     <file name="index.pages">
       <button ng-dblclick="count = count + 1" ng-init="count=0">
         Increment (on double click)
       </button>
@@ -18672,7 +18672,7 @@ forEach(
  *
  * @example
    <example>
-     <file name="index.html">
+     <file name="index.pages">
       <button ng-mousedown="count = count + 1" ng-init="count=0">
         Increment (on mouse down)
       </button>
@@ -18696,7 +18696,7 @@ forEach(
  *
  * @example
    <example>
-     <file name="index.html">
+     <file name="index.pages">
       <button ng-mouseup="count = count + 1" ng-init="count=0">
         Increment (on mouse up)
       </button>
@@ -18719,7 +18719,7 @@ forEach(
  *
  * @example
    <example>
-     <file name="index.html">
+     <file name="index.pages">
       <button ng-mouseover="count = count + 1" ng-init="count=0">
         Increment (when mouse is over)
       </button>
@@ -18743,7 +18743,7 @@ forEach(
  *
  * @example
    <example>
-     <file name="index.html">
+     <file name="index.pages">
       <button ng-mouseenter="count = count + 1" ng-init="count=0">
         Increment (when mouse enters)
       </button>
@@ -18767,7 +18767,7 @@ forEach(
  *
  * @example
    <example>
-     <file name="index.html">
+     <file name="index.pages">
       <button ng-mouseleave="count = count + 1" ng-init="count=0">
         Increment (when mouse leaves)
       </button>
@@ -18791,7 +18791,7 @@ forEach(
  *
  * @example
    <example>
-     <file name="index.html">
+     <file name="index.pages">
       <button ng-mousemove="count = count + 1" ng-init="count=0">
         Increment (when mouse moves)
       </button>
@@ -18815,7 +18815,7 @@ forEach(
  *
  * @example
    <example>
-     <file name="index.html">
+     <file name="index.pages">
       <input ng-keydown="count = count + 1" ng-init="count=0">
       key down count: {{count}}
      </file>
@@ -18837,7 +18837,7 @@ forEach(
  *
  * @example
    <example>
-     <file name="index.html">
+     <file name="index.pages">
       <input ng-keyup="count = count + 1" ng-init="count=0">
       key up count: {{count}}
      </file>
@@ -18859,7 +18859,7 @@ forEach(
  *
  * @example
    <example>
-     <file name="index.html">
+     <file name="index.pages">
       <input ng-keypress="count = count + 1" ng-init="count=0">
       key press count: {{count}}
      </file>
@@ -18885,7 +18885,7 @@ forEach(
  *
  * @example
    <example>
-     <file name="index.html">
+     <file name="index.pages">
       <script>
         function Ctrl($scope) {
           $scope.list = [];
@@ -18968,7 +18968,7 @@ forEach(
  *
  * @example
    <example>
-     <file name="index.html">
+     <file name="index.pages">
       <input ng-copy="copied=true" ng-init="copied=false; value='copy me'" ng-model="value">
       copied: {{copied}}
      </file>
@@ -18989,7 +18989,7 @@ forEach(
  *
  * @example
    <example>
-     <file name="index.html">
+     <file name="index.pages">
       <input ng-cut="cut=true" ng-init="cut=false; value='cut me'" ng-model="value">
       cut: {{cut}}
      </file>
@@ -19010,7 +19010,7 @@ forEach(
  *
  * @example
    <example>
-     <file name="index.html">
+     <file name="index.pages">
       <input ng-paste="paste=true" ng-init="paste=false" placeholder='paste here'>
       pasted: {{paste}}
      </file>
@@ -19062,7 +19062,7 @@ forEach(
  *
  * @example
   <example module="ngAnimate" deps="angular-animate.js" animations="true">
-    <file name="index.html">
+    <file name="index.pages">
       Click me: <input type="checkbox" ng-model="checked" ng-init="checked=true" /><br/>
       Show when checked:
       <span ng-if="checked" class="animate-if">
@@ -19172,7 +19172,7 @@ var ngIfDirective = ['$animate', function($animate) {
  * @priority 400
  *
  * @param {string} ngInclude|src angular expression evaluating to URL. If the source is a string constant,
- *                 make sure you wrap it in **single** quotes, e.g. `src="'myPartialTemplate.html'"`.
+ *                 make sure you wrap it in **single** quotes, e.g. `src="'myPartialTemplate.pages'"`.
  * @param {string=} onload Expression to evaluate when a new partial is loaded.
  *
  * @param {string=} autoscroll Whether `ngInclude` should call {@link ng.$anchorScroll
@@ -19184,7 +19184,7 @@ var ngIfDirective = ['$animate', function($animate) {
  *
  * @example
   <example module="ngAnimate" deps="angular-animate.js" animations="true">
-    <file name="index.html">
+    <file name="index.pages">
      <div ng-controller="Ctrl">
        <select ng-model="template" ng-options="t.name for t in templates">
         <option value="">(blank)</option>
@@ -19199,16 +19199,16 @@ var ngIfDirective = ['$animate', function($animate) {
     <file name="script.js">
       function Ctrl($scope) {
         $scope.templates =
-          [ { name: 'template1.html', url: 'template1.html'},
-            { name: 'template2.html', url: 'template2.html'} ];
+          [ { name: 'template1.pages', url: 'template1.pages'},
+            { name: 'template2.pages', url: 'template2.pages'} ];
         $scope.template = $scope.templates[0];
       }
      </file>
-    <file name="template1.html">
-      Content of template1.html
+    <file name="template1.pages">
+      Content of template1.pages
     </file>
-    <file name="template2.html">
-      Content of template2.html
+    <file name="template2.pages">
+      Content of template2.pages
     </file>
     <file name="animations.css">
       .slide-animate-container {
@@ -19254,11 +19254,11 @@ var ngIfDirective = ['$animate', function($animate) {
       var templateSelect = element(by.model('template'));
       var includeElem = element(by.css('[ng-include]'));
 
-      it('should load template1.html', function() {
-        expect(includeElem.getText()).toMatch(/Content of template1.html/);
+      it('should load template1.pages', function() {
+        expect(includeElem.getText()).toMatch(/Content of template1.pages/);
       });
 
-      it('should load template2.html', function() {
+      it('should load template2.pages', function() {
         if (browser.params.browser == 'firefox') {
           // Firefox can't handle using selects
           // See https://github.com/angular/protractor/issues/480
@@ -19266,7 +19266,7 @@ var ngIfDirective = ['$animate', function($animate) {
         }
         templateSelect.click();
         templateSelect.element.all(by.css('option')).get(2).click();
-        expect(includeElem.getText()).toMatch(/Content of template2.html/);
+        expect(includeElem.getText()).toMatch(/Content of template2.pages/);
       });
 
       it('should change to blank', function() {
@@ -19351,7 +19351,7 @@ var ngIncludeDirective = ['$http', '$templateCache', '$anchorScroll', '$animate'
               ctrl.template = response;
 
               // Note: This will also link all children of ng-include that were contained in the original
-              // html. If that content contains controllers, ... they could pollute/change the scope.
+              // pages. If that content contains controllers, ... they could pollute/change the scope.
               // However, using ng-include on an element with additional content does not make sense...
               // Note: We can't remove them in the cloneAttchFn of $transclude as that
               // function is called before linking the content, which would apply child
@@ -19428,7 +19428,7 @@ var ngIncludeFillContentDirective = ['$compile',
  *
  * @example
    <example>
-     <file name="index.html">
+     <file name="index.pages">
    <script>
      function Ctrl($scope) {
        $scope.list = [['a', 'b'], ['c', 'd']];
@@ -19484,7 +19484,7 @@ var ngInitDirective = ngDirective({
  *
  * @example
     <example>
-      <file name="index.html">
+      <file name="index.pages">
         <div>Normal: {{1 + 2}}</div>
         <div ng-non-bindable>Ignored: {{1 + 2}}</div>
       </file>
@@ -19508,12 +19508,12 @@ var ngNonBindableDirective = ngDirective({ terminal: true, priority: 1000 });
  * These rules are bundled with angular.js, but can be overridden
  * (see {@link guide/i18n Angular i18n} dev guide). You configure ngPluralize directive
  * by specifying the mappings between
- * [plural categories](http://unicode.org/repos/cldr-tmp/trunk/diff/supplemental/language_plural_rules.html)
+ * [plural categories](http://unicode.org/repos/cldr-tmp/trunk/diff/supplemental/language_plural_rules.pages)
  * and the strings to be displayed.
  *
  * # Plural categories and explicit number rules
  * There are two
- * [plural categories](http://unicode.org/repos/cldr-tmp/trunk/diff/supplemental/language_plural_rules.html)
+ * [plural categories](http://unicode.org/repos/cldr-tmp/trunk/diff/supplemental/language_plural_rules.pages)
  * in Angular's default en-US locale: "one" and "other".
  *
  * While a plural category may match many numbers (for example, in en-US locale, "other" can match
@@ -19533,7 +19533,7 @@ var ngNonBindableDirective = ngDirective({ terminal: true, priority: 1000 });
  *
  * The following example shows how to configure ngPluralize:
  *
- * ```html
+ * ```pages
  * <ng-pluralize count="personCount"
                  when="{'0': 'Nobody is viewing.',
  *                      'one': '1 person is viewing.',
@@ -19559,7 +19559,7 @@ var ngNonBindableDirective = ngDirective({ terminal: true, priority: 1000 });
  * The offset attribute allows you to offset a number by any desired value.
  * Let's take a look at an example:
  *
- * ```html
+ * ```pages
  * <ng-pluralize count="personCount" offset=2
  *               when="{'0': 'Nobody is viewing.',
  *                      '1': '{{person1}} is viewing.',
@@ -19588,7 +19588,7 @@ var ngNonBindableDirective = ngDirective({ terminal: true, priority: 1000 });
  *
  * @example
     <example>
-      <file name="index.html">
+      <file name="index.pages">
         <script>
           function Ctrl($scope) {
             $scope.person1 = 'Igor';
@@ -19743,7 +19743,7 @@ var ngPluralizeDirective = ['$locale', '$interpolate', function($locale, $interp
  * up to and including the ending HTML tag where **ng-repeat-end** is placed.
  *
  * The example below makes use of this feature:
- * ```html
+ * ```pages
  *   <header ng-repeat-start="item in items">
  *     Header {{ item }}
  *   </header>
@@ -19756,7 +19756,7 @@ var ngPluralizeDirective = ['$locale', '$interpolate', function($locale, $interp
  * ```
  *
  * And with an input of {@type ['A','B']} for the items variable in the example above, the output will evaluate to:
- * ```html
+ * ```pages
  *   <header>
  *     Header A
  *   </header>
@@ -19829,7 +19829,7 @@ var ngPluralizeDirective = ['$locale', '$interpolate', function($locale, $interp
  * This example initializes the scope to a list of names and
  * then uses `ngRepeat` to display every person:
   <example module="ngAnimate" deps="angular-animate.js" animations="true">
-    <file name="index.html">
+    <file name="index.pages">
       <div ng-init="friends = [
         {name:'John', age:25, gender:'boy'},
         {name:'Jessie', age:30, gender:'girl'},
@@ -20117,9 +20117,9 @@ var ngRepeatDirective = ['$parse', '$animate', function($parse, $animate) {
  * provided to the ngShow attribute. The element is shown or hidden by removing or adding
  * the `ng-hide` CSS class onto the element. The `.ng-hide` CSS class is predefined
  * in AngularJS and sets the display style to none (using an !important flag).
- * For CSP mode please add `angular-csp.css` to your html file (see {@link ng.directive:ngCsp ngCsp}).
+ * For CSP mode please add `angular-csp.css` to your pages file (see {@link ng.directive:ngCsp ngCsp}).
  *
- * ```html
+ * ```pages
  * <!-- when $scope.myValue is truthy (element is visible) -->
  * <div ng-show="myValue"></div>
  *
@@ -20197,7 +20197,7 @@ var ngRepeatDirective = ['$parse', '$animate', function($parse, $animate) {
  *
  * @example
   <example module="ngAnimate" deps="angular-animate.js" animations="true">
-    <file name="index.html">
+    <file name="index.pages">
       Click me: <input type="checkbox" ng-model="checked"><br/>
       <div>
         Show:
@@ -20277,9 +20277,9 @@ var ngShowDirective = ['$animate', function($animate) {
  * provided to the ngHide attribute. The element is shown or hidden by removing or adding
  * the `ng-hide` CSS class onto the element. The `.ng-hide` CSS class is predefined
  * in AngularJS and sets the display style to none (using an !important flag).
- * For CSP mode please add `angular-csp.css` to your html file (see {@link ng.directive:ngCsp ngCsp}).
+ * For CSP mode please add `angular-csp.css` to your pages file (see {@link ng.directive:ngCsp ngCsp}).
  *
- * ```html
+ * ```pages
  * <!-- when $scope.myValue is truthy (element is hidden) -->
  * <div ng-hide="myValue"></div>
  *
@@ -20357,7 +20357,7 @@ var ngShowDirective = ['$animate', function($animate) {
  *
  * @example
   <example module="ngAnimate" deps="angular-animate.js" animations="true">
-    <file name="index.html">
+    <file name="index.pages">
       Click me: <input type="checkbox" ng-model="checked"><br/>
       <div>
         Show:
@@ -20442,7 +20442,7 @@ var ngHideDirective = ['$animate', function($animate) {
  *
  * @example
    <example>
-     <file name="index.html">
+     <file name="index.pages">
         <input type="button" value="set" ng-click="myStyle={color:'red'}">
         <input type="button" value="clear" ng-click="myStyle={}">
         <br/>
@@ -20529,7 +20529,7 @@ var ngStyleDirective = ngDirective(function(scope, element, attr) {
  *
  * @example
   <example module="ngAnimate" deps="angular-animate.js" animations="true">
-    <file name="index.html">
+    <file name="index.pages">
       <div ng-controller="Ctrl">
         <select ng-model="selection" ng-options="item for item in items">
         </select>
@@ -20695,7 +20695,7 @@ var ngSwitchDefaultDirective = ngDirective({
  *
  * @example
    <example module="transclude">
-     <file name="index.html">
+     <file name="index.pages">
        <script>
          function Ctrl($scope) {
            $scope.title = 'Lorem Ipsum';
@@ -20770,12 +20770,12 @@ var ngTranscludeDirective = ngDirective({
  *
  * @example
   <example>
-    <file name="index.html">
-      <script type="text/ng-template" id="/tpl.html">
+    <file name="index.pages">
+      <script type="text/ng-template" id="/tpl.pages">
         Content of the template.
       </script>
 
-      <a ng-click="currentTpl='/tpl.html'" id="tpl-link">Load inlined template</a>
+      <a ng-click="currentTpl='/tpl.pages'" id="tpl-link">Load inlined template</a>
       <div id="tpl-content" ng-include src="currentTpl"></div>
     </file>
     <file name="protractor.js" type="protractor">
@@ -20875,7 +20875,7 @@ var ngOptionsMinErr = minErr('ngOptions');
  *
  * @example
     <example>
-      <file name="index.html">
+      <file name="index.pages">
         <script>
         function MyCntrl($scope) {
           $scope.colors = [

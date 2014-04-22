@@ -7,7 +7,7 @@
 
     awaxa.sentinel.configs.ServiceConfig = awaxa.sentinel.configs.ServiceConfig ||
     {
-
+        rooUrl : '/ClientManager/service/entitlements'
     };
 
 }());

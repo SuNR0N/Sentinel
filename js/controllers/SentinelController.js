@@ -7,6 +7,8 @@
 
     awaxa.sentinel.controllers.SentinelController = function($scope, config, queryService, updateService, entitlementService)
     {
+        $scope.currentUser = new awaxa.sentinel.models.User();
+
         $scope.sentinelModel =
         {
             isSuperUser : false,
@@ -15,22 +17,12 @@
             isAssistant : false,
             userName : null,
             isLoggedIn : false
-        }
+        };
 
         $scope.init = function()
         {
 
-        }
-
-        $scope.login = function()
-        {
-            $scope.sentinelModel.isLoggedIn = true;
-        }
-
-        $scope.logout = function()
-        {
-            $scope.sentinelModel.isLoggedIn = false;
-        }
+        };
     }
 
 }());
