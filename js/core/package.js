@@ -10,6 +10,7 @@
     window.awaxa.sentinel.configs = window.awaxa.sentinel.configs || {};
     window.awaxa.sentinel.controllers = window.awaxa.sentinel.controllers || {};
     window.awaxa.sentinel.directives = window.awaxa.sentinel.directives || {};
+    window.awaxa.sentinel.filters = window.awaxa.sentinel.filters || {};
     window.awaxa.sentinel.models = window.awaxa.sentinel.models || {};
     window.awaxa.sentinel.services = window.awaxa.sentinel.services || {};
 

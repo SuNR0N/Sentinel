@@ -2,9 +2,39 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title></title>
+    <title>Sentinel - Upload CSV</title>
 </head>
 <body>
-    <h1>Upload</h1>
+
+    <div class="row p25t">
+        <div class="col-md-6">
+            <div class="col-md-4">
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <span class="btn btn-primary btn-file">
+                                Browse… <input id="fileUploader" type="file" file-model="upload.csvFile">
+                        </span>
+                    </span>
+                    <input type="text" class="form-control" readonly>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <input type="button" class="btn btn-default btn-primary" value="Upload" ng-click="upload.uploadCSV()">
+            </div>
+        </div>
+    </div>
+
+    <div class="row uploadMessage">
+        <div class="col-md-6">
+            <div class="alert"
+                 ng-class="{'alert-danger' : upload.result == false, 'alert-success' : upload.result == true}"
+                 ng-show="upload.result != null"
+                    >
+                <strong>{{upload.result == false ? 'Error' : (upload.result == true ? 'Success' : '')}}</strong>
+                <span>{{upload.message}}</span>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>

@@ -2,9 +2,288 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title></title>
+    <title>Sentinel - Tasks</title>
 </head>
 <body>
-    <h1>Tasks</h1>
+    <div class="btn-group p15lr p15tb">
+        <button ng-class="tasks.currentFilter == 'my' ? 'active' : ''" type="button" class="btn btn-default" ng-click="tasks.applyTasksFilter('my')">My Tasks</button>
+        <button type="button" class="btn btn-default" ng-click="tasks.applyTasksFilter('unassigned')">Unassigned Tasks</button>
+        <button type="button" class="btn btn-default" ng-click="tasks.applyTasksFilter('all')">All Tasks</button>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th>MT ID</th>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Phone</th>
+                <th>Mobile</th>
+                <th>Service TV</th>
+                <th>Service Internet</th>
+                <th>Service Phone</th>
+                <th>Loyalty Expiration</th>
+                <th>Status</th>
+                <th>Comment</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="client in tasks.clients | tasksFilter:this.currentUser:tasks.currentFilter" ng-click="tasks.showClientDetails(client)">
+                <td>{{client.mtId}}</td>
+                <td>{{client.name}}</td>
+                <td>{{client.address}}</td>
+                <td>{{client.phone}}</td>
+                <td>{{client.mobile}}</td>
+                <td>{{client.serviceTVName}}</td>
+                <td>{{client.serviceInternetName}}</td>
+                <td>{{client.servicePhoneName}}</td>
+                <td>{{client.loyaltyExpiration}}</td>
+                <td>{{client.assignments | assignmentStatusFilter}}</td>
+                <td>{{client.comment}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="modal fade" id="clientDetailsModal" tabindex="-1" role="dialog" aria-labelledby="clientDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="clientDetailsModalLabel">Client Details</h4>
+                </div>
+                <div class="modal-body">
+                   <ul id="clientDetailsTab" class="nav nav-tabs">
+                        <li class="active">
+                            <a href="#basic" data-toggle="tab">Basic</a>
+                        </li>
+                        <li>
+                           <a href="#contract" data-toggle="tab">Contract</a>
+                        </li>
+                        <li ng-show="currentUser.isAdmin()">
+                            <a href="#personal" data-toggle="tab">Personal</a>
+                        </li>
+                   </ul>
+                   <div id="clientDetailsTabContent" class="tab-content">
+                       <div class="tab-pane fade in active" id="basic">
+                           <form class="form-horizontal" role="form">
+                               <div class="form-group">
+                                   <label class="col-sm-4 control-label">MT ID</label>
+                                   <div class="col-sm-8">
+                                       <p class="form-control-static">{{tasks.selectedClient.mtId}}</p>
+                                   </div>
+                               </div>
+                               <div class="form-group">
+                                   <label class="col-sm-4 control-label">Name</label>
+                                   <div class="col-sm-8">
+                                       <p class="form-control-static">{{tasks.selectedClient.name}}</p>
+                                   </div>
+                               </div>
+                               <div class="form-group">
+                                   <label class="col-sm-4 control-label">Address</label>
+                                   <div class="col-sm-8">
+                                       <p class="form-control-static">{{tasks.selectedClient.address}}</p>
+                                   </div>
+                               </div>
+                               <div class="form-group">
+                                   <label class="col-sm-4 control-label">Phone</label>
+                                   <div class="col-sm-8">
+                                       <p class="form-control-static">{{tasks.selectedClient.phone}}</p>
+                                   </div>
+                               </div>
+                               <div class="form-group">
+                                   <label class="col-sm-4 control-label">Mobile</label>
+                                   <div class="col-sm-8">
+                                       <p class="form-control-static">{{tasks.selectedClient.mobile}}</p>
+                                   </div>
+                               </div>
+                               <div class="form-group">
+                                   <label class="col-sm-4 control-label">Loyalty Expiration</label>
+                                   <div class="col-sm-8">
+                                       <p class="form-control-static">{{tasks.selectedClient.loyaltyExpiration}}</p>
+                                   </div>
+                               </div>
+                               <div class="form-group">
+                                   <label for="comment" class="col-sm-4 control-label">Comment</label>
+                                   <div class="col-sm-8">
+                                       <input type="text" class="form-control" id="comment"
+                                              ng-model="tasks.selectedClient.comment"
+                                              ng-disabled="!currentUser.isAdmin()">
+                                   </div>
+                               </div>
+                               <div class="form-group">
+                                   <label class="col-sm-4 control-label">Service TV</label>
+                                   <div class="col-sm-8 input-group p15lr">
+                                       <span class="input-group-addon">
+                                            <input type="checkbox" ng-model="tasks.selectedClient.serviceTVNew">
+                                       </span>
+                                       <select ng-show="tasks.selectedClient.serviceTVNew"
+                                               class="form-control"
+                                               ng-model="tasks.selectedClient.serviceTVName"
+                                               ng-options="p.name as p.name for p in tasks.tvPlans"
+                                               >
+                                       </select>
+                                       <input readonly ng-show="!tasks.selectedClient.serviceTVNew" type="text" class="form-control" value="{{tasks.selectedClient.serviceTVName}}">
+                                   </div>
+                               </div>
+                               <div class="form-group">
+                                   <label class="col-sm-4 control-label">Service Phone</label>
+                                   <div class="col-sm-8 input-group p15lr">
+                                       <span class="input-group-addon">
+                                            <input type="checkbox" ng-model="tasks.selectedClient.servicePhoneNew">
+                                       </span>
+                                       <select ng-show="tasks.selectedClient.servicePhoneNew"
+                                               class="form-control"
+                                               ng-model="tasks.selectedClient.servicePhoneName"
+                                               ng-options="p.name as p.name for p in tasks.phonePlans"
+                                               >
+                                       </select>
+                                       <input readonly ng-show="!tasks.selectedClient.servicePhoneNew" type="text" class="form-control" value="{{tasks.selectedClient.servicePhoneName}}">
+                                   </div>
+                               </div>
+                               <div class="form-group">
+                                   <label class="col-sm-4 control-label">Service Internet</label>
+                                   <div class="col-sm-8 input-group p15lr">
+                                       <span class="input-group-addon">
+                                            <input type="checkbox" ng-model="tasks.selectedClient.serviceInternetNew">
+                                       </span>
+                                       <select ng-show="tasks.selectedClient.serviceInternetNew"
+                                               class="form-control"
+                                               ng-model="tasks.selectedClient.serviceInternetName"
+                                               ng-options="p.name as p.name for p in tasks.internetPlans"
+                                               >
+                                       </select>
+                                       <input readonly ng-show="!tasks.selectedClient.serviceInternetNew" type="text" class="form-control" value="{{tasks.selectedClient.serviceInternetName}}">
+                                   </div>
+                               </div>
+                               <hr/>
+                               <div class="form-group">
+                                   <label for="datetimepicker1" class="col-sm-4 control-label">Appointment</label>
+                                   <div class="col-sm-8 input-group p15lr date" id="datetimepicker1">
+                                       <input type="text" class="form-control"
+                                               ng-model="tasks.selectedClient.appointment"/>
+                                       <span class="input-group-addon">
+                                           <span class="glyphicon glyphicon-calendar"></span>
+                                       </span>
+                                   </div>
+                               </div>
+                               <div class="form-group">
+                                   <label for="comment1" class="col-sm-4 control-label">Comment #1</label>
+                                   <div class="col-sm-8">
+                                       <input type="text" class="form-control" id="comment1"
+                                              ng-model="tasks.selectedClient.comment1"
+                                              ng-disabled="!currentUser.isAssistant()">
+                                   </div>
+                               </div>
+                               <div class="form-group">
+                                   <label for="comment2" class="col-sm-4 control-label">Comment #2</label>
+                                   <div class="col-sm-8">
+                                       <input type="text" class="form-control" id="comment2"
+                                              ng-model="tasks.selectedClient.comment2"
+                                              ng-disabled="!currentUser.isAgent()">
+                                   </div>
+                               </div>
+                               <div class="form-group">
+                                   <label for="assignmentStatus" class="col-sm-4 control-label">Status</label>
+                                   <div class="col-sm-8">
+                                       <select id="assignmentStatus"
+                                               class="form-control"
+                                               ng-disabled="!tasks.isAssignmentStatusEditable(tasks.selectedClient.assignments)"
+                                               ng-model="tasks.selectedClient.currentStatus"
+                                               ng-options="s.value as s.label for s in tasks.assignmentStatusOptions | selectableAssignmentStatusFilter:this.currentUser:tasks.selectedClient.assignments">
+                                       </select>
+                                   </div>
+                               </div>
+                               <div class="form-group">
+                                   <label for="assignee" class="col-sm-4 control-label">Assignee</label>
+                                   <div class="col-sm-8">
+                                       <select id="assignee" class="form-control"
+                                               ng-model="tasks.selectedClient.currentAssignee"
+                                               ng-options="user as user for user in tasks.availableAssignees">
+                                       </select>
+                                   </div>
+                               </div>
+                           </form>
+                       </div>
+                       <div class="tab-pane fade" id="contract">
+                           <div class="row p25t">
+                               <div class="col-md-12">
+                                   <div class="col-md-10">
+                                       <div class="input-group">
+                                            <span class="input-group-btn">
+                                                <span class="btn btn-primary btn-file">
+                                                        Browse… <input id="contractsUploader" type="file" file-model="tasks.contractFile">
+                                                </span>
+                                            </span>
+                                           <input type="text" class="form-control" readonly>
+                                       </div>
+                                   </div>
+                                   <div class="col-md-2">
+                                       <input type="button" class="btn btn-default btn-primary" value="Upload" ng-click="tasks.uploadContract()">
+                                   </div>
+                               </div>
+                           </div>
+                           <div class="row p15tb p15lr">
+                               <ul class="list-group">
+                                   <li class="list-group-item" ng-repeat="file in tasks.selectedClient.contracts">{{file.fileLocation}}
+                                       <a ng-href="{{tasks.getContract(file.id)}}" target="_blank"><span class="glyphicon glyphicon-file pull-right"></span></a>
+                                   </li>
+                               </ul>
+                           </div>
+                       </div>
+                       <div class="tab-pane fade" id="personal">
+                           <form class="form-horizontal" role="form">
+                               <div class="form-group">
+                                   <label class="col-sm-4 control-label">Personal ID</label>
+                                   <div class="col-sm-8">
+                                       <p class="form-control-static">{{tasks.selectedClient.personalId}}</p>
+                                   </div>
+                               </div>
+                               <div class="form-group">
+                                   <label class="col-sm-4 control-label">Date of Birth</label>
+                                   <div class="col-sm-8">
+                                       <p class="form-control-static">{{tasks.selectedClient.dateOfBirth}}</p>
+                                   </div>
+                               </div>
+                               <div class="form-group">
+                                   <label class="col-sm-4 control-label">Place of Birth</label>
+                                   <div class="col-sm-8">
+                                       <p class="form-control-static">{{tasks.selectedClient.placeOfBirth}}</p>
+                                   </div>
+                               </div>
+                               <div class="form-group">
+                                   <label class="col-sm-4 control-label">Name of Mother</label>
+                                   <div class="col-sm-8">
+                                       <p class="form-control-static">{{tasks.selectedClient.nameOfMother}}</p>
+                                   </div>
+                               </div>
+                               <div class="form-group">
+                                   <label class="col-sm-4 control-label">Payment Method</label>
+                                   <div class="col-sm-8">
+                                       <p class="form-control-static">{{tasks.selectedClient.paymentMethod}}</p>
+                                   </div>
+                               </div>
+                               <div class="form-group">
+                                   <label class="col-sm-4 control-label">Bank Account</label>
+                                   <div class="col-sm-8">
+                                       <p class="form-control-static">{{tasks.selectedClient.bankAccount}}</p>
+                                   </div>
+                               </div>
+                           </form>
+                       </div>
+                   </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" ng-click="tasks.hideClientDetails()" data-dismiss="modal">Close</button>
+                    <a ng-href="{{tasks.generateContract()}}" target="_blank"><button type="button" class="btn btn-info">
+                        <i class="glyphicon glyphicon-edit"></i>
+                        <span>Generate Contract</span>
+                    </button></a>
+                    <button type="button" class="btn btn-primary" ng-click="tasks.saveClient()">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

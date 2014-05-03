@@ -22,7 +22,7 @@
             error = error || defaultErrorHandler;
             var encoded = $base64.encode(user.userName + ':' + user.password);
             $http.defaults.headers.common.Authorization = 'Basic ' + encoded;
-            $http.get(config.rooUrl + '/initUser')
+            $http.get(config.rootURL + '/entitlement/initUser')
                 .success(success)
                 .error(error);
         };
@@ -37,7 +37,7 @@
                 clientCode : user.clientCode
             };
             $http.defaults.headers.common.Authorization = 'Basic ' + encoded;
-            $http.post(config.rooUrl + '/registerUser', name)
+            $http.post(config.rootURL + '/entitlement/registerUser', name)
                 .success(success)
                 .error(error);
         };

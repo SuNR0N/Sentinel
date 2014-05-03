@@ -5,16 +5,15 @@
 
     "use strict";
 
-    awaxa.sentinel.controllers.RegisterController = function($scope, $location, config, entitlementService)
+    awaxa.sentinel.controllers.RegisterController = function($scope, $location, entitlementService)
     {
-        $scope.newUser = {};
-        $scope.registrationErrorMessage = null;
-        $scope.onlyNumbers = /^\d+$/;
+        $scope.register = {};
+        $scope.register.user = {};
+        $scope.register.errorMessage = null;
 
-        $scope.register = function()
+        $scope.register.registerUser = function()
         {
-            var user = $scope.newUser;
-            entitlementService.registerUser(user, registerUser_onResult, registerUser_onError);
+            entitlementService.registerUser($scope.register.user, registerUser_onResult, registerUser_onError);
         };
 
         function registerUser_onResult(result)
@@ -24,26 +23,28 @@
                 if (result.hasOwnProperty('currentUser'))
                 {
                     $scope.currentUser.setUserName(result.currentUser.userName);
+                    $scope.currentUser.setPassword($scope.register.user.password);
                     $scope.currentUser.setFirstName(result.currentUser.firstName);
                     $scope.currentUser.setLastName(result.currentUser.lastName);
                     $scope.currentUser.setRole(result.currentUser.role);
                     $scope.currentUser.setIsLogged(true);
+                    $scope.getUsers();
                     $location.path('/tasks');
                 }
             }
             if (result.hasOwnProperty('message'))
             {
-                $scope.registrationErrorMessage = result.message;
+                $scope.register.errorMessage = result.message;
             }
             else
             {
-                $scope.registrationErrorMessage = null;
+                $scope.register.errorMessage = null;
             }
         }
 
         function registerUser_onError(error)
         {
-            $scope.registrationErrorMessage = 'Registration failed'
+            $scope.register.errorMessage = 'Registration failed'
         }
     }
 

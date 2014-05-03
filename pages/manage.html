@@ -2,9 +2,131 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title></title>
+    <title>Sentinel - Manage Users</title>
 </head>
 <body>
-    <h1>Manage</h1>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Last Name</th>
+                    <th>First Name</th>
+                    <th>Username</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Mode</th>
+                    <th>Client Code</th>
+                    <th>Owner</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="user in manage.users" ng-click="manage.showUserDetails(user)">
+                    <td>{{user.lastName}}</td>
+                    <td>{{user.firstName}}</td>
+                    <td>{{user.userId}}</td>
+                    <td>{{user.role | roleFilter}}</td>
+                    <td>{{user.status | statusFilter}}</td>
+                    <td>{{user.mode | modeFilter}}</td>
+                    <td>{{user.clientCode}}</td>
+                    <td>{{user.owner}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="modal fade" id="userDetailsModal" tabindex="-1" role="dialog" aria-labelledby="userDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="userDetailsModalLabel">User Details</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label for="lastName" class="col-sm-3 control-label">Last Name</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="lastName" ng-model="manage.selectedUser.lastName">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="firstName" class="col-sm-3 control-label">First Name</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="firstName" ng-model="manage.selectedUser.firstName">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="username" class="col-sm-3 control-label">Username</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="username"
+                                       ng-model="manage.selectedUser.userId"
+                                       ng-disabled="true">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Role</label>
+                            <div class="col-sm-9">
+                                <select class="form-control"
+                                        ng-model="manage.selectedUser.role"
+                                        ng-disabled="manage.selectedUser.role >= currentUser.getRole()">
+                                    <option ng-repeat="role in manage.roleOptions | selectableRoleFilter:this.currentUser.getRole()"
+                                            label="{{role.label}}"
+                                            value="{{role.value}}"
+                                            ></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Status</label>
+                            <div class="col-sm-9">
+                                <select class="form-control"
+                                        ng-model="manage.selectedUser.status">
+                                    <option ng-repeat="status in manage.statusOptions"
+                                            label="{{status.label}}"
+                                            value="{{status.value}}"
+                                            ></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Mode</label>
+                            <div class="col-sm-9">
+                                <select class="form-control"
+                                        ng-model="manage.selectedUser.mode">
+                                    <option ng-repeat="mode in manage.modeOptions"
+                                            label="{{mode.label}}"
+                                            value="{{mode.value}}"
+                                            ></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="clientCode" class="col-sm-3 control-label">Client Code</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="clientCode"
+                                       ng-model="manage.selectedUser.clientCode"
+                                       >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Owner</label>
+                            <div class="col-sm-9">
+                                <select class="form-control"
+                                        ng-disabled="manage.selectedUser.role >= currentUser.getRole()"
+                                        ng-model="manage.selectedUser.owner"
+                                        >
+                                    <option ng-repeat="user in manage.users | selectableOwnerFilter">{{user.userId}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" ng-click="manage.saveUser()">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

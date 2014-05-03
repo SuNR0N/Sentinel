@@ -5,16 +5,16 @@
 
     "use strict";
 
-    awaxa.sentinel.controllers.LoginController = function($scope, $location, config, entitlementService)
+    awaxa.sentinel.controllers.LoginController = function($scope, $location, entitlementService)
     {
-        $scope.user = {};
-        $scope.isInvalidUser = false;
-        $scope.loginErrorMessage = null;
+        $scope.login = {};
+        $scope.login.user = {};
+        $scope.login.isInvalidUser = false;
+        $scope.login.errorMessage = null;
 
-        $scope.logIn = function()
+        $scope.login.logIn = function()
         {
-            var user = $scope.user;
-            entitlementService.logInUser(user, logInUser_onResult, logInUser_onError);
+            entitlementService.logInUser($scope.login.user, logInUser_onResult, logInUser_onError);
         };
 
         function logInUser_onResult(result)
@@ -24,35 +24,37 @@
                 if (result.hasOwnProperty('currentUser'))
                 {
                     $scope.currentUser.setUserName(result.currentUser.userName);
+                    $scope.currentUser.setPassword($scope.login.user.password);
                     $scope.currentUser.setFirstName(result.currentUser.firstName);
                     $scope.currentUser.setLastName(result.currentUser.lastName);
                     $scope.currentUser.setRole(result.currentUser.role);
                     $scope.currentUser.setIsLogged(true);
-                    $scope.isInvalidUser = false;
+                    $scope.login.isInvalidUser = false;
+                    $scope.getUsers();
                     $location.path('/tasks');
                 }
             }
             else
             {
-                $scope.isInvalidUser = true;
+                $scope.login.isInvalidUser = true;
             }
             if (result.hasOwnProperty('message'))
             {
-                $scope.loginErrorMessage = result.message;
+                $scope.login.errorMessage = result.message;
             }
             else
             {
-                $scope.loginErrorMessage = null;
+                $scope.login.errorMessage = null;
             }
         }
 
         function logInUser_onError(error)
         {
-            $scope.loginErrorMessage = 'Login failed';
-            $scope.isInvalidUser = true;
+            $scope.login.errorMessage = 'Login failed';
+            $scope.login.isInvalidUser = true;
         }
 
-        $scope.logOut = function()
+        $scope.login.logOut = function()
         {
             $scope.currentUser.clear();
             $location.path('/login');

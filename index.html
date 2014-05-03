@@ -4,12 +4,19 @@
     <title>Sentinel</title>
     <link href="css/bootstrap.css" rel="stylesheet">
     <link href="css/sentinel.css" rel="stylesheet">
+    <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <link href="css/calendar.css" rel="stylesheet">
     <script type="text/javascript" src="libs/jquery-2.1.0.min.js"></script>
+    <script type="text/javascript" src="libs/d3.min.js"></script>
+    <script type="text/javascript" src="libs/underscore-min.js"></script>
+    <script type="text/javascript" src="libs/calendar.js"></script>
+    <script type="text/javascript" src="libs/moment.min.js"></script>
     <script type="text/javascript" src="libs/angular.js"></script>
     <script type="text/javascript" src="libs/angular-base64.js"></script>
     <script type="text/javascript" src="libs/angular-route.js"></script>
+    <script type="text/javascript" src="libs/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="libs/date.format.js"></script>
     <script type="text/javascript" src="libs/bootstrap.js"></script>
-    <script type="text/javascript" src="libs/bootstrap.file-input.js"></script>
 </head>
 <body>
 
@@ -34,22 +41,22 @@
                     <li ng-show="currentUser.getIsLogged()"><a href="#calendar">Calendar</a></li>
                     <li ng-show="currentUser.getIsLogged()"><a href="#messages">Messages</a></li>
                     <li ng-show="currentUser.getIsLogged()"><a href="#statistics">Statistics</a></li>
-                    <li class="dropdown" ng-show="currentUser.getIsLogged() && (currentUser.getRole() == Role.ADMIN || currentUser.getRole() == Role.SUPERUSER)">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
+                    <li class="dropdown" ng-show="currentUser.getIsLogged() && currentUser.isAdmin()">
+                        <a class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li><a href="#manage">Manage Users</a></li>
-                            <li><a href="#upload" data-toggle="modal" data-target="#csvUploadPopUp">Upload CSV</a></li>
+                            <li><a href="#upload">Upload CSV</a></li>
                         </ul>
                     </li>
                 </ul>
                 <ul ng-show="currentUser.getIsLogged()" class="nav navbar-nav navbar-right">
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Logged in as <span style="font-weight: bold">{{currentUser.getUserName()}}</span> <b class="caret"></b></a>
+                        <a class="dropdown-toggle" data-toggle="dropdown">Logged in as <span style="font-weight: bold">{{currentUser.getUserName()}}</span> <b class="caret"></b></a>
                         <ul class="dropdown-menu" style="padding: 15px;min-width: 250px;">
                             <li>
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <form class="form" role="form" ng-controller="LoginController" ng-submit="logOut()" accept-charset="UTF-8" id="logout-nav">
+                                        <form class="form" role="form" ng-controller="LoginController" ng-submit="login.logOut()" accept-charset="UTF-8" id="logout-nav">
                                             <div class="form-group">
                                                 <button type="submit" class="btn btn-success btn-block">Log out</button>
                                             </div>
@@ -66,26 +73,6 @@
 
     <ng-view></ng-view>
 
-    <div class="modal fade" id="csvUploadPopUp">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Upload CSV</h4>
-                </div>
-                <div class="modal-body">
-                    <a class="file-input-wrapper btn btn-default btn-primary">
-                        <span>Search for a file to add</span>
-                        <input type="file" title="Search for a file to add" class="btn-primary">
-                    </a>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Upload</button>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
 <script type="text/javascript" src="js/core/package.js"></script>
@@ -93,14 +80,34 @@
 <script type="text/javascript" src="js/services/QueryService.js"></script>
 <script type="text/javascript" src="js/services/UpdateService.js"></script>
 <script type="text/javascript" src="js/services/EntitlementService.js"></script>
+<script type="text/javascript" src="js/services/UtilityService.js"></script>
 
 <script type="text/javascript" src="js/controllers/SentinelController.js"></script>
 <script type="text/javascript" src="js/controllers/LoginController.js"></script>
 <script type="text/javascript" src="js/controllers/RegisterController.js"></script>
+<script type="text/javascript" src="js/controllers/UploadController.js"></script>
+<script type="text/javascript" src="js/controllers/ManageController.js"></script>
+<script type="text/javascript" src="js/controllers/TasksController.js"></script>
+<script type="text/javascript" src="js/controllers/MessagesController.js"></script>
+<script type="text/javascript" src="js/controllers/CalendarController.js"></script>
+<script type="text/javascript" src="js/controllers/StatisticsController.js"></script>
 
 <script type="text/javascript" src="js/directives/StringMatch.js"></script>
+<script type="text/javascript" src="js/directives/FileModel.js"></script>
+
+<script type="text/javascript" src="js/filters/RoleFilter.js"></script>
+<script type="text/javascript" src="js/filters/SelectableRoleFilter.js"></script>
+<script type="text/javascript" src="js/filters/SelectableOwnerFilter.js"></script>
+<script type="text/javascript" src="js/filters/SelectableAssignmentStatusFilter.js"></script>
+<script type="text/javascript" src="js/filters/ModeFilter.js"></script>
+<script type="text/javascript" src="js/filters/StatusFilter.js"></script>
+<script type="text/javascript" src="js/filters/AssignmentStatusFilter.js"></script>
+<script type="text/javascript" src="js/filters/TasksFilter.js"></script>
 
 <script type="text/javascript" src="js/models/Role.js"></script>
+<script type="text/javascript" src="js/models/Mode.js"></script>
+<script type="text/javascript" src="js/models/Status.js"></script>
+<script type="text/javascript" src="js/models/AssignmentStatus.js"></script>
 <script type="text/javascript" src="js/models/User.js"></script>
 
 <script type="text/javascript" src="js/configs/ApplicationConfig.js"></script>
