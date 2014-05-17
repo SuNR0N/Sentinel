@@ -51,10 +51,20 @@
                 .error(error);
         };
 
+        this.getAvailableUsers = function(user, success, error) {
+            success = success || defaultSuccessHandler;
+            error = error || defaultErrorHandler;
+            $http.get(config.rootURL + '/query/getAvailableUsers/' + user.getUserName())
+                .success(success)
+                .error(error);
+        };
+
         this.getAvailableAssignees = function(user, success, error) {
             success = success || defaultSuccessHandler;
             error = error || defaultErrorHandler;
-            $http.get(config.rootURL + '/query/getAvailableAssignees/' + user.getUserName())
+            var encoded = $base64.encode(user.getUserName() + ':' + user.getPassword());
+            $http.defaults.headers.common.Authorization = 'Basic ' + encoded;
+            $http.get(config.rootURL + '/query/getAvailableAssignees')
                 .success(success)
                 .error(error);
         };

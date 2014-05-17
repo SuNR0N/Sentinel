@@ -13,6 +13,10 @@
                 templateUrl: 'pages/login.html',
                 controller: 'LoginController'
             })
+            .when('/password', {
+                templateUrl: 'pages/password.html',
+                controller: 'PasswordController'
+            })
             .when('/register', {
                 templateUrl: 'pages/register.html',
                 controller:  'RegisterController'

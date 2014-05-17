@@ -5,7 +5,7 @@
 
     "use strict";
 
-    awaxa.sentinel.controllers.LoginController = function($scope, $location, entitlementService)
+    awaxa.sentinel.controllers.LoginController = function($scope, $location, $filter, entitlementService)
     {
         $scope.login = {};
         $scope.login.user = {};
@@ -38,9 +38,9 @@
             {
                 $scope.login.isInvalidUser = true;
             }
-            if (result.hasOwnProperty('message'))
+            if (result.hasOwnProperty('code') && result.code != -1)
             {
-                $scope.login.errorMessage = result.message;
+                $scope.login.errorMessage = $filter('translate')(result.code.toString());
             }
             else
             {
@@ -50,7 +50,7 @@
 
         function logInUser_onError(error)
         {
-            $scope.login.errorMessage = 'Login failed';
+            $scope.login.errorMessage = $filter('translate')('MSG_LOGIN_FAILED');
             $scope.login.isInvalidUser = true;
         }
 

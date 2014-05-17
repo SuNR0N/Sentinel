@@ -8,15 +8,15 @@
     awaxa.sentinel.models.Status = awaxa.sentinel.models.Status ||
     {
         ACTIVE : {
-            label : 'Active',
+            label : 'STATUS_ACTIVE',
             value : 'A'
         },
         INACTIVE : {
-            label : 'Inactive',
+            label : 'STATUS_INACTIVE',
             value : 'I'
         },
         TERMINATED : {
-            label : 'Terminated',
+            label : 'STATUS_TERMINATED',
             value : 'T'
         }
     };

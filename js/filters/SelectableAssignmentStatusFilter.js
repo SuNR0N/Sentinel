@@ -24,19 +24,20 @@
                         {
                             ret.push(input[index]);
                         }
-                        // Assistant can select NEW, RECALL, ARRANGED, REJECTED statuses only
+                        // Assistant can select NEW, RECALL, ARRANGED, REJECTED, WRONG_ADDRESS statuses only
                         if (user.isAssistant() &&
                             (input[index].value === awaxa.sentinel.models.AssignmentStatus.NEW.value ||
                             input[index].value === awaxa.sentinel.models.AssignmentStatus.RECALL.value ||
                             input[index].value === awaxa.sentinel.models.AssignmentStatus.ARRANGED.value ||
-                            input[index].value === awaxa.sentinel.models.AssignmentStatus.REJECTED.value  ))
+                            input[index].value === awaxa.sentinel.models.AssignmentStatus.REJECTED.value ||
+                            input[index].value === awaxa.sentinel.models.AssignmentStatus.WRONG_ADDRESS.value ))
                         {
                             ret.push(input[index]);
                         }
-                        // Agent can select WRONG_ADDRESS, REJECTED, UPLOADED statuses only
-                        else if (user.isAgent() && (input[index].value === awaxa.sentinel.models.AssignmentStatus.WRONG_ADDRESS.value ||
-                            input[index].value === awaxa.sentinel.models.AssignmentStatus.REJECTED.value ||
-                            input[index].value === awaxa.sentinel.models.AssignmentStatus.UPLOADED.value))
+                        // Agent can select REJECTED, SENT statuses only
+                        else if (user.isAgent() &&
+                            (input[index].value === awaxa.sentinel.models.AssignmentStatus.REJECTED.value ||
+                            input[index].value === awaxa.sentinel.models.AssignmentStatus.SENT.value))
                         {
                             ret.push(input[index]);
                         }

@@ -16,9 +16,28 @@ body {
     padding-right: 15px !important;
 }
 
+.p100lr {
+    padding-left: 100px !important;
+    padding-right: 100px !important;
+}
+
+.m5lr {
+    margin-left: 5px !important;
+    margin-right: 5px !important;
+}
+
+.p30lr {
+    padding-left: 30px !important;
+    padding-right: 30px !important;
+}
+
 .p15tb {
     padding-top: 15px !important;
     padding-bottom: 15px !important;
+}
+
+.searchFilterStyle {
+    width: 300px;
 }
 
 .uploadMessage {
@@ -46,7 +65,44 @@ body {
     display: block;
 }
 
+.footerError {
+    text-align: left !important;
+}
+
 input[readonly] {
     background-color: white !important;
     cursor: text !important;
+}
+
+.recallStyle {
+    background-color: #f5e79e;
+}
+
+.arrangedStyle {
+    background-color: #31b0d5;
+}
+
+.wrongAddressStyle {
+    background-color: #d3d3d3;
+}
+
+.rejectedStyle {
+    background-color: #a9a9a9;
+}
+
+.sentStyle {
+    background-color: #90ee90;
+}
+
+.processedStyle {
+    background-color: #006400;
+}
+
+.multiselect {
+    text-align: left;
+}
+.multiselect b.caret {
+    position: absolute;
+    top: 14px;
+    right: 8px;
 }

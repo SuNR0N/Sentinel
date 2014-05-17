@@ -6,13 +6,14 @@
     "use strict";
 
     angular.module('sentinel.filters', [])
-        .filter('roleFilter', awaxa.sentinel.filters.RoleFilter)
-        .filter('modeFilter', awaxa.sentinel.filters.ModeFilter)
-        .filter('statusFilter', awaxa.sentinel.filters.StatusFilter)
-        .filter('assignmentStatusFilter', awaxa.sentinel.filters.AssignmentStatusFilter)
+        .filter('roleFilter', ['$filter', awaxa.sentinel.filters.RoleFilter])
+        .filter('modeFilter', ['$filter', awaxa.sentinel.filters.ModeFilter])
+        .filter('statusFilter', ['$filter', awaxa.sentinel.filters.StatusFilter])
+        .filter('assignmentStatusFilter', ['$filter', awaxa.sentinel.filters.AssignmentStatusFilter])
         .filter('selectableAssignmentStatusFilter', awaxa.sentinel.filters.SelectableAssignmentStatusFilter)
         .filter('tasksFilter', awaxa.sentinel.filters.TasksFilter)
         .filter('selectableRoleFilter', awaxa.sentinel.filters.SelectableRoleFilter)
+        .filter('accessFilter', awaxa.sentinel.filters.AccessFilter)
         .filter('selectableOwnerFilter', awaxa.sentinel.filters.SelectableOwnerFilter);
 
     angular.module('sentinel.directives',[])
@@ -27,16 +28,18 @@
         .service('utilityService', ['$http', '$log', '$base64', 'serviceConfig', awaxa.sentinel.services.UtilityService])
         .service('entitlementService', ['$http', '$log', '$base64', 'serviceConfig', awaxa.sentinel.services.EntitlementService]);
 
-    angular.module('sentinel', ['ngRoute', 'sentinel.services', 'sentinel.directives', 'sentinel.filters'])
+    angular.module('sentinel', ['ngRoute', 'pascalprecht.translate', 'sentinel.services', 'sentinel.directives', 'sentinel.filters'])
         .config(['$locationProvider', '$routeProvider', awaxa.sentinel.configs.ApplicationConfig])
+        .config(['$translateProvider', awaxa.sentinel.configs.LanguageConfig])
         .controller('SentinelController', ['$scope', '$location', 'queryService', awaxa.sentinel.controllers.SentinelController])
-        .controller('LoginController', ['$scope', '$location', 'entitlementService', awaxa.sentinel.controllers.LoginController])
-        .controller('RegisterController', ['$scope', '$location', 'entitlementService', awaxa.sentinel.controllers.RegisterController])
-        .controller('UploadController', ['$scope', 'utilityService', awaxa.sentinel.controllers.UploadController])
-        .controller('ManageController', ['$scope', 'queryService', 'updateService', awaxa.sentinel.controllers.ManageController])
+        .controller('LoginController', ['$scope', '$location', '$filter', 'entitlementService', awaxa.sentinel.controllers.LoginController])
+        .controller('PasswordController', ['$scope', '$filter', 'entitlementService', awaxa.sentinel.controllers.PasswordController])
+        .controller('RegisterController', ['$scope', '$location', '$filter', 'entitlementService', awaxa.sentinel.controllers.RegisterController])
+        .controller('UploadController', ['$scope', '$filter', 'utilityService', awaxa.sentinel.controllers.UploadController])
+        .controller('ManageController', ['$scope', '$filter', 'queryService', 'updateService', awaxa.sentinel.controllers.ManageController])
         .controller('MessagesController', ['$scope', 'queryService', awaxa.sentinel.controllers.MessagesController])
         .controller('CalendarController', ['$scope', 'queryService', awaxa.sentinel.controllers.CalendarController])
-        .controller('StatisticsController', ['$scope', 'queryService', awaxa.sentinel.controllers.StatisticsController])
-        .controller('TasksController', ['$scope', 'queryService', 'updateService', 'utilityService', awaxa.sentinel.controllers.TasksController]);
+        .controller('StatisticsController', ['$scope', '$filter', 'queryService', awaxa.sentinel.controllers.StatisticsController])
+        .controller('TasksController', ['$scope', '$filter', 'queryService', 'updateService', 'utilityService', awaxa.sentinel.controllers.TasksController]);
 
 }());

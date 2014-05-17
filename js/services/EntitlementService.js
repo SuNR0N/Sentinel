@@ -41,6 +41,16 @@
                 .success(success)
                 .error(error);
         };
+
+        this.changePassword = function(username, passwords, success, error) {
+            success = success || defaultSuccessHandler;
+            error = error || defaultErrorHandler;
+            var encoded = $base64.encode(username + ':' + passwords.old + ':' + passwords.new);
+            $http.defaults.headers.common.Authorization = 'Basic ' + encoded;
+            $http.get(config.rootURL + '/entitlement/changePassword')
+                .success(success)
+                .error(error);
+        };
     }
 
 }());

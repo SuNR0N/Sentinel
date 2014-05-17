@@ -2,7 +2,7 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>Sentinel - Upload CSV</title>
+    <title>{{ 'BROWSER_TITLE_UPLOAD' | translate }}</title>
 </head>
 <body>
 
@@ -12,14 +12,14 @@
                 <div class="input-group">
                     <span class="input-group-btn">
                         <span class="btn btn-primary btn-file">
-                                Browse… <input id="fileUploader" type="file" file-model="upload.csvFile">
+                                {{ 'BUTTON_BROWSE' | translate }}<input id="fileUploader" type="file" file-model="upload.csvFile">
                         </span>
                     </span>
                     <input type="text" class="form-control" readonly>
                 </div>
             </div>
             <div class="col-md-2">
-                <input type="button" class="btn btn-default btn-primary" value="Upload" ng-click="upload.uploadCSV()">
+                <input type="button" class="btn btn-default btn-primary" value="{{ 'BUTTON_UPLOAD' | translate }}" ng-click="upload.uploadCSV()">
             </div>
         </div>
     </div>

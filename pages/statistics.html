@@ -2,7 +2,7 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>Sentinel - Statistics</title>
+    <title>{{ 'BROWSER_TITLE_STATISTICS' | translate }}</title>
 </head>
 <body>
     <form class="row p15tb p15lr" role="form">
@@ -17,25 +17,24 @@
         </div>
         <div class="col-md-3">
             <div class="form-group">
-                <div class="input-group date" id="startDate">
-                    <input id="startDateInput" type="text" placeholder="Start Date" class="form-control" />
-                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
-                        </span>
+                <div class="input-group date form_datetime" id="startDate">
+                    <input class="form-control" size="16" type="text" value="" ng-model="statistics.startDateDisplay" placeholder="{{ 'PLACEHOLDER_START_DATE' | translate }}" disabled>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
             <div class="form-group">
-                <div class="input-group date" id="endDate">
-                    <input id="endDateInput" type="text" placeholder="End Date" class="form-control" />
-                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
-                        </span>
+                <div class="input-group date form_datetime" id="endDate">
+                    <input class="form-control" size="16" type="text" value="" ng-model="statistics.endDateDisplay" placeholder="{{ 'PLACEHOLDER_END_DATE' | translate }}" disabled>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
                 </div>
             </div>
         </div>
         <div class="col-md-4 pull-left">
-            <button type="submit" class="btn btn-default btn-primary" ng-click="statistics.getStatisticsForUser()">Submit</button>
-            <button type="submit" class="btn btn-default" ng-click="statistics.clear()">Clear</button>
+            <button type="submit" class="btn btn-default btn-primary" ng-click="statistics.getStatisticsForUser()">{{ 'BUTTON_SUBMIT' | translate }}</button>
         </div>
     </form>
 
@@ -44,7 +43,7 @@
             <div class="alert alert-warning"
                  ng-show="statistics.errorMessageVisible"
                     >
-                <strong>Warning!</strong>
+                <strong>{{ 'MSG_WARNING' | translate }}</strong>
                 <span> {{statistics.errorMessage}}</span>
             </div>
         </div>

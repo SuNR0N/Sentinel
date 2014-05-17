@@ -8,36 +8,32 @@
     awaxa.sentinel.models.AssignmentStatus = awaxa.sentinel.models.AssignmentStatus ||
     {
         NEW : {
-            label : 'New',
+            label : 'ASSIGNMENT_STATUS_NEW',
             value : 0
         },
         RECALL : {
-            label : 'Recall',
+            label : 'ASSIGNMENT_STATUS_RECALL',
             value : 1
         },
         ARRANGED : {
-            label : 'Arranged',
+            label : 'ASSIGNMENT_STATUS_ARRANGED',
             value : 2
         },
         WRONG_ADDRESS : {
-            label : 'Wrong Address',
+            label : 'ASSIGNMENT_STATUS_WRONG_ADDRESS',
             value : 3
         },
         REJECTED : {
-            label : 'Rejected',
+            label : 'ASSIGNMENT_STATUS_REJECTED',
             value : 4
         },
-        UPLOADED : {
-            label : 'Uploaded',
+        SENT : {
+            label : 'ASSIGNMENT_STATUS_SENT',
             value : 5
         },
-        SENT : {
-            label : 'Sent',
-            value : 6
-        },
         PROCESSED : {
-            label : 'Processed',
-            value : 7
+            label : 'ASSIGNMENT_STATUS_PROCESSED',
+            value : 6
         },
 
         getLabelByValue : function(val)

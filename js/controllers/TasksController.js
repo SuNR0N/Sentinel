@@ -5,7 +5,7 @@
 
     "use strict";
 
-    awaxa.sentinel.controllers.TasksController = function($scope, queryService, updateService, utilityService)
+    awaxa.sentinel.controllers.TasksController = function($scope, $filter, queryService, updateService, utilityService)
     {
         $scope.tasks = {};
         $scope.tasks.clients = [];
@@ -14,9 +14,16 @@
         $scope.tasks.internetPlans = [];
         $scope.tasks.tvPlans = [];
         $scope.tasks.phonePlans = [];
-        $scope.tasks.currentFilter = 'my';
+        $scope.tasks.currentFilter = 'all';
+        $scope.tasks.searchText = '';
+        $scope.tasks.availableUsers = [];
         $scope.tasks.availableAssignees = [];
+        $scope.tasks.selectedUser = null;
+        $scope.tasks.selectedAssignee = null;
         $scope.tasks.saveClientErrorMessage = null;
+        $scope.tasks.resendErrorMessage = null;
+        $scope.tasks.isSendingMail = false;
+        $scope.tasks.isSavingClient = false;
         $scope.tasks.assignmentStatusOptions =
             [
                 awaxa.sentinel.models.AssignmentStatus.NEW,
@@ -24,10 +31,51 @@
                 awaxa.sentinel.models.AssignmentStatus.ARRANGED,
                 awaxa.sentinel.models.AssignmentStatus.WRONG_ADDRESS,
                 awaxa.sentinel.models.AssignmentStatus.REJECTED,
-                awaxa.sentinel.models.AssignmentStatus.UPLOADED,
                 awaxa.sentinel.models.AssignmentStatus.SENT,
                 awaxa.sentinel.models.AssignmentStatus.PROCESSED
             ];
+
+
+        $scope.tasks.getRowClass = function (assignments) {
+            return {
+                recallStyle : angular.isArray(assignments) && assignments.length > 0 && assignments[0].status === awaxa.sentinel.models.AssignmentStatus.RECALL.value,
+                arrangedStyle : angular.isArray(assignments) && assignments.length > 0 && assignments[0].status === awaxa.sentinel.models.AssignmentStatus.ARRANGED.value,
+                wrongAddressStyle : angular.isArray(assignments) && assignments.length > 0 && assignments[0].status === awaxa.sentinel.models.AssignmentStatus.WRONG_ADDRESS.value,
+                rejectedStyle : angular.isArray(assignments) && assignments.length > 0 && assignments[0].status === awaxa.sentinel.models.AssignmentStatus.REJECTED.value,
+                sentStyle : angular.isArray(assignments) && assignments.length > 0 && assignments[0].status === awaxa.sentinel.models.AssignmentStatus.SENT.value,
+                processedStyle : angular.isArray(assignments) && assignments.length > 0 && assignments[0].status === awaxa.sentinel.models.AssignmentStatus.PROCESSED.value
+            };
+        };
+
+        $scope.tasks.isGenerateContractButtonVisible = function()
+        {
+            if ($scope.currentUser.isAdmin())
+            {
+                return true;
+            }
+            else if ($scope.tasks.selectedClient != null &&
+                        angular.isArray($scope.tasks.selectedClient.assignments) &&
+                        $scope.tasks.selectedClient.assignments[0].status >= awaxa.sentinel.models.AssignmentStatus.ARRANGED.value)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        };
+
+        $scope.tasks.orderByStatusFilter = function(client)
+        {
+            if (angular.isArray(client.assignments) && client.assignments.length > 0)
+            {
+                return client.assignments[0].status;
+            }
+            else
+            {
+                return -1;
+            }
+        };
 
         $scope.tasks.getClients = function()
         {
@@ -37,9 +85,43 @@
             }
         };
 
+        $scope.tasks.resend = function()
+        {
+            if ($scope.currentUser.getIsLogged() && $scope.currentUser.isAdmin())
+            {
+                $scope.tasks.isSendingMail = true;
+                $scope.tasks.resendErrorMessage = null;
+                updateService.resend($scope.tasks.selectedClient, $scope.currentUser, resend_onResult, resend_onError);
+            }
+        };
+
+        $scope.tasks.assignTasks = function()
+        {
+            var tasks = [];
+            for (var i = 0; i < $scope.tasks.clients.length; ++i)
+            {
+                if ($scope.tasks.clients[i].selected)
+                {
+                    tasks.push($scope.tasks.clients[i].mtId);
+                }
+            }
+            if ($scope.currentUser.getIsLogged())
+            {
+                updateService.assignTasks(tasks, $scope.tasks.selectedAssignee, assignTasks_onResult, assignTasks_onError);
+            }
+        };
+
         $scope.tasks.getPlans = function()
         {
             queryService.getPlans(getPlans_onResult, getPlans_onError);
+        };
+
+        $scope.tasks.getAvailableUsers = function()
+        {
+            if ($scope.currentUser.getIsLogged())
+            {
+                queryService.getAvailableUsers($scope.currentUser, getAvailableUsers_onResult, getAvailableUsers_onError);
+            }
         };
 
         $scope.tasks.getAvailableAssignees = function()
@@ -50,15 +132,34 @@
             }
         };
 
-        $scope.tasks.showClientDetails = function(client)
+        $scope.tasks.selectAll = function()
         {
-            $scope.tasks.selectedClient = angular.copy(client);
-            var lastAssignment = (angular.isArray(client.assignments) && client.assignments.length > 0) ? client.assignments[0] : null;
-            $scope.tasks.selectedClient.currentStatus = awaxa.sentinel.models.AssignmentStatus.getAssignmentStatusByValue(lastAssignment != null ? lastAssignment.status : null);
-            $scope.tasks.selectedClient.currentAssignee = (lastAssignment != null ? lastAssignment.assignee : null);
-            $scope.tasks.selectedClient.appointment = (lastAssignment != null ? lastAssignment.appointment : null);
-            $scope.tasks.selectedClient.lastAssignmentId = (lastAssignment != null ? lastAssignment.id : null);
-            $('#clientDetailsModal').modal('show');
+            for (var i = 0; i < $scope.tasks.clients.length; ++i)
+            {
+                $scope.tasks.clients[i].selected = $('#selectAllCheckbox')[0].checked;
+            }
+            $('td input').each(function(i,v) { v.checked = $('#selectAllCheckbox')[0].checked; });
+        };
+
+        $scope.tasks.onRowClick = function($event, client)
+        {
+            if ($event.target.hasOwnProperty('type') && $event.target.type === 'checkbox')
+            {
+
+            }
+            else
+            {
+                $scope.tasks.selectedClient = angular.copy(client);
+                var lastAssignment = (angular.isArray(client.assignments) && client.assignments.length > 0) ? client.assignments[0] : null;
+                $scope.tasks.selectedClient.currentStatus = lastAssignment != null ? lastAssignment.status : null;
+                $scope.tasks.selectedClient.currentAssignee = (lastAssignment != null ? lastAssignment.assignee : null);
+                $scope.tasks.selectedClient.appointment = ((lastAssignment != null && lastAssignment.appointment != null) ? lastAssignment.appointment  : null);
+                $scope.tasks.selectedClient.appointmentDisplay = $scope.tasks.selectedClient.appointment != null ? dateFormat($scope.tasks.selectedClient.appointment, 'UTC:yyyy.mm.dd. - HH:MM') : null;
+                $scope.tasks.selectedClient.lastAssignmentId = (lastAssignment != null ? lastAssignment.id : null);
+                $scope.tasks.saveClientErrorMessage = null;
+                $scope.tasks.resendErrorMessage = null;
+                $('#clientDetailsModal').modal('show');
+            }
         };
 
         $scope.tasks.applyTasksFilter = function(type)
@@ -82,6 +183,8 @@
 
         $scope.tasks.saveClient = function()
         {
+            $scope.tasks.isSavingClient = true;
+            $scope.tasks.saveClientErrorMessage = null;
             updateService.saveClient($scope.tasks.selectedClient, $scope.currentUser, updateClient_onResult, updateClient_onError);
         };
 
@@ -100,26 +203,61 @@
 
         $scope.tasks.changeAppointmentDate = function(e)
         {
-            $scope.tasks.selectedClient.appointment = e.date._d.format("isoDateTime");
+            $scope.tasks.selectedClient.appointment = (e.date != null ? e.date.format("isoDateTime") : null);
         };
+
+        function resend_onResult(result)
+        {
+            $scope.tasks.isSendingMail = false;
+            if (result.hasOwnProperty('success') && result.success == true)
+            {
+                $scope.tasks.hideClientDetails();
+                $scope.tasks.getClients();
+            }
+            else if (result.hasOwnProperty('code') && result.code != -1)
+            {
+                $scope.tasks.resendErrorMessage = $filter('translate')(result.code.toString());
+            }
+        }
+
+        function resend_onError(error)
+        {
+            $scope.tasks.isSendingMail = false;
+            if (error.hasOwnProperty('code') && error.code != -1)
+            {
+                $scope.tasks.resendErrorMessage = $filter('translate')(error.code.toString());
+            }
+            else if (error.hasOwnProperty('error'))
+            {
+                $scope.tasks.resendErrorMessage = error.error;
+            }
+        }
 
         function updateClient_onResult(result)
         {
+            $scope.tasks.isSavingClient = false;
             if (result.hasOwnProperty('success') && result.success == true)
             {
                 $scope.tasks.hideClientDetails();
                 $scope.tasks.getClients();
 
             }
-            else if (result.hasOwnProperty('message'))
+            else if (result.hasOwnProperty('code') && result.code != -1)
             {
-                $scope.tasks.saveClientErrorMessage = result.message;
+                $scope.tasks.saveClientErrorMessage = $filter('translate')(result.code.toString());
             }
         }
 
         function uploadContract_onResult(result)
         {
-
+            if (result.hasOwnProperty('success') && result.success == true && result.hasOwnProperty('contract'))
+            {
+                if (angular.isArray($scope.tasks.selectedClient.contracts))
+                {
+                    $scope.tasks.selectedClient.contracts.push(result.contract);
+                }
+                $scope.tasks.getClients();
+            }
         }
 
         function uploadContract_onError(error)
@@ -127,12 +265,47 @@
 
         }
 
+        function assignTasks_onResult(result)
+        {
+            if (result.hasOwnProperty('success') && result.success == true)
+            {
+                $scope.tasks.getClients();
+            }
+        }
+
+        function assignTasks_onError(error)
+        {
+
+        }
+
         function updateClient_onError(error)
         {
-            if (error.hasOwnProperty('error'))
+            $scope.tasks.isSavingClient = false;
+            if (error.hasOwnProperty('code') && error.code != -1)
+            {
+                $scope.tasks.saveClientErrorMessage = $filter('translate')(error.code.toString());
+            }
+            else if (error.hasOwnProperty('error'))
             {
                 $scope.tasks.saveClientErrorMessage = error.error;
             }
+        }
+
+        function getAvailableUsers_onResult(result)
+        {
+            if (result && angular.isArray(result))
+            {
+                $scope.tasks.availableUsers = result;
+            }
+            else
+            {
+                $scope.tasks.availableUsers = [];
+            }
+        }
+
+        function getAvailableUsers_onError(result)
+        {
+            $scope.tasks.availableUsers = [];
         }
 
         function getAvailableAssignees_onResult(result)
@@ -225,27 +398,6 @@
             }
         };
 
-        $scope.tasks.isAssigneeEditable = function()
-        {
-            if ($scope.currentUser.isAdmin())
-            {
-                return true;
-            }
-            else
-            {
-                if ($scope.tasks.selectedClient.hasOwnProperty('currentStatus') &&
-                    ($scope.tasks.selectedClient.currentStatus == null && $scope.currentUser.isAssistant()) ||
-                    ($scope.tasks.selectedClient.currentStatus == awaxa.sentinel.models.AssignmentStatus.ARRANGED.value && $scope.currentUser.isAssistant))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        };
-
         $scope.tasks.init = function()
         {
             $('#clientDetailsTab a').click(function (e) {
@@ -253,10 +405,17 @@
                 $(this).tab('show')
             });
             $(function () {
-                $('#datetimepicker1').datetimepicker();
-                $("#datetimepicker1").on("dp.change",function (e) {
-                    $('#clientDetailsModal').scope().changeAppointmentDate(e);
+                $("#appointmentPicker").datetimepicker({
+                    format: "yyyy.mm.dd. - hh:ii",
+                    language: 'hu',
+                    autoclose: true,
+                    todayBtn: true,
+                    minuteStep: 5
+                })
+                .on("changeDate",function (e) {
+                    $('#clientDetailsModal').scope().tasks.changeAppointmentDate(e);
                 });
+
             });
         };
 
@@ -291,6 +450,7 @@
         $scope.tasks.initUploader();
         $scope.tasks.getClients();
         $scope.tasks.getPlans();
+        $scope.tasks.getAvailableUsers();
         $scope.tasks.getAvailableAssignees();
     }
 

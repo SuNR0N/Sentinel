@@ -1,20 +1,27 @@
 <!DOCTYPE html>
 <html ng-app="sentinel">
 <head>
-    <title>Sentinel</title>
+    <meta charset="utf-8">
+    <title>{{ 'BROWSER_TITLE_SENTINEL' | translate }}</title>
     <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/bootstrap-theme.css" rel="stylesheet">
     <link href="css/sentinel.css" rel="stylesheet">
     <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <link href="css/bootstrap-multiselect.css" rel="stylesheet">
     <link href="css/calendar.css" rel="stylesheet">
     <script type="text/javascript" src="libs/jquery-2.1.0.min.js"></script>
     <script type="text/javascript" src="libs/d3.min.js"></script>
     <script type="text/javascript" src="libs/underscore-min.js"></script>
+    <script type="text/javascript" src="libs/language/hu-HU.js" charset="UTF-8"></script>
     <script type="text/javascript" src="libs/calendar.js"></script>
     <script type="text/javascript" src="libs/moment.min.js"></script>
     <script type="text/javascript" src="libs/angular.js"></script>
     <script type="text/javascript" src="libs/angular-base64.js"></script>
     <script type="text/javascript" src="libs/angular-route.js"></script>
+    <script type="text/javascript" src="libs/angular-translate.js"></script>
     <script type="text/javascript" src="libs/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="libs/language/bootstrap-datetimepicker.hu.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="libs/bootstrap-multiselect.js"></script>
     <script type="text/javascript" src="libs/date.format.js"></script>
     <script type="text/javascript" src="libs/bootstrap.js"></script>
 </head>
@@ -35,30 +42,31 @@
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li ng-show="!currentUser.getIsLogged()"><a href="#login">Login</a></li>
-                    <li ng-show="!currentUser.getIsLogged()"><a href="#register">Register</a></li>
-                    <li ng-show="currentUser.getIsLogged()"><a href="#tasks">Tasks</a></li>
-                    <li ng-show="currentUser.getIsLogged()"><a href="#calendar">Calendar</a></li>
-                    <li ng-show="currentUser.getIsLogged()"><a href="#messages">Messages</a></li>
-                    <li ng-show="currentUser.getIsLogged()"><a href="#statistics">Statistics</a></li>
+                    <li ng-show="!currentUser.getIsLogged()"><a href="#login">{{ 'MENU_LOGIN' | translate }}</a></li>
+                    <li ng-show="currentUser.getIsLogged()"><a href="#tasks">{{ 'MENU_TASKS' | translate }}</a></li>
+                    <li ng-show="currentUser.getIsLogged()"><a href="#calendar">{{ 'MENU_CALENDAR' | translate }}</a></li>
+                    <li ng-show="currentUser.getIsLogged()"><a href="#messages">{{ 'MENU_MESSAGES' | translate }}</a></li>
+                    <li ng-show="currentUser.getIsLogged()"><a href="#statistics">{{ 'MENU_STATISTICS' | translate }}</a></li>
+                    <li ng-show="currentUser.getIsLogged()"><a href="#password">{{ 'MENU_CHANGE_PASSWORD' | translate }}</a></li>
                     <li class="dropdown" ng-show="currentUser.getIsLogged() && currentUser.isAdmin()">
-                        <a class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
+                        <a class="dropdown-toggle" data-toggle="dropdown">{{ 'MENU_ADMIN' | translate }} <b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#manage">Manage Users</a></li>
-                            <li><a href="#upload">Upload CSV</a></li>
+                            <li><a href="#register">{{ 'MENU_REGISTER_NEW_USER' | translate }}</a></li>
+                            <li><a href="#manage">{{ 'MENU_MANAGE_USERS' | translate }}</a></li>
+                            <li><a href="#upload">{{ 'MENU_UPLOAD_CSV' | translate }}</a></li>
                         </ul>
                     </li>
                 </ul>
                 <ul ng-show="currentUser.getIsLogged()" class="nav navbar-nav navbar-right">
                     <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown">Logged in as <span style="font-weight: bold">{{currentUser.getUserName()}}</span> <b class="caret"></b></a>
+                        <a class="dropdown-toggle" data-toggle="dropdown">{{ 'LOGGED_IN_AS' | translate }} <span style="font-weight: bold">{{currentUser.getUserName()}}</span> <b class="caret"></b></a>
                         <ul class="dropdown-menu" style="padding: 15px;min-width: 250px;">
                             <li>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <form class="form" role="form" ng-controller="LoginController" ng-submit="login.logOut()" accept-charset="UTF-8" id="logout-nav">
                                             <div class="form-group">
-                                                <button type="submit" class="btn btn-success btn-block">Log out</button>
+                                                <button type="submit" class="btn btn-success btn-block">{{ 'LOGOUT' | translate }}</button>
                                             </div>
                                         </form>
                                     </div>
@@ -91,6 +99,7 @@
 <script type="text/javascript" src="js/controllers/MessagesController.js"></script>
 <script type="text/javascript" src="js/controllers/CalendarController.js"></script>
 <script type="text/javascript" src="js/controllers/StatisticsController.js"></script>
+<script type="text/javascript" src="js/controllers/PasswordController.js"></script>
 
 <script type="text/javascript" src="js/directives/StringMatch.js"></script>
 <script type="text/javascript" src="js/directives/FileModel.js"></script>
@@ -103,6 +112,7 @@
 <script type="text/javascript" src="js/filters/StatusFilter.js"></script>
 <script type="text/javascript" src="js/filters/AssignmentStatusFilter.js"></script>
 <script type="text/javascript" src="js/filters/TasksFilter.js"></script>
+<script type="text/javascript" src="js/filters/AccessFilter.js"></script>
 
 <script type="text/javascript" src="js/models/Role.js"></script>
 <script type="text/javascript" src="js/models/Mode.js"></script>
@@ -112,6 +122,7 @@
 
 <script type="text/javascript" src="js/configs/ApplicationConfig.js"></script>
 <script type="text/javascript" src="js/configs/ServiceConfig.js"></script>
+<script type="text/javascript" src="js/configs/LanguageConfig.js"></script>
 
 <script type="text/javascript" src="js/core/app.js"></script>
 

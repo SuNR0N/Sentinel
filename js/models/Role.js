@@ -8,23 +8,23 @@
     awaxa.sentinel.models.Role = awaxa.sentinel.models.Role ||
     {
         GUEST : {
-            label : 'Guest',
+            label : 'ROLE_GUEST',
             value : 0
         },
         ASSISTANT : {
-            label : 'Assistant',
+            label : 'ROLE_ASSISTANT',
             value : 1
         },
         AGENT : {
-            label : 'Agent',
+            label : 'ROLE_AGENT',
             value : 2
         },
         ADMIN : {
-            label : 'Administrator',
+            label : 'ROLE_ADMIN',
             value : 8
         },
         SUPERUSER : {
-            label : 'SuperUser',
+            label : 'ROLE_SUPERUSER',
             value : 9
         }
     };

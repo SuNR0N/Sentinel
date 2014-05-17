@@ -5,19 +5,24 @@
 
     "use strict";
 
-    awaxa.sentinel.controllers.StatisticsController = function($scope, queryService)
+    awaxa.sentinel.controllers.StatisticsController = function($scope, $filter, queryService)
     {
         $scope.statistics = {};
         $scope.statistics.currentStatistics = null;
         $scope.statistics.startDate = null;
         $scope.statistics.endDate = null;
+        $scope.statistics.startDateDisplay = null;
+        $scope.statistics.endDateDisplay = null;
         $scope.statistics.errorMessage = null;
         $scope.statistics.errorMessageVisible = false;
         $scope.statistics.selectedUser = $scope.currentUser.getUserName();
 
         $scope.statistics.getStatisticsForUser = function()
         {
-            queryService.getStatistics($scope.statistics.selectedUser, $scope.statistics.startDate, $scope.statistics.endDate, getStatisticsForUser_onResult, getStatisticsForUser_onError);
+            queryService.getStatistics($scope.statistics.selectedUser,
+                $scope.statistics.startDate,
+                $scope.statistics.endDate,
+                getStatisticsForUser_onResult, getStatisticsForUser_onError);
         };
 
         function getStatisticsForUser_onResult(result)
@@ -32,28 +37,28 @@
                     if (result.hasOwnProperty('completedAssignments') && result.completedAssignments > 0)
                     {
                         $scope.statistics.currentStatistics.push(
-                            {"label":"COMPLETED", "value": result.completedAssignments, "color" : "#00FF7F"}
+                            {"label":$filter('translate')('STATISTICS_COMPLETED'), "value": result.completedAssignments, "color" : "#00FF7F"}
                         )
                     }
                     if (result.hasOwnProperty('failedAssignments') && result.failedAssignments > 0)
                     {
                         $scope.statistics.currentStatistics.push(
-                            {"label":"FAILED", "value": result.failedAssignments, "color" : "#DC143C"}
+                            {"label":$filter('translate')('STATISTICS_FAILED'), "value": result.failedAssignments, "color" : "#DC143C"}
                         )
                     }
                     if (result.hasOwnProperty('pendingAssignments') && result.pendingAssignments > 0)
                     {
                         $scope.statistics.currentStatistics.push(
-                            {"label":"PENDING", "value": result.pendingAssignments, "color" : "#FFEBCD"}
+                            {"label":$filter('translate')('STATISTICS_PENDING'), "value": result.pendingAssignments, "color" : "#FFEBCD"}
                         )
                     }
 
                     $scope.statistics.createChart();
                 }
-                else if (result.hasOwnProperty('message'))
+                else if (result.hasOwnProperty('code') && result.code != -1)
                 {
                     $scope.statistics.errorMessageVisible = true;
-                    $scope.statistics.errorMessage = result.message;
+                    $scope.statistics.errorMessage = $filter('translate')(result.code.toString());
                     $('#chartContainer').empty();
                 }
             }
@@ -65,27 +70,27 @@
             $scope.statistics.errorMessageVisible = false;
         }
 
-        $scope.statistics.clear = function()
-        {
-            $('#startDateInput').val("");
-            $scope.statistics.startDate = null;
-            $('#endDateInput').val("");
-            $scope.statistics.endDate = null;
-        };
-
         $scope.statistics.init = function()
         {
             $('#startDate').datetimepicker({
-                clearBtn : true
+                format: "yyyy.mm.dd.",
+                language: 'hu',
+                autoclose: true,
+                todayBtn: true,
+                minView: 2
+            }).on("changeDate",function (e) {
+                $('#endDate').datetimepicker('setStartDate', e.date);
+                $scope.statistics.startDate = (e.date != null ? e.date.format("isoDateTime") : null);
             });
-            $('#endDate').datetimepicker();
-            $("#startDate").on("dp.change",function (e) {
-                $scope.statistics.startDate = e.date._d.format("isoDateTime");
-                $('#endDate').data("DateTimePicker").setMinDate(e.date);
-            });
-            $("#endDate").on("dp.change",function (e) {
-                $scope.statistics.endDate = e.date._d.format("isoDateTime");
-                $('#startDate').data("DateTimePicker").setMaxDate(e.date);
+            $('#endDate').datetimepicker({
+                format: "yyyy.mm.dd.",
+                language: 'hu',
+                autoclose: true,
+                todayBtn: true,
+                minView: 2
+            }).on("changeDate",function (e) {
+                $('#startDate').datetimepicker('setEndDate', e.date);
+                $scope.statistics.endDate = (e.date != null ? e.date.format("isoDateTime") : null);
             });
         };
 

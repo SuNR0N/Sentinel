@@ -5,10 +5,11 @@
 
     "use strict";
 
-    awaxa.sentinel.controllers.ManageController = function($scope, queryService, updateService)
+    awaxa.sentinel.controllers.ManageController = function($scope, $filter, queryService, updateService)
     {
         $scope.manage = {};
         $scope.manage.users = [];
+        $scope.manage.assignments = [];
         $scope.manage.selectedUser = {};
         $scope.manage.roleOptions =
             [
@@ -41,15 +42,42 @@
 
         $scope.manage.showUserDetails = function(user)
         {
+            var assignments = [];
+            for (var i = 0; i < user.assignments.length; ++i)
+            {
+                assignments.push(user.assignments[i].assigneeUserId);
+            }
             $scope.manage.selectedUser = angular.copy(user);
+            $scope.manage.selectedUser.assignments = assignments;
             $('#userDetailsModal').modal('show');
+            loadSelectedAssignmentsForUser(user);
         };
+
+        function loadSelectedAssignmentsForUser(user)
+        {
+            $('option', $('#assignmentsSelector')).each(function(element) { $('#assignmentsSelector').multiselect('deselect', $(this).val()) });
+            var selectedUserIds = [];
+            for (var i = 0; i < user.assignments.length; ++i)
+            {
+                selectedUserIds.push(user.assignments[i].assigneeUserId);
+            }
+            $('#assignmentsSelector').multiselect('select', selectedUserIds);
+        }
 
         function getUsers_onResult(result)
         {
             if (result)
             {
                 $scope.manage.users = result;
+                $scope.manage.assignments = [];
+                for (var i = 0; i < $scope.manage.users.length; ++i)
+                {
+                    $scope.manage.assignments.push({
+                        value : $scope.manage.users[i].userId,
+                        label : $scope.manage.users[i].fullName
+                    });
+                }
+                $("#assignmentsSelector").multiselect('dataprovider', $scope.manage.assignments);
             }
         }
 
@@ -57,6 +85,15 @@
         {
 
         }
+
+        $scope.manage.init = function()
+        {
+            $(document).ready(function() {
+                $('.multiselect').multiselect({
+                    buttonWidth: '410px'
+                });
+                });
+        };
 
         $scope.manage.saveUser = function()
         {
@@ -72,9 +109,9 @@
                 $scope.manage.getUsers();
 
             }
-            else if (result.hasOwnProperty('message'))
+            else if (result.hasOwnProperty('code') && result.code != -1)
             {
-                $scope.manage.saveUserErrorMessage = result.message;
+                $scope.manage.saveUserErrorMessage = $filter('translate')(result.code.toString());
             }
         }
 
@@ -84,5 +121,6 @@
         }
 
         $scope.manage.getUsers();
+        $scope.manage.init();
     }
 }());

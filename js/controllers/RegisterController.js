@@ -5,7 +5,7 @@
 
     "use strict";
 
-    awaxa.sentinel.controllers.RegisterController = function($scope, $location, entitlementService)
+    awaxa.sentinel.controllers.RegisterController = function($scope, $location, $filter, entitlementService)
     {
         $scope.register = {};
         $scope.register.user = {};
@@ -22,19 +22,13 @@
             {
                 if (result.hasOwnProperty('currentUser'))
                 {
-                    $scope.currentUser.setUserName(result.currentUser.userName);
-                    $scope.currentUser.setPassword($scope.register.user.password);
-                    $scope.currentUser.setFirstName(result.currentUser.firstName);
-                    $scope.currentUser.setLastName(result.currentUser.lastName);
-                    $scope.currentUser.setRole(result.currentUser.role);
-                    $scope.currentUser.setIsLogged(true);
                     $scope.getUsers();
-                    $location.path('/tasks');
+                    $location.path('/manage');
                 }
             }
-            if (result.hasOwnProperty('message'))
+            if (result.hasOwnProperty('code') && result.code != -1)
             {
-                $scope.register.errorMessage = result.message;
+                $scope.register.errorMessage = $filter('translate')(result.code.toString());
             }
             else
             {
@@ -44,7 +38,7 @@
 
         function registerUser_onError(error)
         {
-            $scope.register.errorMessage = 'Registration failed'
+            $scope.register.errorMessage = $filter('translate')('MSG_REGISTRATION_FAILED');
         }
     }
 

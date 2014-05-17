@@ -2,7 +2,7 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>Sentinel - Calendar</title>
+    <title>{{ 'BROWSER_TITLE_CALENDAR' | translate }}</title>
 </head>
 <body>
     <div class="page-header p15lr">
@@ -11,19 +11,19 @@
                     ng-model="calendar.selectedUser"
                     ng-change="calendar.getCalendarForUser(calendar.selectedUser.userName)"></select>
             <div class="btn-group">
-                <button class="btn btn-primary" data-calendar-nav="prev">&lt;&lt; Prev</button>
-                <button class="btn btn-default" data-calendar-nav="today">Today</button>
-                <button class="btn btn-primary" data-calendar-nav="next">Next &gt;&gt;</button>
+                <button class="btn btn-primary" data-calendar-nav="prev">&lt;&lt; {{ 'BUTTON_PREVIOUS' | translate}}</button>
+                <button class="btn btn-default" data-calendar-nav="today">{{ 'BUTTON_TODAY' | translate}}</button>
+                <button class="btn btn-primary" data-calendar-nav="next">{{ 'BUTTON_NEXT' | translate}} &gt;&gt;</button>
             </div>
             <div class="btn-group">
-                <button class="btn btn-warning" data-calendar-view="year">Year</button>
-                <button class="btn btn-warning active" data-calendar-view="month">Month</button>
-                <button class="btn btn-warning" data-calendar-view="week">Week</button>
-                <button class="btn btn-warning" data-calendar-view="day">Day</button>
+                <button class="btn btn-warning" data-calendar-view="year">{{ 'BUTTON_YEAR' | translate}}</button>
+                <button class="btn btn-warning active" data-calendar-view="month">{{ 'BUTTON_MONTH' | translate}}</button>
+                <button class="btn btn-warning" data-calendar-view="week">{{ 'BUTTON_WEEK' | translate}}</button>
+                <button class="btn btn-warning" data-calendar-view="day">{{ 'BUTTON_DAY' | translate}}</button>
             </div>
         </div>
         <h3></h3>
     </div>
-    <div id="calendar" class="p15lr"></div>
+    <div id="calendar" class="p100lr"></div>
 </body>
 </html>

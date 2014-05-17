@@ -8,11 +8,13 @@
     awaxa.sentinel.controllers.MessagesController = function($scope, queryService)
     {
         $scope.messages = {};
+        $scope.messages.isLoaded = false;
         $scope.messages.mails = [];
         $scope.messages.errorMessage = null;
 
         $scope.messages.getMails = function()
         {
+            $scope.messages.isLoaded = false;
             queryService.getMails($scope.currentUser, getMails_onResult, getMails_onError);
         };
 
@@ -22,6 +24,7 @@
             {
                 $scope.messages.mails = result;
             }
+            $scope.messages.isLoaded = true;
         }
 
         function getMails_onError(error)
@@ -32,6 +35,7 @@
             }
 
             $scope.messages.mails = [];
+            $scope.messages.isLoaded = true;
         }
 
         $scope.messages.getMails();

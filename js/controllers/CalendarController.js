@@ -33,6 +33,7 @@
         $scope.calendar.initCalendar = function()
         {
             var options = {
+                language: 'hu-HU',
                 events_source: $scope.calendar.timeEntries,
                 view: 'month',
                 first_day: 1,

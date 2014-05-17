@@ -5,7 +5,7 @@
 
     "use strict";
 
-    awaxa.sentinel.controllers.UploadController = function($scope, utilityService)
+    awaxa.sentinel.controllers.UploadController = function($scope, $filter, utilityService)
     {
         $scope.upload = {};
         $scope.upload.csvFile = null;
@@ -27,19 +27,27 @@
             {
                 $scope.upload.result = result.success;
             }
-            if (result.hasOwnProperty('message'))
+            if (result.hasOwnProperty('code') && result.code != -1)
             {
-                $scope.upload.message = result.message;
+                $scope.upload.message = $filter('translate')(result.code.toString());
+                if (result.hasOwnProperty('message') && result.message != null)
+                {
+                    $scope.upload.message = $scope.upload.message + " (" + result.message + ")";
+                }
             }
         }
 
         function uploadCSV_onError(error)
         {
-            if (error.hasOwnProperty('error'))
+            if (error.hasOwnProperty('code') && error.code != -1)
+            {
+                $scope.upload.message = $filter('translate')(error.code.toString());
+            }
+            else if (error.hasOwnProperty('error'))
             {
                 $scope.upload.message = error.error;
-                $scope.upload.result = false;
             }
+            $scope.upload.result = false;
         }
 
         $scope.upload.clear = function()

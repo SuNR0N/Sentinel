@@ -8,11 +8,11 @@
     awaxa.sentinel.models.Mode = awaxa.sentinel.models.Mode ||
     {
         BEGINNER : {
-            label : 'Beginner',
+            label : 'MODE_BEGINNER',
             value : 0
         },
         EXPERT : {
-            label : 'Expert',
+            label : 'MODE_EXPERT',
             value : 1
         }
     };

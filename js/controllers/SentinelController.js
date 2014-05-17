@@ -14,12 +14,12 @@
             return $location.path();
         }, function(newValue, oldValue)
         {
-            if (($scope.currentUser == null || $scope.currentUser == undefined || !$scope.currentUser.getIsLogged()) && (newValue != '/login' && newValue != '/register'))
+            if (($scope.currentUser == null || $scope.currentUser == undefined || !$scope.currentUser.getIsLogged()) && newValue != '/login')
             {
                 $location.path('/login');
             }
             if ($scope.currentUser != null && $scope.currentUser != undefined && $scope.currentUser.getIsLogged() && !$scope.currentUser.isAdmin()
-                && (newValue == '/manage' || newValue == '/upload'))
+                && (newValue == '/manage' || newValue == '/upload' || newValue == '/register'))
             {
                 $location.path(oldValue);
             }

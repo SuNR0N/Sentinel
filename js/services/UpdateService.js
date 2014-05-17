@@ -17,21 +17,54 @@
             $log.error("Service call failed", arguments);
         }
 
+        this.assignTasks = function(tasks, assignee, success, error)
+        {
+            success = success || defaultSuccessHandler;
+            error = error || defaultErrorHandler;
+            var param =
+            {
+                tasks : tasks,
+                assignee : assignee
+            };
+            $http.post(config.rootURL + '/update/assignTasks', param)
+                .success(success)
+                .error(error);
+        };
+
         this.saveUser = function(user, success, error) {
             success = success || defaultSuccessHandler;
             error = error || defaultErrorHandler;
             var param =
             {
-                firstName : user.firstName,
-                lastName : user.lastName,
-                userId: user.userId,
-                role : angular.isString(user.role) ? parseInt(user.role) : user.role,
-                status : angular.isString(user.status) ? user.status.charAt(0) : user.status,
-                mode : angular.isString(user.mode) ? parseInt(user.mode) : user.mode,
-                clientCode : angular.isString(user.clientCode) ? parseInt(user.clientCode) : user.clientCode,
-                owner : user.owner
+                user : {
+                    firstName : user.firstName,
+                    lastName : user.lastName,
+                    userId: user.userId,
+                    role : angular.isString(user.role) ? parseInt(user.role) : user.role,
+                    status : angular.isString(user.status) ? user.status.charAt(0) : user.status,
+                    mode : angular.isString(user.mode) ? parseInt(user.mode) : user.mode,
+                    clientCode : angular.isString(user.clientCode) ? parseInt(user.clientCode) : user.clientCode,
+                    owner : user.owner
+                },
+                assignments : user.assignments
             };
             $http.post(config.rootURL + '/update/saveUser', param)
+                .success(success)
+                .error(error);
+        };
+
+        this.resend = function(client, user, success, error) {
+            success = success || defaultSuccessHandler;
+            error = error || defaultErrorHandler;
+            var encoded = $base64.encode(user.getUserName() + ':' + user.getPassword());
+            $http.defaults.headers.common.Authorization = 'Basic ' + encoded;
+            var param = {
+                client : {
+                    mtId : client.mtId,
+                    contracts: client.contracts
+                }
+            };
+            $http.post(config.rootURL + '/update/resendUpdatedContracts', param)
                 .success(success)
                 .error(error);
         };
@@ -51,12 +84,15 @@
                     serviceTVNew : client.serviceTVNew,
                     serviceInternetName : client.serviceInternetName,
                     serviceInternetNew : client.serviceInternetNew,
+                    comment : client.comment,
                     comment1 : client.comment1,
-                    comment2 : client.comment2
+                    comment2 : client.comment2,
+                    phone : client.phone,
+                    mobile : client.mobile,
+                    contracts: client.contracts
                 },
-                appointment : client.appointment,
+                appointment : client.appointment != null ? client.appointment.format("isoDateTime") : null,
                 currentStatus : client.currentStatus,
-                currentAssignee : client.currentAssignee,
                 lastAssignmentId : client.lastAssignmentId
             };
             $http.post(config.rootURL + '/update/saveClient', param)

@@ -7,9 +7,9 @@
 
     awaxa.sentinel.filters.TasksFilter = function()
     {
-        return function(input, user, mode)
+        return function(input, userId, mode)
         {
-            if (angular.isArray(input) && angular.isString(mode) && user != null)
+            if (angular.isArray(input) && angular.isString(mode))
             {
                 var ret = [];
                 var index;
@@ -21,12 +21,14 @@
                         continue;
                     }
                     var lastAssignment = (input[index].hasOwnProperty('assignments') && angular.isArray(input[index].assignments) && input[index].assignments.length > 0) ? input[index].assignments[0] : null;
-                    if (lastAssignment == null && mode == 'unassigned')
+                    if ((lastAssignment == null
+                            || lastAssignment.status == awaxa.sentinel.models.AssignmentStatus.NEW.value
+                            || lastAssignment.status == awaxa.sentinel.models.AssignmentStatus.RECALL.value) && mode == 'processing')
                     {
                         ret.push(input[index]);
                         continue;
                     }
-                    if (lastAssignment != null && lastAssignment.assignee == user.getUserName() && mode == 'my')
+                    if (lastAssignment != null && lastAssignment.assignee == userId && mode == 'user')
                     {
                         ret.push(input[index]);
                     }

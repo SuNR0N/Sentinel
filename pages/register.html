@@ -2,7 +2,7 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>Sentinel - Register</title>
+    <title>{{ 'BROWSER_TITLE_REGISTER' | translate }}</title>
 </head>
 <body>
 <div class="container login">
@@ -10,7 +10,7 @@
         <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title"><strong>Register</strong></h3>
+                    <h3 class="panel-title"><strong>{{ 'TITLE_REGISTER' | translate }}</strong></h3>
                 </div>
                 <div class="panel-body">
                     <form name="registerForm" accept-charset="UTF-8" role="form">
@@ -18,49 +18,49 @@
                             <div class="row">
                                 <div class="col-xs-12 col-sm-6 col-md-6">
                                     <div class="form-group" ng-class="registerForm.first_name.$error.required ? 'has-error' : ''">
-                                        <input type="text" ng-model="register.user.firstName" name="first_name" id="first_name" class="form-control input-lg" placeholder="First Name" tabindex="1" required="">
+                                        <input type="text" ng-model="register.user.firstName" name="first_name" id="first_name" class="form-control input-lg" placeholder="{{ 'PLACEHOLDER_FIRST_NAME' | translate }}" tabindex="1" required="">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-6 col-md-6">
                                     <div class="form-group" ng-class="registerForm.last_name.$error.required ? 'has-error' : ''">
-                                        <input type="text" ng-model="register.user.lastName" name="last_name" id="last_name" class="form-control input-lg" placeholder="Last Name" tabindex="2" required="">
+                                        <input type="text" ng-model="register.user.lastName" name="last_name" id="last_name" class="form-control input-lg" placeholder="{{ 'PLACEHOLDER_LAST_NAME' | translate }}" tabindex="2" required="">
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group" ng-class="registerForm.user_name.$error.required ? 'has-error' : ''">
-                                <input type="text" ng-model="register.user.userName" name="user_name" id="user_name" class="form-control input-lg" placeholder="Username" tabindex="3" required="">
+                                <input type="text" ng-model="register.user.userName" name="user_name" id="user_name" class="form-control input-lg" placeholder="{{ 'PLACEHOLDER_USERNAME' | translate }}" tabindex="3" required="">
                             </div>
                             <div class="form-group" ng-class="(registerForm.client_code.$error.required || registerForm.client_code.$error.pattern) ? 'has-error' : ''">
-                                <input type="text" ng-model="register.user.clientCode" ng-pattern="/^\d{9}$/" name="client_code" id="client_code" class="form-control input-lg" placeholder="Client Code" tabindex="4" required="">
+                                <input type="text" ng-model="register.user.clientCode" ng-pattern="/^\d{9}$/" name="client_code" id="client_code" class="form-control input-lg" placeholder="{{ 'PLACEHOLDER_CLIENT_CODE' | translate }}" tabindex="4" required="">
                             </div>
                             <div class="alert alert-danger" ng-show="registerForm.client_code.$error.pattern">
                                 <span ng-show="registerForm.client_code.$error.pattern">
                                     <strong>
-                                        Client code must be 9 digits
+                                        {{ 'MSG_CLIENT_CODE_LENGTH' | translate }}
                                     </strong>
                                 </span>
                             </div>
                             <div class="row">
                                 <div class="col-xs-12 col-sm-6 col-md-6">
                                     <div class="form-group" ng-class="(registerForm.password.$error.required || registerForm.password_confirmation.$error.strmatch) ? 'has-error' : ''">
-                                        <input type="password" ng-model="register.user.password" name="password" id="password" class="form-control input-lg" placeholder="Password" tabindex="5" required="">
+                                        <input type="password" ng-model="register.user.password" name="password" id="password" class="form-control input-lg" placeholder="{{ 'PLACEHOLDER_PASSWORD' | translate }}" tabindex="5" required="">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-6 col-md-6">
                                     <div class="form-group" ng-class="(registerForm.password_confirmation.$error.required || registerForm.password_confirmation.$error.strmatch) ? 'has-error' : ''">
-                                        <input type="password" ng-model="register.user.password_confirmation" name="password_confirmation" id="password_confirmation" str-match="password" class="form-control input-lg" placeholder="Confirm Password" tabindex="6" required="">
+                                        <input type="password" ng-model="register.user.password_confirmation" name="password_confirmation" id="password_confirmation" str-match="password" class="form-control input-lg" placeholder="{{ 'PLACEHOLDER_PASSWORD_CONFIRMATION' | translate }}" tabindex="6" required="">
                                     </div>
                                 </div>
                             </div>
                             <div class="alert alert-danger" ng-show="registerForm.password_confirmation.$error.strmatch">
                                 <strong>
-                                    Passwords don't match.
+                                    {{ 'MSG_PASSWORDS_DONT_MATCH' | translate }}
                                 </strong>
                             </div>
                             <div ng-show="register.errorMessage != null" class="alert alert-danger">
                                 <strong>{{register.errorMessage}}</strong>
                             </div>
-                            <input class="btn btn-lg btn-primary btn-block" ng-disabled="registerForm.$invalid" ng-click="register.registerUser()" value="Register" tabindex="7">
+                            <input class="btn btn-lg btn-primary btn-block" ng-disabled="registerForm.$invalid" ng-click="register.registerUser()" value="{{ 'BUTTON_REGISTER' | translate }}" tabindex="7">
                         </fieldset>
                     </form>
                 </div>
