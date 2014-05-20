@@ -329,6 +329,7 @@
         {
             if (result)
             {
+                $scope.currentUser.isAssistant() ? $scope.tasks.applyTasksFilter('processing') : $scope.tasks.applyTasksFilter('all');
                 $scope.tasks.clients = result;
             }
         }

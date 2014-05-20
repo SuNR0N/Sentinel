@@ -106,3 +106,8 @@ input[readonly] {
     top: 14px;
     right: 8px;
 }
+
+.modal-dialog {
+    width: 700px;
+    margin: 30px auto;
+}

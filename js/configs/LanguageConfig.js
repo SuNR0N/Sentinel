@@ -8,6 +8,7 @@
     awaxa.sentinel.configs.LanguageConfig = function($translateProvider)
     {
         $translateProvider.translations('en', {
+            BRAND_NAME: 'Awaxa',
             MENU_LOGIN: 'Login',
             MENU_TASKS: 'Tasks',
             MENU_CALENDAR: 'Calendar',
@@ -94,6 +95,9 @@
             CLIENT_POPUP_BANK_ACCOUNT: 'Bank Account',
             MESSAGES_FROM: 'From',
             MESSAGES_SUBJECT: 'Subject',
+            MESSAGES_STATUS: 'Status',
+            MESSAGES_STATUS_COMPLETED: 'Completed',
+            MESSAGES_STATUS_FAILED: 'Failed',
             MESSAGES_CONTENT: 'Content',
             MESSAGES_DATE: 'Date',
             USER_FIRST_NAME: 'First Name',
@@ -159,6 +163,7 @@
             1101: 'Email sending was not initiated as the last assignment status is not "SENT"'
         });
         $translateProvider.translations('hu', {
+            BRAND_NAME: 'Awaxa',
             MENU_LOGIN: 'Bejelentkezés',
             MENU_TASKS: 'Feladatok',
             MENU_CALENDAR: 'Naptár',
@@ -246,6 +251,9 @@
             MESSAGES_FROM: 'Feladó',
             MESSAGES_SUBJECT: 'Tárgy',
             MESSAGES_CONTENT: 'Tartalom',
+            MESSAGES_STATUS: 'Státusz',
+            MESSAGES_STATUS_COMPLETED: 'Sikeres',
+            MESSAGES_STATUS_FAILED: 'Sikertelen',
             MESSAGES_DATE: 'Dátum',
             USER_FIRST_NAME: 'Keresztnév',
             USER_LAST_NAME: 'Vezeteknév',

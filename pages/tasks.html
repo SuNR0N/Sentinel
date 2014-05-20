@@ -15,7 +15,7 @@
             <div class="btn-group">
                 <button ng-class="tasks.currentFilter == 'user' ? 'active' : ''"type="button" class="btn btn-default" ng-click="tasks.applyTasksFilter('user')">{{ 'BUTTON_USER_TASKS' | translate }}</button>
                 <button ng-class="tasks.currentFilter == 'processing' ? 'active' : ''"type="button" class="btn btn-default" ng-click="tasks.applyTasksFilter('processing')">{{ 'BUTTON_PROCESSING_TASKS' | translate }}</button>
-                <button ng-class="tasks.currentFilter == 'all' ? 'active' : ''" type="button" class="btn btn-default" ng-click="tasks.applyTasksFilter('all')">{{ 'BUTTON_ALL_TASKS' | translate }}</button>
+                <button ng-hide="currentUser.isAssistant()" ng-class="tasks.currentFilter == 'all' ? 'active' : ''" type="button" class="btn btn-default" ng-click="tasks.applyTasksFilter('all')">{{ 'BUTTON_ALL_TASKS' | translate }}</button>
             </div>
             <div class="input-group input-group-md" ng-show="currentUser.isAdmin()">
                 <select class="form-control" ng-model="tasks.selectedAssignee"
@@ -219,45 +219,47 @@
                                </ul>
                            </div>
                            <hr/>
-                           <div class="form-group">
-                               <label class="col-sm-4 control-label">{{ 'CLIENT_POPUP_SERVICE_TV' | translate }}</label>
-                               <div class="col-sm-8 input-group p15lr">
-                                   <span class="input-group-addon">
-                                        <input type="checkbox" ng-model="tasks.selectedClient.serviceTVNew">
-                                   </span>
-                                   <select class="form-control"
-                                           ng-model="tasks.selectedClient.serviceTVName"
-                                           ng-options="p.name as p.name for p in tasks.tvPlans"
-                                           >
-                                   </select>
+                           <form class="form-horizontal" role="form">
+                               <div class="form-group">
+                                   <label class="col-sm-4 control-label">{{ 'CLIENT_POPUP_SERVICE_TV' | translate }}</label>
+                                   <div class="col-sm-8 input-group p15lr">
+                                       <span class="input-group-addon">
+                                            <input type="checkbox" ng-model="tasks.selectedClient.serviceTVNew">
+                                       </span>
+                                       <select class="form-control"
+                                               ng-model="tasks.selectedClient.serviceTVName"
+                                               ng-options="p.name as p.name for p in tasks.tvPlans"
+                                               >
+                                       </select>
+                                   </div>
                                </div>
-                           </div>
-                           <div class="form-group">
-                               <label class="col-sm-4 control-label">{{ 'CLIENT_POPUP_SERVICE_PHONE' | translate }}</label>
-                               <div class="col-sm-8 input-group p15lr">
-                                   <span class="input-group-addon">
-                                        <input type="checkbox" ng-model="tasks.selectedClient.servicePhoneNew">
-                                   </span>
-                                   <select class="form-control"
-                                           ng-model="tasks.selectedClient.servicePhoneName"
-                                           ng-options="p.name as p.name for p in tasks.phonePlans"
-                                           >
-                                   </select>
+                               <div class="form-group">
+                                   <label class="col-sm-4 control-label">{{ 'CLIENT_POPUP_SERVICE_PHONE' | translate }}</label>
+                                   <div class="col-sm-8 input-group p15lr">
+                                       <span class="input-group-addon">
+                                            <input type="checkbox" ng-model="tasks.selectedClient.servicePhoneNew">
+                                       </span>
+                                       <select class="form-control"
+                                               ng-model="tasks.selectedClient.servicePhoneName"
+                                               ng-options="p.name as p.name for p in tasks.phonePlans"
+                                               >
+                                       </select>
+                                   </div>
                                </div>
-                           </div>
-                           <div class="form-group">
-                               <label class="col-sm-4 control-label">{{ 'CLIENT_POPUP_SERVICE_INTERNET' | translate }}</label>
-                               <div class="col-sm-8 input-group p15lr">
-                                   <span class="input-group-addon">
-                                        <input type="checkbox" ng-model="tasks.selectedClient.serviceInternetNew">
-                                   </span>
-                                   <select class="form-control"
-                                           ng-model="tasks.selectedClient.serviceInternetName"
-                                           ng-options="p.name as p.name for p in tasks.internetPlans"
-                                           >
-                                   </select>
+                               <div class="form-group">
+                                   <label class="col-sm-4 control-label">{{ 'CLIENT_POPUP_SERVICE_INTERNET' | translate }}</label>
+                                   <div class="col-sm-8 input-group p15lr">
+                                       <span class="input-group-addon">
+                                            <input type="checkbox" ng-model="tasks.selectedClient.serviceInternetNew">
+                                       </span>
+                                       <select class="form-control"
+                                               ng-model="tasks.selectedClient.serviceInternetName"
+                                               ng-options="p.name as p.name for p in tasks.internetPlans"
+                                               >
+                                       </select>
+                                   </div>
                                </div>
-                           </div>
+                           </form>
                        </div>
                        <div class="tab-pane fade" id="personal">
                            <form class="form-horizontal" role="form">
