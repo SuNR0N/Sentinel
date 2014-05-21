@@ -365,6 +365,34 @@
             $scope.tasks.tvPlans = [];
         }
 
+        $scope.tasks.isAppointmentRequired = function()
+        {
+            return ($scope.tasks.selectedClient.currentStatus == awaxa.sentinel.models.AssignmentStatus.ARRANGED.value ||
+                    $scope.tasks.selectedClient.currentStatus == awaxa.sentinel.models.AssignmentStatus.RECALL.value) &&
+                    $scope.tasks.selectedClient.appointment == null;
+        };
+
+        $scope.tasks.isComment1Required = function()
+        {
+            return ($scope.tasks.selectedClient.currentStatus == awaxa.sentinel.models.AssignmentStatus.WRONG_ADDRESS.value ||
+                ($scope.tasks.selectedClient.currentStatus == awaxa.sentinel.models.AssignmentStatus.REJECTED.value && $scope.currentUser.isAssistant())) &&
+                ($scope.tasks.selectedClient.comment1 == null || $scope.tasks.selectedClient.comment1.trim() == '');
+        };
+
+        $scope.tasks.isComment2Required = function()
+        {
+            return $scope.tasks.selectedClient.currentStatus == awaxa.sentinel.models.AssignmentStatus.REJECTED.value &&
+                    $scope.currentUser.isAgent() &&
+                    ($scope.tasks.selectedClient.comment2 == null || $scope.tasks.selectedClient.comment2.trim() == '');
+        };
+
+        $scope.tasks.isSelectedPlanRequired = function(selector)
+        {
+            return $(selector).val() === "?" &&
+                $scope.tasks.selectedClient.currentStatus == awaxa.sentinel.models.AssignmentStatus.SENT.value &&
+                $scope.currentUser.isAgent();
+        };
+
         $scope.tasks.isAssignmentStatusEditable = function(assignments)
         {
             if ($scope.currentUser.isAdmin())
