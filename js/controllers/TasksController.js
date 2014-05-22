@@ -95,6 +95,22 @@
             }
         };
 
+        $scope.tasks.deleteTasks = function()
+        {
+            var tasks = [];
+            for (var i = 0; i < $scope.tasks.clients.length; ++i)
+            {
+                if ($scope.tasks.clients[i].selected)
+                {
+                    tasks.push($scope.tasks.clients[i].mtId);
+                }
+            }
+            if ($scope.currentUser.getIsLogged())
+            {
+                updateService.deleteTasks(tasks, deleteTasks_onResult, deleteTasks_onError);
+            }
+        };
+
         $scope.tasks.assignTasks = function()
         {
             var tasks = [];
@@ -134,11 +150,14 @@
 
         $scope.tasks.selectAll = function()
         {
-            for (var i = 0; i < $scope.tasks.clients.length; ++i)
+            var filteredTasks = $filter('filter')($filter('tasksFilter')($scope.tasks.clients, $scope.tasks.selectedUser, $scope.currentUser.getRole(), $scope.tasks.currentFilter), $scope.tasks.searchText);
+            if (angular.isArray(filteredTasks))
             {
-                $scope.tasks.clients[i].selected = $('#selectAllCheckbox')[0].checked;
+                for (var i = 0; i < filteredTasks.length; ++i)
+                {
+                    filteredTasks[i].selected = $('#selectAllCheckbox')[0].checked;
+                }
             }
-            $('td input').each(function(i,v) { v.checked = $('#selectAllCheckbox')[0].checked; });
         };
 
         $scope.tasks.onRowClick = function($event, client)
@@ -278,6 +297,19 @@
 
         }
 
+        function deleteTasks_onResult(result)
+        {
+            if (result.hasOwnProperty('success') && result.success == true)
+            {
+                $scope.tasks.getClients();
+            }
+        }
+
+        function deleteTasks_onError(error)
+        {
+
+        }
+
         function updateClient_onError(error)
         {
             $scope.tasks.isSavingClient = false;
@@ -374,8 +406,8 @@
 
         $scope.tasks.isComment1Required = function()
         {
-            return ($scope.tasks.selectedClient.currentStatus == awaxa.sentinel.models.AssignmentStatus.WRONG_ADDRESS.value ||
-                ($scope.tasks.selectedClient.currentStatus == awaxa.sentinel.models.AssignmentStatus.REJECTED.value && $scope.currentUser.isAssistant())) &&
+            return (($scope.tasks.selectedClient.currentStatus == awaxa.sentinel.models.AssignmentStatus.WRONG_ADDRESS.value ||
+                $scope.tasks.selectedClient.currentStatus == awaxa.sentinel.models.AssignmentStatus.REJECTED.value) && $scope.currentUser.isAssistant()) &&
                 ($scope.tasks.selectedClient.comment1 == null || $scope.tasks.selectedClient.comment1.trim() == '');
         };
 
@@ -388,9 +420,9 @@
 
         $scope.tasks.isSelectedPlanRequired = function(selector)
         {
-            return $(selector).val() === "?" &&
-                $scope.tasks.selectedClient.currentStatus == awaxa.sentinel.models.AssignmentStatus.SENT.value &&
-                $scope.currentUser.isAgent();
+            return $(selector).val() === "?" && $scope.currentUser.isAgent() &&
+                ($scope.tasks.selectedClient.currentStatus == awaxa.sentinel.models.AssignmentStatus.SENT.value);
+
         };
 
         $scope.tasks.isAssignmentStatusEditable = function(assignments)

@@ -31,6 +31,19 @@
                 .error(error);
         };
 
+        this.deleteTasks = function(tasks, success, error)
+        {
+            success = success || defaultSuccessHandler;
+            error = error || defaultErrorHandler;
+            var param =
+            {
+                tasks : tasks
+            };
+            $http.post(config.rootURL + '/update/deleteTasks', param)
+                .success(success)
+                .error(error);
+        };
+
         this.saveUser = function(user, success, error) {
             success = success || defaultSuccessHandler;
             error = error || defaultErrorHandler;
