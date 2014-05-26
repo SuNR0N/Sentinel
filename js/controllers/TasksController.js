@@ -55,6 +55,7 @@
             }
             else if ($scope.tasks.selectedClient != null &&
                         angular.isArray($scope.tasks.selectedClient.assignments) &&
+                        $scope.tasks.selectedClient.assignments.length > 0 &&
                         $scope.tasks.selectedClient.assignments[0].status >= awaxa.sentinel.models.AssignmentStatus.ARRANGED.value)
             {
                 return true;
@@ -396,6 +397,13 @@
             $scope.tasks.phonePlans = [];
             $scope.tasks.tvPlans = [];
         }
+
+        $scope.tasks.isValidMobileRequired = function()
+        {
+            return ($scope.tasks.selectedClient.currentStatus == awaxa.sentinel.models.AssignmentStatus.ARRANGED.value &&
+                    $scope.tasks.selectedClient.mobile != null && $scope.tasks.selectedClient.mobile.trim() != '' &&
+                    !$scope.tasks.selectedClient.mobile.match(/^\d{11}$/g));
+        };
 
         $scope.tasks.isAppointmentRequired = function()
         {

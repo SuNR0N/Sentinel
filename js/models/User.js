@@ -78,6 +78,11 @@
             role = null;
         };
 
+        this.isSuperUser = function()
+        {
+            return role === awaxa.sentinel.models.Role.SUPERUSER.value;
+        };
+
         this.isAdmin = function()
         {
             return role === awaxa.sentinel.models.Role.ADMIN.value || role === awaxa.sentinel.models.Role.SUPERUSER.value;

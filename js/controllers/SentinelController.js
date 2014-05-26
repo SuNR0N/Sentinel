@@ -5,10 +5,11 @@
 
     "use strict";
 
-    awaxa.sentinel.controllers.SentinelController = function($scope, $location, queryService)
+    awaxa.sentinel.controllers.SentinelController = function($scope, $location, queryService, updateService)
     {
         $scope.currentUser = new awaxa.sentinel.models.User();
         $scope.users = [];
+        $scope.isClearingDatabase = false;
 
         $scope.$watch(function() {
             return $location.path();
@@ -29,6 +30,29 @@
         {
             queryService.getUsersWithNames(getUsersWithNames_onResult, getUsersWithNames_onError);
         };
+
+        $scope.clearDatabase = function()
+        {
+            if ($scope.currentUser.getIsLogged() && $scope.currentUser.isSuperUser())
+            {
+                $scope.isClearingDatabase = true;
+                updateService.clearDatabase($scope.currentUser, clearDatabase_onResult, clearDatabase_onError);
+            }
+        };
+
+        function clearDatabase_onResult(result)
+        {
+            $scope.isClearingDatabase = false;
+            if (result.hasOwnProperty('success') && result.success == true)
+            {
+                $('#dbClearModal').modal('hide');
+            }
+        }
+
+        function clearDatabase_onError(error)
+        {
+            $scope.isClearingDatabase = false;
+        }
 
         function getUsersWithNames_onResult(result)
         {

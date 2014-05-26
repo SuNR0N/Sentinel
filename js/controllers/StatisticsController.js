@@ -9,6 +9,8 @@
     {
         $scope.statistics = {};
         $scope.statistics.currentStatistics = null;
+        $scope.statistics.currentNewPlanValues = null;
+        $scope.statistics.currentNewPlanLabels = null;
         $scope.statistics.startDate = null;
         $scope.statistics.endDate = null;
         $scope.statistics.startDateDisplay = null;
@@ -30,10 +32,12 @@
             if (result != null)
             {
                 $scope.statistics.currentStatistics = [];
+                $scope.statistics.currentNewPlanValues = [];
+                $scope.statistics.currentNewPlanLabels = [];
                 if (result.hasOwnProperty('totalAssignments') && result.totalAssignments > 0)
                 {
                     $scope.statistics.errorMessageVisible = false;
-                    $scope.statistics.createChart();
+
                     if (result.hasOwnProperty('completedAssignments') && result.completedAssignments > 0)
                     {
                         $scope.statistics.currentStatistics.push(
@@ -52,14 +56,31 @@
                             {"label":$filter('translate')('STATISTICS_PENDING'), "value": result.pendingAssignments, "color" : "#FFEBCD"}
                         )
                     }
+                    $scope.statistics.createPieChart();
 
-                    $scope.statistics.createChart();
+                    if (result.hasOwnProperty('newPhonePlans'))
+                    {
+                        $scope.statistics.currentNewPlanLabels.push($filter('translate')('STATISTICS_NEW_PHONE_PLANS'));
+                        $scope.statistics.currentNewPlanValues.push(result.newPhonePlans);
+                    }
+                    if (result.hasOwnProperty('newInternetPlans'))
+                    {
+                        $scope.statistics.currentNewPlanLabels.push($filter('translate')('STATISTICS_NEW_INTERNET_PLANS'));
+                        $scope.statistics.currentNewPlanValues.push(result.newInternetPlans);
+                    }
+                    if (result.hasOwnProperty('newTVPlans'))
+                    {
+                        $scope.statistics.currentNewPlanLabels.push($filter('translate')('STATISTICS_NEW_TV_PLANS'));
+                        $scope.statistics.currentNewPlanValues.push(result.newTVPlans);
+                    }
+                    //$scope.statistics.createBarChart();
                 }
                 else if (result.hasOwnProperty('code') && result.code != -1)
                 {
                     $scope.statistics.errorMessageVisible = true;
                     $scope.statistics.errorMessage = $filter('translate')(result.code.toString());
-                    $('#chartContainer').empty();
+                    $('#pieChartContainer').empty();
+                    $('#barChartContainer').empty();
                 }
             }
         }
@@ -94,15 +115,73 @@
             });
         };
 
-        $scope.statistics.createChart = function()
+        $scope.statistics.createBarChart = function()
+        {
+            var width = 400,
+                chart,
+                bar_height = 100,
+                left_width = 100,
+                height = bar_height * $scope.statistics.currentNewPlanLabels.length;
+
+            var x, y;
+
+            $('#barChartContainer').empty();
+
+            chart = d3.select("#barChartContainer")
+                .append('svg')
+                .attr('class', 'chart')
+                .attr("style", "display: block; margin: 0 auto;" )
+                .attr('width', left_width + width)
+                .attr('height', height);
+
+            x = d3.scale.linear()
+                .domain([0, d3.max($scope.statistics.currentNewPlanValues)])
+                .range([0, width]);
+
+            y = d3.scale.ordinal()
+                .domain(d3.extent($scope.statistics.currentNewPlanValues))
+                .rangeBands([0, height]);
+
+            chart.selectAll("rect")
+                .data($scope.statistics.currentNewPlanValues)
+                .enter().append("rect")
+                .attr("x", left_width)
+                .attr("y", y)
+                .attr("width", x)
+                .attr("height", y.rangeBand());
+
+            chart.selectAll("text.score")
+                .data($scope.statistics.currentNewPlanValues)
+                .enter().append("text")
+                .attr("x", function(d) { return x(d) + left_width; })
+                .attr("y", function(d) { return y(d) + y.rangeBand()/2; } )
+                .attr("dx", -5)
+                .attr("dy", ".36em")
+                .attr("text-anchor", "end")
+                .attr('class', 'score')
+                .text(String);
+
+            chart.selectAll("text.name")
+                .data($scope.statistics.currentNewPlanLabels)
+                .enter().append("text")
+                .attr("x", left_width / 2)
+                .attr("y", function(d) { return y(d) + y.rangeBand()/2; } )
+                .attr("dy", ".36em")
+                .attr("text-anchor", "middle")
+                .attr('class', 'name')
+                .text(String);
+
+        };
+
+        $scope.statistics.createPieChart = function()
         {
             var w = 500,                        //width
                 h = 500,                            //height
                 r = 250;                            //radius
 
-            $('#chartContainer').empty();
+            $('#pieChartContainer').empty();
 
-            var vis = d3.select("#chartContainer")
+            var vis = d3.select("#pieChartContainer")
                 .append("svg:svg")              //create the SVG element inside the <body>
                 .data([$scope.statistics.currentStatistics])                   //associate our data with the document
                 .attr("style", "display: block; margin: 0 auto;" )

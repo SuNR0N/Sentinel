@@ -44,6 +44,17 @@
                 .error(error);
         };
 
+        this.clearDatabase = function(user, success, error)
+        {
+            success = success || defaultSuccessHandler;
+            error = error || defaultErrorHandler;
+            var encoded = $base64.encode(user.getUserName() + ':' + user.getPassword());
+            $http.defaults.headers.common.Authorization = 'Basic ' + encoded;
+            $http.get(config.rootURL + '/update/clearDatabase')
+                .success(success)
+                .error(error);
+        };
+
         this.saveUser = function(user, success, error) {
             success = success || defaultSuccessHandler;
             error = error || defaultErrorHandler;

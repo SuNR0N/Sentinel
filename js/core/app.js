@@ -31,7 +31,7 @@
     angular.module('sentinel', ['ngRoute', 'pascalprecht.translate', 'sentinel.services', 'sentinel.directives', 'sentinel.filters'])
         .config(['$locationProvider', '$routeProvider', awaxa.sentinel.configs.ApplicationConfig])
         .config(['$translateProvider', awaxa.sentinel.configs.LanguageConfig])
-        .controller('SentinelController', ['$scope', '$location', 'queryService', awaxa.sentinel.controllers.SentinelController])
+        .controller('SentinelController', ['$scope', '$location', 'queryService', 'updateService', awaxa.sentinel.controllers.SentinelController])
         .controller('LoginController', ['$scope', '$location', '$filter', 'entitlementService', awaxa.sentinel.controllers.LoginController])
         .controller('PasswordController', ['$scope', '$filter', 'entitlementService', awaxa.sentinel.controllers.PasswordController])
         .controller('RegisterController', ['$scope', '$location', '$filter', 'entitlementService', awaxa.sentinel.controllers.RegisterController])

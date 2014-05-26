@@ -133,11 +133,12 @@
                                               ng-disabled="!(currentUser.isAdmin() || currentUser.isAssistant())">
                                    </div>
                                </div>
-                               <div class="form-group">
+                               <div class="form-group" ng-class="tasks.isValidMobileRequired() ? 'has-error' : ''">
                                    <label for="mobile" class="col-sm-4 control-label">{{ 'CLIENT_POPUP_MOBILE' | translate }}</label>
                                    <div class="col-sm-8">
-                                       <input type="text" class="form-control" id="mobile"
+                                       <input type="text" class="form-control" id="mobile" name="mobile"
                                               ng-model="tasks.selectedClient.mobile"
+                                              ng-required="tasks.isValidMobileRequired()"
                                               ng-disabled="!(currentUser.isAdmin() || currentUser.isAssistant())">
                                    </div>
                                </div>
@@ -342,6 +343,7 @@
                         <button type="button" class="btn btn-primary"
                                 ng-disabled="tasks.isSavingClient ||
                                                 basicForm.$error.required ||
+                                                tasks.isValidMobileRequired() ||
                                                 tasks.isSelectedPlanRequired('#serviceInternetNameSelector') ||
                                                 tasks.isSelectedPlanRequired('#servicePhoneNameSelector') ||
                                                 tasks.isSelectedPlanRequired('#serviceTVNameSelector')"
