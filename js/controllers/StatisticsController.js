@@ -9,8 +9,7 @@
     {
         $scope.statistics = {};
         $scope.statistics.currentStatistics = null;
-        $scope.statistics.currentNewPlanValues = null;
-        $scope.statistics.currentNewPlanLabels = null;
+        $scope.statistics.currentPlanStatistics = null;
         $scope.statistics.startDate = null;
         $scope.statistics.endDate = null;
         $scope.statistics.startDateDisplay = null;
@@ -32,8 +31,7 @@
             if (result != null)
             {
                 $scope.statistics.currentStatistics = [];
-                $scope.statistics.currentNewPlanValues = [];
-                $scope.statistics.currentNewPlanLabels = [];
+                $scope.statistics.currentPlanStatistics = [];
                 if (result.hasOwnProperty('totalAssignments') && result.totalAssignments > 0)
                 {
                     $scope.statistics.errorMessageVisible = false;
@@ -60,20 +58,23 @@
 
                     if (result.hasOwnProperty('newPhonePlans'))
                     {
-                        $scope.statistics.currentNewPlanLabels.push($filter('translate')('STATISTICS_NEW_PHONE_PLANS'));
-                        $scope.statistics.currentNewPlanValues.push(result.newPhonePlans);
+                        $scope.statistics.currentPlanStatistics.push(
+                            {"label": $filter('translate')('STATISTICS_NEW_PHONE_PLANS'), "value": result.newPhonePlans, "color": "#C0C0C0"}
+                        );
                     }
                     if (result.hasOwnProperty('newInternetPlans'))
                     {
-                        $scope.statistics.currentNewPlanLabels.push($filter('translate')('STATISTICS_NEW_INTERNET_PLANS'));
-                        $scope.statistics.currentNewPlanValues.push(result.newInternetPlans);
+                        $scope.statistics.currentPlanStatistics.push(
+                            {"label": $filter('translate')('STATISTICS_NEW_INTERNET_PLANS'), "value": result.newInternetPlans, "color": "#A9A9A9"}
+                        );
                     }
                     if (result.hasOwnProperty('newTVPlans'))
                     {
-                        $scope.statistics.currentNewPlanLabels.push($filter('translate')('STATISTICS_NEW_TV_PLANS'));
-                        $scope.statistics.currentNewPlanValues.push(result.newTVPlans);
+                        $scope.statistics.currentPlanStatistics.push(
+                            {"label": $filter('translate')('STATISTICS_NEW_TV_PLANS'), "value": result.newTVPlans, "color": "#808080"}
+                        );
                     }
-                    //$scope.statistics.createBarChart();
+                    $scope.statistics.createBarChart();
                 }
                 else if (result.hasOwnProperty('code') && result.code != -1)
                 {
@@ -117,60 +118,66 @@
 
         $scope.statistics.createBarChart = function()
         {
-            var width = 400,
-                chart,
-                bar_height = 100,
-                left_width = 100,
-                height = bar_height * $scope.statistics.currentNewPlanLabels.length;
+            var w = 500;
+            var h = 500;
 
-            var x, y;
+            var xScale = d3.scale.ordinal()
+                .domain(d3.range($scope.statistics.currentPlanStatistics.length))
+                .rangeRoundBands([0, w], 0.1);
+
+            var yScale = d3.scale.linear()
+                .domain([0, d3.max($scope.statistics.currentPlanStatistics, function(d) {return d.value;})])
+                .range([0, h]);
+
+            var label = function(d) {
+                return d.label;
+            };
 
             $('#barChartContainer').empty();
 
-            chart = d3.select("#barChartContainer")
-                .append('svg')
-                .attr('class', 'chart')
-                .attr("style", "display: block; margin: 0 auto;" )
-                .attr('width', left_width + width)
-                .attr('height', height);
+            //Create SVG element
+            var svg = d3.select("#barChartContainer")
+                .append("svg")
+                .attr("width", w)
+                .attr("height", h);
 
-            x = d3.scale.linear()
-                .domain([0, d3.max($scope.statistics.currentNewPlanValues)])
-                .range([0, width]);
+            //Create bars
+            svg.selectAll("rect")
+                .data($scope.statistics.currentPlanStatistics, label)
+                .enter()
+                .append("rect")
+                .attr("x", function(d, i) {
+                    return xScale(i);
+                })
+                .attr("y", function(d) {
+                    return h - yScale(d.value);
+                })
+                .attr("width", xScale.rangeBand())
+                .attr("height", function(d) {
+                    return yScale(d.value);
+                })
+                .attr("fill", function(d) {
+                    return d.color;
+                });
 
-            y = d3.scale.ordinal()
-                .domain(d3.extent($scope.statistics.currentNewPlanValues))
-                .rangeBands([0, height]);
-
-            chart.selectAll("rect")
-                .data($scope.statistics.currentNewPlanValues)
-                .enter().append("rect")
-                .attr("x", left_width)
-                .attr("y", y)
-                .attr("width", x)
-                .attr("height", y.rangeBand());
-
-            chart.selectAll("text.score")
-                .data($scope.statistics.currentNewPlanValues)
-                .enter().append("text")
-                .attr("x", function(d) { return x(d) + left_width; })
-                .attr("y", function(d) { return y(d) + y.rangeBand()/2; } )
-                .attr("dx", -5)
-                .attr("dy", ".36em")
-                .attr("text-anchor", "end")
-                .attr('class', 'score')
-                .text(String);
-
-            chart.selectAll("text.name")
-                .data($scope.statistics.currentNewPlanLabels)
-                .enter().append("text")
-                .attr("x", left_width / 2)
-                .attr("y", function(d) { return y(d) + y.rangeBand()/2; } )
-                .attr("dy", ".36em")
+            //Create labels
+            svg.selectAll("text")
+                .data($scope.statistics.currentPlanStatistics, label)
+                .enter()
+                .append("text")
+                .text(function(d) {
+                    return d.label + " (" + d.value + ")";
+                })
                 .attr("text-anchor", "middle")
-                .attr('class', 'name')
-                .text(String);
-
+                .attr("x", function(d, i) {
+                    return xScale(i) + xScale.rangeBand() / 2;
+                })
+                .attr("y", function(d) {
+                    return h - yScale(d.value) + 14;
+                })
+                .attr("font-family", "sans-serif")
+                .attr("font-size", "11px")
+                .attr("fill", "white");
         };
 
         $scope.statistics.createPieChart = function()

@@ -223,7 +223,7 @@
 
         $scope.tasks.changeAppointmentDate = function(e)
         {
-            $scope.tasks.selectedClient.appointment = (e.date != null ? e.date.format("isoDateTime") : null);
+            $scope.tasks.selectedClient.appointment = (e.date != null ? dateFormat(e.date.getTime() + e.date.getTimezoneOffset()*60000, "isoDateTime") : null);
         };
 
         function resend_onResult(result)
