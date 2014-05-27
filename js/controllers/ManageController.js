@@ -90,7 +90,7 @@
         {
             $(document).ready(function() {
                 $('.multiselect').multiselect({
-                    buttonWidth: '410px'
+                    buttonWidth: '485px'
                 });
                 });
         };

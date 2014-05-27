@@ -16,10 +16,12 @@
                     <form name="loginForm" accept-charset="UTF-8" role="form">
                         <fieldset>
                             <div class="form-group" ng-class="loginForm.username.$error.required ? 'has-error' : ''">
-                                <input class="form-control input-lg" ng-model="login.user.userName" placeholder="{{ 'PLACEHOLDER_USERNAME' | translate}}" name="username" type="text" required="">
+                                <input class="form-control input-lg" ng-model="login.user.userName" placeholder="{{ 'PLACEHOLDER_USERNAME' | translate}}" name="username" type="text" required=""
+                                       ng-keyup="$event.keyCode == 13 && !loginForm.$invalid ? login.logIn() : null">
                             </div>
                             <div class="form-group" ng-class="loginForm.password.$error.required ? 'has-error' : ''">
-                                <input class="form-control input-lg" ng-model="login.user.password" placeholder="{{ 'PLACEHOLDER_PASSWORD' | translate}}" name="password" type="password" value="" required="">
+                                <input class="form-control input-lg" ng-model="login.user.password" placeholder="{{ 'PLACEHOLDER_PASSWORD' | translate}}" name="password" type="password" value="" required=""
+                                       ng-keyup="$event.keyCode == 13 && !loginForm.$invalid ? login.logIn() : null">
                             </div>
                             <div ng-show="login.isInvalidUser" class="alert alert-danger">
                                 <strong>{{login.errorMessage}}</strong>

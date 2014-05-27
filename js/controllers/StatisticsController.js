@@ -39,19 +39,19 @@
                     if (result.hasOwnProperty('completedAssignments') && result.completedAssignments > 0)
                     {
                         $scope.statistics.currentStatistics.push(
-                            {"label":$filter('translate')('STATISTICS_COMPLETED'), "value": result.completedAssignments, "color" : "#00FF7F"}
+                            {"label":$filter('translate')('STATISTICS_COMPLETED'), "value": result.completedAssignments}
                         )
                     }
                     if (result.hasOwnProperty('failedAssignments') && result.failedAssignments > 0)
                     {
                         $scope.statistics.currentStatistics.push(
-                            {"label":$filter('translate')('STATISTICS_FAILED'), "value": result.failedAssignments, "color" : "#DC143C"}
+                            {"label":$filter('translate')('STATISTICS_FAILED'), "value": result.failedAssignments}
                         )
                     }
                     if (result.hasOwnProperty('pendingAssignments') && result.pendingAssignments > 0)
                     {
                         $scope.statistics.currentStatistics.push(
-                            {"label":$filter('translate')('STATISTICS_PENDING'), "value": result.pendingAssignments, "color" : "#FFEBCD"}
+                            {"label":$filter('translate')('STATISTICS_PENDING'), "value": result.pendingAssignments}
                         )
                     }
                     $scope.statistics.createPieChart();
@@ -59,19 +59,19 @@
                     if (result.hasOwnProperty('newPhonePlans'))
                     {
                         $scope.statistics.currentPlanStatistics.push(
-                            {"label": $filter('translate')('STATISTICS_NEW_PHONE_PLANS'), "value": result.newPhonePlans, "color": "#C0C0C0"}
+                            {"label": $filter('translate')('STATISTICS_NEW_PHONE_PLANS'), "value": result.newPhonePlans}
                         );
                     }
                     if (result.hasOwnProperty('newInternetPlans'))
                     {
                         $scope.statistics.currentPlanStatistics.push(
-                            {"label": $filter('translate')('STATISTICS_NEW_INTERNET_PLANS'), "value": result.newInternetPlans, "color": "#A9A9A9"}
+                            {"label": $filter('translate')('STATISTICS_NEW_INTERNET_PLANS'), "value": result.newInternetPlans}
                         );
                     }
                     if (result.hasOwnProperty('newTVPlans'))
                     {
                         $scope.statistics.currentPlanStatistics.push(
-                            {"label": $filter('translate')('STATISTICS_NEW_TV_PLANS'), "value": result.newTVPlans, "color": "#808080"}
+                            {"label": $filter('translate')('STATISTICS_NEW_TV_PLANS'), "value": result.newTVPlans}
                         );
                     }
                     $scope.statistics.createBarChart();
@@ -118,8 +118,9 @@
 
         $scope.statistics.createBarChart = function()
         {
-            var w = 500;
-            var h = 500;
+            var w = 500,
+                h = 500,
+                color = d3.scale.category20();
 
             var xScale = d3.scale.ordinal()
                 .domain(d3.range($scope.statistics.currentPlanStatistics.length))
@@ -146,59 +147,44 @@
                 .data($scope.statistics.currentPlanStatistics, label)
                 .enter()
                 .append("rect")
-                .attr("x", function(d, i) {
-                    return xScale(i);
-                })
-                .attr("y", function(d) {
-                    return h - yScale(d.value);
-                })
+                .attr("x", function(d, i) { return xScale(i); })
+                .attr("y", function(d) { return h - yScale(d.value); })
                 .attr("width", xScale.rangeBand())
-                .attr("height", function(d) {
-                    return yScale(d.value);
-                })
-                .attr("fill", function(d) {
-                    return d.color;
-                });
+                .attr("height", function(d) { return yScale(d.value); })
+                .attr("fill", function(d,i) { return color(i); });
 
             //Create labels
             svg.selectAll("text")
                 .data($scope.statistics.currentPlanStatistics, label)
                 .enter()
                 .append("text")
-                .text(function(d) {
-                    return d.label + " (" + d.value + ")";
-                })
+                .text(function(d) { return d.label + " (" + d.value + ")"; })
                 .attr("text-anchor", "middle")
-                .attr("x", function(d, i) {
-                    return xScale(i) + xScale.rangeBand() / 2;
-                })
-                .attr("y", function(d) {
-                    return h - yScale(d.value) + 14;
-                })
-                .attr("font-family", "sans-serif")
-                .attr("font-size", "11px")
-                .attr("fill", "white");
+                .attr("x", function(d, i) { return xScale(i) + xScale.rangeBand() / 2; })
+                .attr("y", function(d) { return h - yScale(d.value) + 14; })
+                .style("font", "bold 12px Arial")
+                .attr("fill", "#000000");
         };
 
         $scope.statistics.createPieChart = function()
         {
-            var w = 500,                        //width
-                h = 500,                            //height
-                r = 250;                            //radius
+            var w = 540,                        //width
+                h = 540,                        //height
+                outerRadius = 180,              //radius
+                color = d3.scale.category20();
 
             $('#pieChartContainer').empty();
 
             var vis = d3.select("#pieChartContainer")
                 .append("svg:svg")              //create the SVG element inside the <body>
                 .data([$scope.statistics.currentStatistics])                   //associate our data with the document
-                .attr("style", "display: block; margin: 0 auto;" )
                 .attr("width", w)           //set the width and height of our visualization (these will be attributes of the <svg> tag
                 .attr("height", h)
                 .append("svg:g")                //make a group to hold our pie chart
-                .attr("transform", "translate(" + r + "," + r + ")")    //move the center of the pie chart from 0, 0 to radius, radius
+                .attr("transform", "translate(" + 1.5*outerRadius + "," + 1.5*outerRadius + ")");    //move the center of the pie chart from 0, 0 to radius, radius
 
             var arc = d3.svg.arc()              //this will create <path> elements for us using arc data
-                .outerRadius(r);
+                .outerRadius(outerRadius);
 
             var pie = d3.layout.pie()           //this will create arc data for us given a list of values
                 .value(function(d) { return d.value; });    //we must tell it out to access the value of each element in our data array
@@ -210,19 +196,34 @@
                 .attr("class", "slice");    //allow us to style things in the slices (like text)
 
             arcs.append("svg:path")
-                .attr("fill", function(d, i) { return $scope.statistics.currentStatistics[i].color; } ) //set the color for each slice to be chosen from the color function defined above
+                .attr("fill", function(d, i) { return color(i); } ) //set the color for each slice to be chosen from the color function defined above
                 .attr("d", arc);                                    //this creates the actual SVG path using the associated data (pie) with the arc drawing function
 
             arcs.append("svg:text")                                     //add a label to each slice
                 .attr("transform", function(d) {                    //set the label's origin to the center of the arc
                     //we have to make sure to set these before calling arc.centroid
-                    d.innerRadius = 0;
-                    d.outerRadius = r;
+                    d.outerRadius = outerRadius + 100; // Set Outer Coordinate
+                    d.innerRadius = outerRadius + 100; // Set Inner Coordinate
                     return "translate(" + arc.centroid(d) + ")";        //this gives us a pair of coordinates like [50, 50]
                 })
                 .attr("text-anchor", "middle")                          //center the text on it's origin
-                .text(function(d, i) { return ($scope.statistics.currentStatistics[i].label + " (" + $scope.statistics.currentStatistics[i].value + ")");  });        //get the label from our original data array
+                .style("fill", "#00000")
+                .style("font", "bold 12px Arial")
+                .text(function(d, i) { return ($scope.statistics.currentStatistics[i].label);  });        //get the label from our original data array
 
+            arcs.filter(function(d) { return d.endAngle - d.startAngle > .2; }).append("svg:text")
+                .attr("dy", ".35em")
+                .attr("text-anchor", "middle")
+                //.attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")rotate(" + angle(d) + ")"; })
+                .attr("transform", function(d) { //set the label's origin to the center of the arc
+                    //we have to make sure to set these before calling arc.centroid
+                    d.outerRadius = outerRadius; // Set Outer Coordinate
+                    d.innerRadius = outerRadius/2; // Set Inner Coordinate
+                    return "translate(" + arc.centroid(d) + ")";
+                })
+                .style("fill", "#000000")
+                .style("font", "bold 18px Arial")
+                .text(function(d) { return d.data.value; });
         };
 
         $scope.statistics.init();

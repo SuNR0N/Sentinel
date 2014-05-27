@@ -30,7 +30,7 @@
                  ng-class="{'alert-danger' : upload.result == false, 'alert-success' : upload.result == true}"
                  ng-show="upload.result != null"
                     >
-                <strong>{{upload.result == false ? 'Error' : (upload.result == true ? 'Success' : '')}}</strong>
+                <strong>{{upload.result == false ? ('MSG_ERROR' | translate) : (upload.result == true ? ('MSG_SUCCESS' | translate) : '')}}</strong>
                 <span>{{upload.message}}</span>
             </div>
         </div>

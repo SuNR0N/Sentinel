@@ -147,6 +147,7 @@
             MSG_CLIENT_CODE_LENGTH: "Client code must be 9 digits.",
             MSG_WARNING: "Warning!",
             MSG_ERROR: "Error!",
+            MSG_SUCCESS: "Success!",
             MSG_LOGIN_FAILED: "Login failed",
             MSG_PASSWORD_CHANGE_FAILED: "Password change failed",
             MSG_REGISTRATION_FAILED: "Registration failed",
@@ -159,7 +160,10 @@
             501: 'No columns defined in the provided csv',
             502: 'Unsupported file format',
             503: 'Count of marked for send contracts does not reach the minimum count',
+            504: 'Column count mismatch',
+            505: 'Undefined column in CSV',
             601: 'An internal error occured during the request',
+            602: 'The trial version has expired',
             701: 'Invalid Username or Password',
             702: 'The password has changed successfully',
             703: 'The password change has failed',
@@ -169,7 +173,7 @@
             901: 'No new clients added',
             902: 'Failed to add new clients',
             903: 'New clients have been successfully added',
-            1101: 'Email sending was not initiated as the last assignment status is not "SENT"'
+            1001: 'Email sending was not initiated as the last assignment status is not "SENT"'
         });
         $translateProvider.translations('hu', {
             BRAND_NAME: 'Awaxa',
@@ -311,6 +315,7 @@
             MSG_CLIENT_CODE_LENGTH: "Az ügyfélkód 9 számjegyből állhat.",
             MSG_WARNING: "Figyelem!",
             MSG_ERROR: "Hiba!",
+            MSG_SUCCESS: "Sikeres!",
             MSG_LOGIN_FAILED: "Sikertelen bejelentkezés",
             MSG_PASSWORD_CHANGE_FAILED: "A jelszóváltoztatás nem járt sikerrel",
             MSG_REGISTRATION_FAILED: "A regisztració nem sikerült",
@@ -323,7 +328,10 @@
             501: 'A megadott csv fájl nem tartalmaz oszlopokat',
             502: 'Nem támogatott fájl formátum',
             503: 'A küldendő fájlok száma nem éri el a szükséges minimumot',
+            504: 'A CSV fájlban definiált oszlopok száma nem megfelelő',
+            505: 'Ismeretlen oszlop a CSV fájlban',
             601: 'Ismeretlen hiba történt a futás során',
+            602: 'Lejárt a próbaverzió :(',
             701: 'Hibás Felhasználónév vagy Jelszó',
             702: 'A jelszó sikeresen megváltozott',
             703: 'A jelszóváltoztatás nem sikerült',
@@ -333,7 +341,7 @@
             901: 'Nem kerültek új ügyfelek hozzáadásra',
             902: 'Nem sikerült az új ügyfelek hozzáadása az adatbázishoz',
             903: 'Új ügyfelek sikeresen hozzáadásra kerültek az adatbázishoz',
-            1101: 'Az email küldés meghiúsult, mivel az aktuális feladat legutolsó érvenyes státusza nem "Elküldött"'
+            1001: 'Az email küldés meghiúsult, mivel az aktuális feladat legutolsó érvenyes státusza nem "Elküldött"'
         });
         $translateProvider.preferredLanguage('hu');
     };

@@ -70,7 +70,14 @@
         {
             if (angular.isArray(client.assignments) && client.assignments.length > 0)
             {
-                return client.assignments[0].status;
+                if (client.assignments[0].status == awaxa.sentinel.models.AssignmentStatus.WRONG_ADDRESS.value)
+                {
+                    return -1;
+                }
+                else
+                {
+                    return client.assignments[0].status;
+                }
             }
             else
             {
@@ -346,6 +353,10 @@
             if (result && angular.isArray(result))
             {
                 $scope.tasks.availableAssignees = result;
+                if ($scope.tasks.availableAssignees.length > 0 && $scope.tasks.availableAssignees[0].hasOwnProperty('userName'))
+                {
+                    $scope.tasks.selectedAssignee = $scope.tasks.availableAssignees[0].userName;
+                }
             }
             else
             {
