@@ -337,7 +337,7 @@
                             <span>{{ 'BUTTON_GENERATE_CONTRACT' | translate }}</span>
                         </button></a>
                         <button type="button" class="btn btn-primary"
-                                ng-show="currentUser.isAdmin()"
+                                ng-show="currentUser.isAdmin() || currentUser.isAgent()"
                                 ng-disabled="tasks.isSendingMail"
                                 ng-click="tasks.resend()">{{ 'BUTTON_RESEND' | translate }}</button>
                         <button type="button" class="btn btn-primary"

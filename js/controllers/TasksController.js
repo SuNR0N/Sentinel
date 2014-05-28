@@ -72,7 +72,7 @@
             {
                 if (client.assignments[0].status == awaxa.sentinel.models.AssignmentStatus.WRONG_ADDRESS.value)
                 {
-                    return -1;
+                    return -2;
                 }
                 else
                 {
@@ -95,7 +95,7 @@
 
         $scope.tasks.resend = function()
         {
-            if ($scope.currentUser.getIsLogged() && $scope.currentUser.isAdmin())
+            if ($scope.currentUser.getIsLogged() && ($scope.currentUser.isAdmin() || $scope.currentUser.isAgent()))
             {
                 $scope.tasks.isSendingMail = true;
                 $scope.tasks.resendErrorMessage = null;
@@ -336,6 +336,10 @@
             if (result && angular.isArray(result))
             {
                 $scope.tasks.availableUsers = result;
+                if ($scope.tasks.availableUsers.length > 0 && $scope.tasks.availableUsers[0].hasOwnProperty('userName'))
+                {
+                    $scope.tasks.selectedUser = $scope.tasks.availableUsers[0].userName;
+                }
             }
             else
             {

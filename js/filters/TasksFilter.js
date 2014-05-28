@@ -24,7 +24,7 @@
                     if (mode == 'processing' &&
                         ((userRole == awaxa.sentinel.models.Role.ADMIN.value && lastAssignment == null) ||
                         (userRole == awaxa.sentinel.models.Role.AGENT.value && lastAssignment != null && lastAssignment.status == awaxa.sentinel.models.AssignmentStatus.ARRANGED.value) ||
-                        (userRole == awaxa.sentinel.models.Role.ASSISTANT.value && (lastAssignment == null || lastAssignment.status == awaxa.sentinel.models.AssignmentStatus.NEW.value || lastAssignment.status == awaxa.sentinel.models.AssignmentStatus.RECALL.value))))
+                        (userRole == awaxa.sentinel.models.Role.ASSISTANT.value && (lastAssignment == null || (lastAssignment.assignee == userId && (lastAssignment.status == awaxa.sentinel.models.AssignmentStatus.NEW.value || lastAssignment.status == awaxa.sentinel.models.AssignmentStatus.RECALL.value))))))
                     {
                         ret.push(input[index]);
                         continue;
