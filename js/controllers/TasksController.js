@@ -14,7 +14,7 @@
         $scope.tasks.internetPlans = [];
         $scope.tasks.tvPlans = [];
         $scope.tasks.phonePlans = [];
-        $scope.tasks.currentFilter = 'all';
+        $scope.tasks.currentFilter = 'processing';
         $scope.tasks.searchText = '';
         $scope.tasks.availableUsers = [];
         $scope.tasks.availableAssignees = [];
@@ -66,11 +66,33 @@
             }
         };
 
+        $scope.tasks.orderByClosestAppointmentDate = function(client)
+        {
+
+            if (angular.isArray(client.assignments) && client.assignments.length > 0)
+            {
+                if (client.assignments[0].appointment == null)
+                {
+                    return -1;
+                }
+                else
+                {
+                    var a = client.assignments[0].appointment;
+                    return new Date(a).getTime();
+                }
+            }
+            else
+            {
+                return -1;
+            }
+        };
+
         $scope.tasks.orderByStatusFilter = function(client)
         {
             if (angular.isArray(client.assignments) && client.assignments.length > 0)
             {
-                if (client.assignments[0].status == awaxa.sentinel.models.AssignmentStatus.WRONG_ADDRESS.value)
+                if (client.assignments[0].status == awaxa.sentinel.models.AssignmentStatus.WRONG_ADDRESS.value ||
+                    client.assignments[0].status == awaxa.sentinel.models.AssignmentStatus.REJECTED.value)
                 {
                     return -2;
                 }
@@ -186,6 +208,7 @@
                 $scope.tasks.saveClientErrorMessage = null;
                 $scope.tasks.resendErrorMessage = null;
                 $('#clientDetailsModal').modal('show');
+                $('[href=#basic]').tab('show');
             }
         };
 
@@ -377,7 +400,7 @@
         {
             if (result)
             {
-                $scope.currentUser.isAssistant() ? $scope.tasks.applyTasksFilter('processing') : $scope.tasks.applyTasksFilter('all');
+                $scope.tasks.applyTasksFilter('processing');
                 $scope.tasks.clients = result;
             }
         }

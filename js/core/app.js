@@ -10,6 +10,7 @@
         .filter('modeFilter', ['$filter', awaxa.sentinel.filters.ModeFilter])
         .filter('statusFilter', ['$filter', awaxa.sentinel.filters.StatusFilter])
         .filter('assignmentStatusFilter', ['$filter', awaxa.sentinel.filters.AssignmentStatusFilter])
+        .filter('appointmentFilter', awaxa.sentinel.filters.AppointmentFilter)
         .filter('selectableAssignmentStatusFilter', awaxa.sentinel.filters.SelectableAssignmentStatusFilter)
         .filter('tasksFilter', awaxa.sentinel.filters.TasksFilter)
         .filter('selectableRoleFilter', awaxa.sentinel.filters.SelectableRoleFilter)

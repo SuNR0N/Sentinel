@@ -29,7 +29,10 @@
                         ret.push(input[index]);
                         continue;
                     }
-                    if (lastAssignment != null && lastAssignment.assignee == userId && mode == 'user')
+                    if (mode == 'user' && lastAssignment != null && lastAssignment.assignee == userId &&
+                        lastAssignment.status != awaxa.sentinel.models.AssignmentStatus.PROCESSED.value &&
+                        lastAssignment.status != awaxa.sentinel.models.AssignmentStatus.WRONG_ADDRESS.value &&
+                        lastAssignment.status != awaxa.sentinel.models.AssignmentStatus.REJECTED.value)
                     {
                         ret.push(input[index]);
                     }
