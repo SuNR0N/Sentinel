@@ -211,7 +211,8 @@
                                        </div>
                                    </div>
                                    <div class="col-md-2">
-                                       <input type="button" class="btn btn-default btn-primary" value="{{ 'BUTTON_UPLOAD' | translate }}" ng-click="tasks.uploadContract()">
+                                       <input type="button" class="btn btn-default btn-primary" value="{{ 'BUTTON_UPLOAD' | translate }}" ng-click="tasks.uploadContract()"
+                                               ng-disabled="tasks.contractFile == null">
                                    </div>
                                </div>
                            </div>

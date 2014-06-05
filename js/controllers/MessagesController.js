@@ -18,6 +18,19 @@
             queryService.getMails($scope.currentUser, getMails_onResult, getMails_onError);
         };
 
+        $scope.messages.orderBySentDate = function(mail)
+        {
+            if (mail.hasOwnProperty('sentDate'))
+            {
+                var d = mail.sentDate;
+                return new Date(d).getTime();
+            }
+            else
+            {
+                return -1;
+            }
+        };
+
         function getMails_onResult(result)
         {
             if (angular.isArray(result))

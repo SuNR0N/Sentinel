@@ -302,6 +302,8 @@
         {
             if (result.hasOwnProperty('success') && result.success == true && result.hasOwnProperty('contract'))
             {
+                $('#fileInput').val('');
+                $scope.tasks.contractFile = null;
                 if (angular.isArray($scope.tasks.selectedClient.contracts))
                 {
                     $scope.tasks.selectedClient.contracts.push(result.contract);

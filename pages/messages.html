@@ -14,7 +14,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="mail in messages.mails" ng-class="mail.success ? 'success' : 'danger'">
+            <tr ng-repeat="mail in messages.mails | orderBy:messages.orderBySentDate:true" ng-class="mail.success ? 'success' : 'danger'">
                 <td>{{mail.content}}</td>
                 <td>{{mail.success ? ('MESSAGES_STATUS_COMPLETED' | translate) : ('MESSAGES_STATUS_FAILED' | translate) }}</td>
                 <td>{{mail.sentDate}}</td>
