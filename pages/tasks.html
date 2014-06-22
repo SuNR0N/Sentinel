@@ -56,7 +56,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-class="tasks.getRowClass(client.assignments)" ng-repeat="client in tasks.clients | tasksFilter:this.tasks.selectedUser:this.currentUser.getRole():tasks.currentFilter | filter:tasks.searchText | orderBy:tasks.orderByClosestAppointmentDate | orderBy:tasks.orderByStatusFilter:true" ng-click="tasks.onRowClick($event, client)">
+            <tr ng-class="tasks.getRowClass(client.assignments)" ng-repeat="client in tasks.clients | tasksFilter:this.tasks.selectedUser:this.currentUser.getRole():tasks.currentFilter | filter:tasks.searchText | orderBy:[tasks.orderByStatusFilter,tasks.orderByClosestAppointmentDate]" ng-click="tasks.onRowClick($event, client)">
                 <td ng-show="currentUser.isAdmin()">
                     <input type="checkbox" ng-model="client.selected">
                 </td>
@@ -146,6 +146,24 @@
                                    <label class="col-sm-4 control-label">{{ 'CLIENT_POPUP_LOYALTY_EXPIRATION' | translate }}</label>
                                    <div class="col-sm-8">
                                        <p class="form-control-static">{{tasks.selectedClient.loyaltyExpiration}}</p>
+                                   </div>
+                               </div>
+                               <div class="form-group">
+                                   <label class="col-sm-4 control-label">{{ 'CLIENT_POPUP_SERVICE_TV' | translate }}</label>
+                                   <div class="col-sm-8">
+                                       <p class="form-control-static">{{tasks.selectedClient.serviceTVName}}</p>
+                                   </div>
+                               </div>
+                               <div class="form-group">
+                                   <label class="col-sm-4 control-label">{{ 'CLIENT_POPUP_SERVICE_PHONE' | translate }}</label>
+                                   <div class="col-sm-8">
+                                       <p class="form-control-static">{{tasks.selectedClient.servicePhoneName}}</p>
+                                   </div>
+                               </div>
+                               <div class="form-group">
+                                   <label class="col-sm-4 control-label">{{ 'CLIENT_POPUP_SERVICE_INTERNET' | translate }}</label>
+                                   <div class="col-sm-8">
+                                       <p class="form-control-static">{{tasks.selectedClient.serviceInternetName}}</p>
                                    </div>
                                </div>
                                <div class="form-group">

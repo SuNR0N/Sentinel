@@ -11,6 +11,7 @@
         .filter('statusFilter', ['$filter', awaxa.sentinel.filters.StatusFilter])
         .filter('assignmentStatusFilter', ['$filter', awaxa.sentinel.filters.AssignmentStatusFilter])
         .filter('appointmentFilter', awaxa.sentinel.filters.AppointmentFilter)
+        .filter('dateFilter', awaxa.sentinel.filters.DateFilter)
         .filter('selectableAssignmentStatusFilter', awaxa.sentinel.filters.SelectableAssignmentStatusFilter)
         .filter('tasksFilter', awaxa.sentinel.filters.TasksFilter)
         .filter('selectableRoleFilter', awaxa.sentinel.filters.SelectableRoleFilter)

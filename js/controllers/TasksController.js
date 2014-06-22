@@ -89,22 +89,28 @@
 
         $scope.tasks.orderByStatusFilter = function(client)
         {
+            var ret = 0;
             if (angular.isArray(client.assignments) && client.assignments.length > 0)
             {
-                if (client.assignments[0].status == awaxa.sentinel.models.AssignmentStatus.WRONG_ADDRESS.value ||
-                    client.assignments[0].status == awaxa.sentinel.models.AssignmentStatus.REJECTED.value)
+                if (client.assignments[0].status == awaxa.sentinel.models.AssignmentStatus.WRONG_ADDRESS.value)
                 {
-                    return -2;
+                    ret = -2;
+                }
+                else if (client.assignments[0].status == awaxa.sentinel.models.AssignmentStatus.REJECTED.value)
+                {
+                    ret = -1;
                 }
                 else
                 {
-                    return client.assignments[0].status;
+                    ret = client.assignments[0].status;
                 }
             }
             else
             {
-                return -1;
+                ret = -10;
             }
+
+            return ret * -1;
         };
 
         $scope.tasks.getClients = function()
