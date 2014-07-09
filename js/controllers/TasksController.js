@@ -115,7 +115,7 @@
 
         $scope.tasks.getClients = function()
         {
-            if ($scope.currentUser.getIsLogged())
+            if ($scope.currentUser.getIsLogged() && ($scope.tasks.clients == null || $scope.tasks.clients.length == 0))
             {
                 queryService.getClients($scope.currentUser, getClients_onResult, getClients_onError);
             }
@@ -262,6 +262,18 @@
             $scope.tasks.selectedClient.appointment = (e.date != null ? dateFormat(e.date.getTime() + e.date.getTimezoneOffset()*60000, "isoDateTime") : null);
         };
 
+        $scope.tasks.refreshClient = function(client)
+        {
+            for (var i = 0, max = $scope.tasks.clients.length; i < max; i += 1)
+            {
+                if ($scope.tasks.clients[i].hasOwnProperty('mtId') && client.hasOwnProperty('mtId') && $scope.tasks.clients[i].mtId === client.mtId)
+                {
+                    $scope.tasks.clients[i] = client;
+                    break;
+                }
+            }
+        };
+
         function resend_onResult(result)
         {
             $scope.tasks.isSendingMail = false;
@@ -295,8 +307,10 @@
             if (result.hasOwnProperty('success') && result.success == true)
             {
                 $scope.tasks.hideClientDetails();
-                $scope.tasks.getClients();
-
+                if (result.hasOwnProperty('client'))
+                {
+                    $scope.tasks.refreshClient(result.client);
+                }
             }
             else if (result.hasOwnProperty('code') && result.code != -1)
             {

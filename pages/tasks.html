@@ -48,6 +48,7 @@
                 <th>{{ 'TASKS_SERVICE_TV' | translate }}</th>
                 <th>{{ 'TASKS_SERVICE_INTERNET' | translate }}</th>
                 <th>{{ 'TASKS_SERVICE_PHONE' | translate }}</th>
+                <th>{{ 'TASKS_TECHNOLOGY' | translate }}</th>
                 <th>{{ 'TASKS_APPOINTMENT' | translate }}</th>
                 <th>{{ 'TASKS_STATUS' | translate }}</th>
                 <th>{{ 'TASKS_COMMENT' | translate }}</th>
@@ -66,6 +67,7 @@
                 <td>{{client.serviceTVName}}</td>
                 <td>{{client.serviceInternetName}}</td>
                 <td>{{client.servicePhoneName}}</td>
+                <td>{{client | technologyFilter}}</td>
                 <td>{{client.assignments | appointmentFilter}}</td>
                 <td>{{client.assignments | assignmentStatusFilter}}</td>
                 <td>
@@ -182,6 +184,57 @@
                                               ng-required="tasks.isAppointmentRequired()">
                                        <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                                        <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                                   </div>
+                               </div>
+                               <div class="form-group">
+                                   <label class="col-sm-4 control-label">{{ 'CLIENT_POPUP_TECHNOLOGY' | translate }}</label>
+                                   <div class="col-sm-8">
+                                       <div class="col-sm-4">
+                                           <div class="checkbox">
+                                               <label>
+                                                   <input type="checkbox" ng-model="tasks.selectedClient.market">
+                                                   {{ 'CLIENT_POPUP_TECHNOLOGY_MARKET' | translate }}
+                                               </label>
+                                           </div>
+                                           <div class="checkbox">
+                                               <label>
+                                                   <input type="checkbox" ng-model="tasks.selectedClient.lion">
+                                                   {{ 'CLIENT_POPUP_TECHNOLOGY_LION' | translate }}
+                                               </label>
+                                           </div>
+                                           <div class="checkbox">
+                                               <label>
+                                                   <input type="checkbox" ng-model="tasks.selectedClient.hyena">
+                                                   {{ 'CLIENT_POPUP_TECHNOLOGY_HYENA' | translate }}
+                                               </label>
+                                           </div>
+                                           <div class="checkbox">
+                                               <label>
+                                                   <input type="checkbox" ng-model="tasks.selectedClient.hyena24">
+                                                   {{ 'CLIENT_POPUP_TECHNOLOGY_HYENA_24' | translate }}
+                                               </label>
+                                           </div>
+                                       </div>
+                                       <div class="col-sm-4">
+                                           <div class="checkbox">
+                                               <label>
+                                                   <input type="checkbox" ng-model="tasks.selectedClient.ed3">
+                                                   {{ 'CLIENT_POPUP_TECHNOLOGY_ED3' | translate }}
+                                               </label>
+                                           </div>
+                                           <div class="checkbox">
+                                               <label>
+                                                   <input type="checkbox" ng-model="tasks.selectedClient.pstn">
+                                                   {{ 'CLIENT_POPUP_TECHNOLOGY_PSTN' | translate }}
+                                               </label>
+                                           </div>
+                                           <div class="checkbox">
+                                               <label>
+                                                   <input type="checkbox" ng-model="tasks.selectedClient.optical">
+                                                   {{ 'CLIENT_POPUP_TECHNOLOGY_OPTICAL' | translate }}
+                                               </label>
+                                           </div>
+                                       </div>
                                    </div>
                                </div>
                                <div class="form-group" ng-class="basicForm.comment1.$error.required ? 'has-error' : ''">
