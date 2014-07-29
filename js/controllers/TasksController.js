@@ -15,6 +15,7 @@
         $scope.tasks.tvPlans = [];
         $scope.tasks.phonePlans = [];
         $scope.tasks.currentFilter = 'processing';
+        $scope.tasks.showArchivedItems = false;
         $scope.tasks.searchText = '';
         $scope.tasks.availableUsers = [];
         $scope.tasks.availableAssignees = [];
@@ -115,9 +116,9 @@
 
         $scope.tasks.getClients = function()
         {
-            if ($scope.currentUser.getIsLogged() && ($scope.tasks.clients == null || $scope.tasks.clients.length == 0))
+            if ($scope.currentUser.getIsLogged())
             {
-                queryService.getClients($scope.currentUser, getClients_onResult, getClients_onError);
+                queryService.getClients($scope.currentUser, $scope.tasks.showArchivedItems, getClients_onResult, getClients_onError);
             }
         };
 
@@ -422,7 +423,7 @@
         {
             if (result)
             {
-                $scope.tasks.applyTasksFilter('processing');
+                //$scope.tasks.applyTasksFilter('processing');
                 $scope.tasks.clients = result;
             }
         }

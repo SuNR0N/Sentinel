@@ -17,6 +17,11 @@
                 <button ng-class="tasks.currentFilter == 'processing' ? 'active' : ''"type="button" class="btn btn-default" ng-click="tasks.applyTasksFilter('processing')">{{ 'BUTTON_PROCESSING_TASKS' | translate }}</button>
                 <button ng-hide="currentUser.isAssistant()" ng-class="tasks.currentFilter == 'all' ? 'active' : ''" type="button" class="btn btn-default" ng-click="tasks.applyTasksFilter('all')">{{ 'BUTTON_ALL_TASKS' | translate }}</button>
             </div>
+            <div class="input-group input-group-md checkbox">
+                <label>
+                    <input type="checkbox" ng-change="tasks.getClients()"  ng-model="tasks.showArchivedItems">{{ 'SHOW_ARCHIVED_ITEMS' | translate }}
+                </label>
+            </div>
             <div class="input-group input-group-md" ng-show="currentUser.isAdmin()">
                 <select class="form-control" ng-model="tasks.selectedAssignee"
                         ng-options="user.userName as user.lastName + ' ' + user.firstName for user in tasks.availableAssignees">

@@ -37,7 +37,8 @@
                         // Agent can select REJECTED, SENT statuses only
                         else if (user.isAgent() &&
                             (input[index].value === awaxa.sentinel.models.AssignmentStatus.REJECTED.value ||
-                            input[index].value === awaxa.sentinel.models.AssignmentStatus.SENT.value))
+                             input[index].value === awaxa.sentinel.models.AssignmentStatus.RECALL.value ||
+                             input[index].value === awaxa.sentinel.models.AssignmentStatus.SENT.value))
                         {
                             ret.push(input[index]);
                         }

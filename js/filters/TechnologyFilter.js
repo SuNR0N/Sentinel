@@ -14,7 +14,7 @@
             if (input.hasOwnProperty('lion') && input.lion === true) {
                 ret.push($filter('translate')('CLIENT_POPUP_TECHNOLOGY_LION'));
             }
-            if (input.hasOwnProperty('hyena') && input.mhyena === true) {
+            if (input.hasOwnProperty('hyena') && input.hyena === true) {
                 ret.push($filter('translate')('CLIENT_POPUP_TECHNOLOGY_HYENA'));
             }
             if (input.hasOwnProperty('hyena24') && input.hyena24 === true) {

@@ -33,12 +33,15 @@
                 .error(error);
         };
 
-        this.getClients = function(user, success, error) {
+        this.getClients = function(user, showArchivedItems, success, error) {
             success = success || defaultSuccessHandler;
             error = error || defaultErrorHandler;
             var encoded = $base64.encode(user.getUserName() + ':' + user.getPassword());
             $http.defaults.headers.common.Authorization = 'Basic ' + encoded;
-            $http.get(config.rootURL + '/query/getClients')
+            var params = {
+                showArchivedItems : showArchivedItems
+            };
+            $http.post(config.rootURL + '/query/getClients', params)
                 .success(success)
                 .error(error);
         };
