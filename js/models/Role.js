@@ -19,6 +19,10 @@
             label : 'ROLE_AGENT',
             value : 2
         },
+        AUDITOR : {
+            label : 'ROLE_AUDITOR',
+            value : 7
+        },
         ADMIN : {
             label : 'ROLE_ADMIN',
             value : 8

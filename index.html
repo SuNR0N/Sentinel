@@ -43,16 +43,18 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li ng-show="!currentUser.getIsLogged()"><a href="#login">{{ 'MENU_LOGIN' | translate }}</a></li>
-                    <li ng-show="currentUser.getIsLogged()"><a href="#tasks">{{ 'MENU_TASKS' | translate }}</a></li>
-                    <li ng-show="currentUser.getIsLogged()"><a href="#calendar">{{ 'MENU_CALENDAR' | translate }}</a></li>
-                    <li ng-show="currentUser.getIsLogged()"><a href="#messages">{{ 'MENU_MESSAGES' | translate }}</a></li>
-                    <li ng-show="currentUser.getIsLogged()"><a href="#statistics">{{ 'MENU_STATISTICS' | translate }}</a></li>
+                    <li ng-show="currentUser.getIsLogged() && currentUser.isEmployee()"><a href="#tasks">{{ 'MENU_TASKS' | translate }}</a></li>
+                    <li ng-show="currentUser.getIsLogged() && currentUser.isEmployee()"><a href="#calendar">{{ 'MENU_CALENDAR' | translate }}</a></li>
+                    <li ng-show="currentUser.getIsLogged() && currentUser.isEmployee()"><a href="#messages">{{ 'MENU_MESSAGES' | translate }}</a></li>
+                    <li ng-show="currentUser.getIsLogged() && currentUser.isEmployee()"><a href="#statistics">{{ 'MENU_STATISTICS' | translate }}</a></li>
+                    <li ng-show="currentUser.getIsLogged() && (currentUser.isAdmin() || currentUser.isAuditor())"><a href="#summary">{{ 'MENU_SUMMARY' | translate }}</a></li>
                     <li ng-show="currentUser.getIsLogged()"><a href="#password">{{ 'MENU_CHANGE_PASSWORD' | translate }}</a></li>
                     <li class="dropdown" ng-show="currentUser.getIsLogged() && currentUser.isAdmin()">
                         <a class="dropdown-toggle" data-toggle="dropdown">{{ 'MENU_ADMIN' | translate }} <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li><a href="#register">{{ 'MENU_REGISTER_NEW_USER' | translate }}</a></li>
                             <li><a href="#manage">{{ 'MENU_MANAGE_USERS' | translate }}</a></li>
+                            <li><a href="#premium">{{ 'MENU_PREMIUM' | translate }}</a></li>
                             <li><a href="#upload">{{ 'MENU_UPLOAD_CSV' | translate }}</a></li>
                             <li><a ng-show="currentUser.isSuperUser()" data-toggle="modal" data-target="#dbClearModal">{{ 'MENU_CLEAR_DATABASE' | translate }}</a></li>
                         </ul>
@@ -119,6 +121,8 @@
 <script type="text/javascript" src="js/controllers/CalendarController.js"></script>
 <script type="text/javascript" src="js/controllers/StatisticsController.js"></script>
 <script type="text/javascript" src="js/controllers/PasswordController.js"></script>
+<script type="text/javascript" src="js/controllers/PremiumController.js"></script>
+<script type="text/javascript" src="js/controllers/SummaryController.js"></script>
 
 <script type="text/javascript" src="js/directives/StringMatch.js"></script>
 <script type="text/javascript" src="js/directives/FileModel.js"></script>
@@ -130,6 +134,7 @@
 <script type="text/javascript" src="js/filters/ModeFilter.js"></script>
 <script type="text/javascript" src="js/filters/StatusFilter.js"></script>
 <script type="text/javascript" src="js/filters/AssignmentStatusFilter.js"></script>
+<script type="text/javascript" src="js/filters/SummaryStatusFilter.js"></script>
 <script type="text/javascript" src="js/filters/TechnologyFilter.js"></script>
 <script type="text/javascript" src="js/filters/TasksFilter.js"></script>
 <script type="text/javascript" src="js/filters/AppointmentFilter.js"></script>
@@ -140,6 +145,7 @@
 <script type="text/javascript" src="js/models/Mode.js"></script>
 <script type="text/javascript" src="js/models/Status.js"></script>
 <script type="text/javascript" src="js/models/AssignmentStatus.js"></script>
+<script type="text/javascript" src="js/models/SummaryStatus.js"></script>
 <script type="text/javascript" src="js/models/User.js"></script>
 
 <script type="text/javascript" src="js/configs/ApplicationConfig.js"></script>

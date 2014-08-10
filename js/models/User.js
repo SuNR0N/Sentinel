@@ -98,6 +98,16 @@
             return role === awaxa.sentinel.models.Role.ASSISTANT.value;
         };
 
+        this.isEmployee = function()
+        {
+            return this.isAdmin() || this.isAgent() || this.isAssistant();
+        };
+
+        this.isAuditor = function()
+        {
+            return role === awaxa.sentinel.models.Role.AUDITOR.value;
+        };
+
         return this;
     };
 

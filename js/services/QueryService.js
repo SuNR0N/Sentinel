@@ -62,6 +62,14 @@
                 .error(error);
         };
 
+        this.getAvailableOwners = function(success, error) {
+            success = success || defaultSuccessHandler;
+            error = error || defaultErrorHandler;
+            $http.get(config.rootURL + '/query/getAvailableOwners')
+                .success(success)
+                .error(error);
+        };
+
         this.getAvailableAssignees = function(user, success, error) {
             success = success || defaultSuccessHandler;
             error = error || defaultErrorHandler;
@@ -99,6 +107,14 @@
                 endDate : endDate
             };
             $http.post(config.rootURL + '/query/getStatistics', params)
+                .success(success)
+                .error(error);
+        };
+
+        this.getSummary = function(username, year, month, success, error) {
+            success = success || defaultSuccessHandler;
+            error = error || defaultErrorHandler;
+            $http.get(config.rootURL + '/query/getSummary/' + username + '/' + year + '/' + month)
                 .success(success)
                 .error(error);
         }

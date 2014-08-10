@@ -55,6 +55,20 @@
                 .error(error);
         };
 
+        this.savePremium = function(internetPlans, phonePlans, tvPlans, extraPlans, success, error) {
+            success = success || defaultSuccessHandler;
+            error = error || defaultErrorHandler;
+            var param = {
+                internetPlans : internetPlans,
+                phonePlans : phonePlans,
+                tvPlans : tvPlans,
+                extraPlans : extraPlans
+            };
+            $http.post(config.rootURL + '/update/savePremium', param)
+                .success(success)
+                .error(error);
+        };
+
         this.saveUser = function(user, success, error) {
             success = success || defaultSuccessHandler;
             error = error || defaultErrorHandler;
@@ -108,12 +122,16 @@
                     serviceTVNew : client.serviceTVNew,
                     serviceInternetName : client.serviceInternetName,
                     serviceInternetNew : client.serviceInternetNew,
+                    serviceHBOName : client.serviceHBOName,
+                    serviceHBONew : client.serviceHBONew,
                     market : client.market,
                     lion : client.lion,
                     hyena : client.hyena,
                     hyena24 : client.hyena24,
                     ed3 : client.ed3,
                     pstn : client.pstn,
+                    contractOptical : client.contractOptical,
+                    contractMobile : client.contractMobile,
                     optical : client.optical,
                     comment : client.comment,
                     comment1 : client.comment1,
@@ -127,6 +145,42 @@
                 lastAssignmentId : client.lastAssignmentId
             };
             $http.post(config.rootURL + '/update/saveClient', param)
+                .success(success)
+                .error(error);
+        };
+
+        this.saveClientSummary = function(client, user, success, error) {
+            success = success || defaultSuccessHandler;
+            error = error || defaultErrorHandler;
+            var encoded = $base64.encode(user.getUserName() + ':' + user.getPassword());
+            $http.defaults.headers.common.Authorization = 'Basic ' + encoded;
+            var param =
+            {
+                client : {
+                    mtId : client.mtId,
+                    errorCorrection : client.errorCorrection,
+                    summaryStatus : client.summaryStatus,
+                    summaryComment1 : client.summaryComment1,
+                    summaryComment2 : client.summaryComment2
+                }
+            };
+            $http.post(config.rootURL + '/update/saveClientSummary', param)
+                .success(success)
+                .error(error);
+        };
+
+        this.saveMonthlyPlan = function(plan, year, month, user, success, error) {
+            success = success || defaultSuccessHandler;
+            error = error || defaultErrorHandler;
+            var encoded = $base64.encode(user.getUserName() + ':' + user.getPassword());
+            $http.defaults.headers.common.Authorization = 'Basic ' + encoded;
+            var param =
+            {
+                plan : plan,
+                year : year,
+                month : month
+            };
+            $http.post(config.rootURL + '/update/saveMonthlyPlan', param)
                 .success(success)
                 .error(error);
         };

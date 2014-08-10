@@ -16,6 +16,7 @@
                 awaxa.sentinel.models.Role.GUEST,
                 awaxa.sentinel.models.Role.ASSISTANT,
                 awaxa.sentinel.models.Role.AGENT,
+                awaxa.sentinel.models.Role.AUDITOR,
                 awaxa.sentinel.models.Role.ADMIN,
                 awaxa.sentinel.models.Role.SUPERUSER
             ];

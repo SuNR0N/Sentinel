@@ -449,6 +449,10 @@
                 {
                     $scope.tasks.tvPlans = result.tvPlans;
                 }
+                if (result.hasOwnProperty('extraPlans'))
+                {
+                    $scope.tasks.extraPlans = result.extraPlans;
+                }
             }
         }
 

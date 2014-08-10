@@ -111,3 +111,73 @@ input[readonly] {
     width: 700px;
     margin: 30px auto;
 }
+
+.premium fieldset .premium-header {
+    text-align: center;
+}
+
+.premium fieldset .premium-label {
+    text-align: left;
+    padding-left: 40px;
+}
+
+.premium fieldset legend {
+    margin: auto 15px;
+    float: none;
+}
+
+.premium fieldset {
+    margin: 10px auto;
+}
+
+.premium .premium-footer {
+    text-align: center;
+    padding: 5px 0;
+}
+
+.premium .premium-result {
+    margin: auto 2px;
+}
+
+.cbOnly {
+    width: 38px;
+    display: block;
+    border: 1px solid #ccc !important;
+    border-radius: 4px !important;
+}
+
+.floatRight {
+    float: right;
+}
+
+.floatLeft {
+    float: left;
+}
+
+.centeredText {
+    text-align: center;
+}
+
+.newProductStyle {
+    background-color: lightcoral;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.underEstablishmentStyle {
+    background-color: #f0ad4e;
+}
+
+.timedActivationStyle {
+    background-color: #5bc0de;
+}
+
+.canceledStyle {
+    background-color: #d9534f;
+}
+
+.establishedStyle {
+    background-color: #5cb85c;
+}

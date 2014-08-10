@@ -30,8 +30,14 @@
                     $scope.currentUser.setRole(result.currentUser.role);
                     $scope.currentUser.setIsLogged(true);
                     $scope.login.isInvalidUser = false;
-                    $scope.getUsers();
-                    $location.path('/tasks');
+                    if ($scope.currentUser.isEmployee()) {
+                        $scope.getUsers();
+                        $location.path('/tasks');
+                    } else  if ($scope.currentUser.isAuditor()) {
+                        $location.path('/summary');
+                    } else {
+                        $location.path('/password');
+                    }
                 }
             }
             else

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>{{ 'BROWSER_TITLE_SUMMARY' | translate }}</title>
+</head>
+<body>
+
+    <div class="container-fluid">
+        <div class="btn-toolbar p15tb">
+            <div class="input-group input-group-md">
+                <select class="form-control" ng-model="summary.selectedOwner" ng-change="summary.getSummary()"
+                        ng-options="user.userName as user.lastName + ' ' + user.firstName + ' (' + user.clientCode + ')' for user in summary.availableOwners">
+                </select>
+            </div>
+            <div class="input-group input-group-md">
+                <input class="form-control" type="month" ng-model="summary.selectedMonth" ng-change="summary.getSummary()">
+            </div>
+        </div>
+    </div>
+
+    <dl class="dl-horizontal" ng-show="summary.monthlyDetails !== null && currentUser.isAdmin()">
+        <dt>{{ 'SUMMARY_NET_INCOME' | translate }}</dt>
+        <dd>{{ summary.netIncome }}</dd>
+        <dt>{{ 'SUMMARY_GROSS_INCOME' | translate }}</dt>
+        <dd>{{ summary.grossIncome }}</dd>
+    </dl>
+
+    <div class="table-responsive col-md-6 col-md-offset-3" ng-show="summary.monthlyPlan !== null">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>{{ 'SUMMARY_PHONE' | translate }}</th>
+                    <th>{{ 'SUMMARY_INTERNET' | translate }}</th>
+                    <th>{{ 'SUMMARY_TV' | translate }}</th>
+                    <th>{{ 'SUMMARY_HBO' | translate }}</th>
+                    <th>{{ 'SUMMARY_MOBILE' | translate }}</th>
+                    <th>{{ 'SUMMARY_OPTICAL' | translate }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ 'SUMMARY_PLAN' | translate }}<span ng-show="currentUser.isAdmin()" ng-click="summary.editPlan()" class="glyphicon glyphicon-edit floatRight clickable" title="{{ 'BUTTON_EDIT' | translate }}"></span></td>
+                    <td>{{ summary.monthlyPlan.phone }}</td>
+                    <td>{{ summary.monthlyPlan.internet }}</td>
+                    <td>{{ summary.monthlyPlan.tv }}</td>
+                    <td>{{ summary.monthlyPlan.hbo }}</td>
+                    <td>{{ summary.monthlyPlan.mobile }}</td>
+                    <td>{{ summary.monthlyPlan.optical }}</td>
+                </tr>
+                <tr>
+                    <td>{{ 'SUMMARY_FACT' | translate }}</td>
+                    <td ng-class="summary.monthlyProgress.phone >= summary.monthlyPlan.phone ? 'bg-success' : 'bg-danger'">{{ summary.monthlyProgress.phone }}</td>
+                    <td ng-class="summary.monthlyProgress.internet >= summary.monthlyPlan.internet ? 'bg-success' : 'bg-danger'">{{ summary.monthlyProgress.internet }}</td>
+                    <td ng-class="summary.monthlyProgress.tv >= summary.monthlyPlan.tv ? 'bg-success' : 'bg-danger'">{{ summary.monthlyProgress.tv }}</td>
+                    <td ng-class="summary.monthlyProgress.hbo >= summary.monthlyPlan.hbo ? 'bg-success' : 'bg-danger'">{{ summary.monthlyProgress.hbo }}</td>
+                    <td ng-class="summary.monthlyProgress.mobile >= summary.monthlyPlan.mobile ? 'bg-success' : 'bg-danger'">{{ summary.monthlyProgress.mobile }}</td>
+                    <td ng-class="summary.monthlyProgress.optical >= summary.monthlyPlan.optical ? 'bg-success' : 'bg-danger'">{{ summary.monthlyProgress.optical }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="table-responsive" ng-show="summary.monthlyDetails !== null">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>{{ 'SUMMARY_VIEW_MT' | translate }}</th>
+                    <th>{{ 'SUMMARY_VIEW_NAME' | translate }}</th>
+                    <th>{{ 'SUMMARY_VIEW_PHONE_NAME' | translate }}</th>
+                    <th>{{ 'SUMMARY_VIEW_INTERNET_NAME' | translate }}</th>
+                    <th>{{ 'SUMMARY_VIEW_TV_NAME' | translate }}</th>
+                    <th>{{ 'SUMMARY_VIEW_HBO_NAME' | translate }}</th>
+                    <th>{{ 'SUMMARY_VIEW_MOBILE' | translate }}</th>
+                    <th>{{ 'SUMMARY_VIEW_OPTICAL' | translate }}</th>
+                    <th ng-show="currentUser.isAdmin()">{{ 'SUMMARY_VIEW_TOTAL' | translate }}</th>
+                    <th>{{ 'SUMMARY_VIEW_ERROR_CORRECTION' | translate }}</th>
+                    <th>{{ 'SUMMARY_VIEW_STATUS' | translate }}</th>
+                    <th>{{ 'SUMMARY_VIEW_COMMENT_1' | translate }}</th>
+                    <th>{{ 'SUMMARY_VIEW_COMMENT_2' | translate }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in summary.monthlyDetails | orderBy:'summaryStatus':true" ng-click="summary.onRowClick($event, item)">
+                    <td>{{ item.mtId }}</td>
+                    <td>{{ item.name }}</td>
+                    <td ng-class="item.servicePhoneNew ? 'newProductStyle' : ''">{{ item.servicePhoneName }}<span ng-show="currentUser.isAdmin()" class="glyphicon glyphicon-euro floatRight" title="{{item.servicePhoneIncome}}"></span></td>
+                    <td ng-class="item.serviceInternetNew ? 'newProductStyle' : ''">{{ item.serviceInternetName }}<span ng-show="currentUser.isAdmin()" class="glyphicon glyphicon-euro floatRight" title="{{item.serviceInternetIncome}}"></span></td>
+                    <td ng-class="item.serviceTVNew ? 'newProductStyle' : ''">{{ item.serviceTVName }}<span ng-show="currentUser.isAdmin()" class="glyphicon glyphicon-euro floatRight" title="{{item.serviceTVIncome}}"></span></td>
+                    <td ng-class="item.serviceHBONew ? 'newProductStyle' : ''">{{ item.serviceHBOName }}<span ng-show="currentUser.isAdmin()" class="glyphicon glyphicon-euro floatRight" title="{{item.serviceHBOIncome}}"></span></td>
+                    <td class="centeredText"><span ng-class="item.contractMobile ? 'glyphicon-ok' : 'glyphicon-remove'" class="glyphicon"></span></td>
+                    <td class="centeredText"><span ng-class="item.contractOptical ? 'glyphicon-ok' : 'glyphicon-remove'" class="glyphicon"></span></td>
+                    <td ng-show="currentUser.isAdmin()">{{ item.totalIncome }}</td>
+                    <td>{{ item.errorCorrection }}</td>
+                    <td ng-class="summary.getCellClass(item.summaryStatus)">{{ item.summaryStatus | summaryStatusFilter }}</td>
+                    <td>
+                        <span ng-show="item.summaryComment1 != null && item.summaryComment1 != ''"
+                              class="glyphicon glyphicon-comment"
+                              data-toggle="tooltip"
+                              data-placement="left"
+                              title="{{item.summaryComment1}}">
+                        </span>
+                    </td>
+                    <td>
+                        <span ng-show="item.summaryComment2 != null && item.summaryComment2 != ''"
+                              class="glyphicon glyphicon-comment"
+                              data-toggle="tooltip"
+                              data-placement="left"
+                              title="{{item.summaryComment2}}">
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="modal fade" id="clientSummaryModal" role="dialog" aria-labelledby="clientSummaryModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">{{ 'TITLE_CLIENT_SUMMARY' | translate }}</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">{{ 'CLIENT_POPUP_MT_ID' | translate }}</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-static">{{summary.selectedClient.mtId}}</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">{{ 'CLIENT_POPUP_NAME' | translate }}</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-static">{{summary.selectedClient.name}}</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">
+                                <span ng-show="summary.selectedClient.servicePhoneNew" class="glyphicon glyphicon-plus-sign floatLeft"></span>
+                                {{ 'CLIENT_POPUP_SERVICE_PHONE' | translate }}
+                            </label>
+                            <div class="col-sm-8">
+                                <p class="form-control-static">{{summary.selectedClient.servicePhoneName}}</p>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-show="currentUser.isAdmin()">
+                            <label class="col-sm-4 control-label">{{ 'CLIENT_POPUP_SERVICE_PHONE_PREMIUM' | translate }}</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-static">{{summary.selectedClient.servicePhoneIncome}}</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">
+                                <span ng-show="summary.selectedClient.serviceInternetNew" class="glyphicon glyphicon-plus-sign floatLeft"></span>
+                                {{ 'CLIENT_POPUP_SERVICE_INTERNET' | translate }}
+                            </label>
+                            <div class="col-sm-8">
+                                <p class="form-control-static">{{summary.selectedClient.serviceInternetName}}</p>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-show="currentUser.isAdmin()">
+                            <label class="col-sm-4 control-label">{{ 'CLIENT_POPUP_SERVICE_INTERNET_PREMIUM' | translate }}</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-static">{{summary.selectedClient.serviceInternetIncome}}</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">
+                                <span ng-show="summary.selectedClient.serviceTVNew" class="glyphicon glyphicon-plus-sign floatLeft"></span>
+                                {{ 'CLIENT_POPUP_SERVICE_TV' | translate }}
+                            </label>
+                            <div class="col-sm-8">
+                                <p class="form-control-static">{{summary.selectedClient.serviceTVName}}</p>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-show="currentUser.isAdmin()">
+                            <label class="col-sm-4 control-label">{{ 'CLIENT_POPUP_SERVICE_TV_PREMIUM' | translate }}</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-static">{{summary.selectedClient.serviceTVIncome}}</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">
+                                <span ng-show="summary.selectedClient.serviceHBONew" class="glyphicon glyphicon-plus-sign floatLeft"></span>
+                                {{ 'CLIENT_POPUP_SERVICE_EXTRA' | translate }}
+                            </label>
+                            <div class="col-sm-8">
+                                <p class="form-control-static">{{summary.selectedClient.serviceHBOName}}</p>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-show="currentUser.isAdmin()">
+                            <label class="col-sm-4 control-label">{{ 'CLIENT_POPUP_SERVICE_EXTRA_PREMIUM' | translate }}</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-static">{{summary.selectedClient.serviceHBOIncome}}</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">{{ 'CLIENT_POPUP_CONTRACT_OPTICAL' | translate }}</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-static"><span ng-class="summary.selectedClient.contractOptical ? 'glyphicon-ok' : 'glyphicon-remove'" class="glyphicon"></span></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">{{ 'CLIENT_POPUP_CONTRACT_MOBILE' | translate }}</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-static"><span ng-class="summary.selectedClient.contractMobile ? 'glyphicon-ok' : 'glyphicon-remove'" class="glyphicon"></span></p>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-show="currentUser.isAdmin()">
+                            <label class="col-sm-4 control-label">{{ 'CLIENT_POPUP_TOTAL_INCOME' | translate }}</label>
+                            <div class="col-sm-8">
+                                <p class="form-control-static">{{summary.selectedClient.totalIncome}}</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="errorCorrection" class="col-sm-4 control-label">{{ 'CLIENT_POPUP_ERROR_CORRECTION' | translate }}</label>
+                            <div class="col-sm-8">
+                                <select id="errorCorrection"
+                                        class="form-control"
+                                        ng-model="summary.selectedClient.errorCorrection"
+                                        ng-options="error for error in summary.errorCorrectionOptions">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="summaryStatus" class="col-sm-4 control-label">{{ 'CLIENT_POPUP_SUMMARY_STATUS' | translate }}</label>
+                            <div class="col-sm-8">
+                                <select id="summaryStatus"
+                                        class="form-control"
+                                        ng-model="summary.selectedClient.summaryStatus"
+                                        ng-options="s.value as s.label | translate for s in summary.statusOptions">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="summaryComment1" class="col-sm-4 control-label">{{ 'CLIENT_POPUP_SUMMARY_COMMENT_1' | translate }}</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="summaryComment1"
+                                       ng-model="summary.selectedClient.summaryComment1"
+                                       ng-disabled="!currentUser.isAuditor()">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="summaryComment2" class="col-sm-4 control-label">{{ 'CLIENT_POPUP_SUMMARY_COMMENT_2' | translate }}</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="summaryComment2"
+                                       ng-model="summary.selectedClient.summaryComment2"
+                                       ng-disabled="!currentUser.isAdmin()">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <div class="row footerError" ng-show="summary.saveClientErrorMessage != null">
+                        <div class="alert alert-danger">
+                            <strong>{{ 'MSG_ERROR' | translate }}</strong>
+                            <span> {{summary.saveClientErrorMessage}}</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <button type="button" class="btn btn-primary"
+                                ng-disabled="summary.isSavingClient"
+                                ng-click="summary.saveClient()">{{ 'BUTTON_SAVE_CHANGES' | translate }}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="monthlyPlanModal" role="dialog" aria-labelledby="monthlyPlanModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">{{ 'TITLE_MONTHLY_PLAN' | translate }}</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label for="phone" class="col-sm-4 control-label">{{ 'MONTHLY_PLAN_POPUP_PHONE' | translate }}</label>
+                            <div class="col-sm-8">
+                                <input id="phone" class="form-control" type="number" ng-model="summary.monthlyPlanEditable.phone">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="internet" class="col-sm-4 control-label">{{ 'MONTHLY_PLAN_POPUP_INTERNET' | translate }}</label>
+                            <div class="col-sm-8">
+                                <input id="internet" class="form-control" type="number" ng-model="summary.monthlyPlanEditable.internet">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="tv" class="col-sm-4 control-label">{{ 'MONTHLY_PLAN_POPUP_TV' | translate }}</label>
+                            <div class="col-sm-8">
+                                <input id="tv" class="form-control" type="number" ng-model="summary.monthlyPlanEditable.tv">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="extra" class="col-sm-4 control-label">{{ 'MONTHLY_PLAN_POPUP_EXTRA' | translate }}</label>
+                            <div class="col-sm-8">
+                                <input id="extra" class="form-control" type="number" ng-model="summary.monthlyPlanEditable.hbo">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="mobile" class="col-sm-4 control-label">{{ 'MONTHLY_PLAN_POPUP_MOBILE' | translate }}</label>
+                            <div class="col-sm-8">
+                                <input id="mobile" class="form-control" type="number" ng-model="summary.monthlyPlanEditable.mobile">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="optical" class="col-sm-4 control-label">{{ 'MONTHLY_PLAN_POPUP_OPTICAL' | translate }}</label>
+                            <div class="col-sm-8">
+                                <input id="optical" class="form-control" type="number" ng-model="summary.monthlyPlanEditable.optical">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <div class="row footerError" ng-show="summary.saveMonthlyPlanErrorMessage != null">
+                        <div class="alert alert-danger">
+                            <strong>{{ 'MSG_ERROR' | translate }}</strong>
+                            <span> {{summary.saveMonthlyPlanErrorMessage}}</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <button type="button" class="btn btn-primary"
+                                ng-disabled="summary.isSavingMonthlyPlan"
+                                ng-click="summary.saveMonthlyPlan()">{{ 'BUTTON_SAVE_CHANGES' | translate }}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -45,6 +45,14 @@
                 templateUrl: 'pages/upload.html',
                 controller:  'UploadController'
             })
+            .when('/summary', {
+                templateUrl: 'pages/summary.html',
+                controller: 'SummaryController'
+            })
+            .when('/premium', {
+                templateUrl: 'pages/premium.html',
+                controller: 'PremiumController'
+            })
             .otherwise({ redirectTo: '/' });
 
     };

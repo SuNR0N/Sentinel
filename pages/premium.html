@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>{{ 'BROWSER_TITLE_PREMIUM' | translate }}</title>
+</head>
+<body>
+
+    <form name="premiumForm" class="form-horizontal premium">
+        <fieldset>
+            <legend class="col-sm-5">{{ 'PREMIUM_PHONE' | translate }}</legend>
+            <div class="form-group">
+                <label class="col-sm-3 control-label premium-header">{{ 'PREMIUM_LABEL_SERVICE' | translate }}</label>
+                <label class="col-sm-1 control-label premium-header">{{ 'PREMIUM_LABEL_NEW' | translate }}</label>
+                <label class="col-sm-1 control-label premium-header">{{ 'PREMIUM_LABEL_ELONGATION' | translate }}</label>
+            </div>
+            <div ng-repeat="phone in premium.phonePlans" class="form-group">
+                <label class="col-sm-3 control-label premium-label">{{phone.name}}</label>
+                <div class="col-sm-1">
+                    <input type="number" title="{{ 'PREMIUM_LABEL_NEW' | translate }}" ng-model="phone.premiumNew">
+                </div>
+                <div class="col-sm-1">
+                    <input type="number" title="{{ 'PREMIUM_LABEL_ELONGATION' | translate }}" ng-model="phone.premiumElongation">
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend class="col-sm-5">{{ 'PREMIUM_INTERNET' | translate }}</legend>
+            <div class="form-group">
+                <label class="col-sm-3 control-label premium-header">{{ 'PREMIUM_LABEL_SERVICE' | translate }}</label>
+                <label class="col-sm-1 control-label premium-header">{{ 'PREMIUM_LABEL_NEW' | translate }}</label>
+                <label class="col-sm-1 control-label premium-header">{{ 'PREMIUM_LABEL_ELONGATION' | translate }}</label>
+            </div>
+            <div ng-repeat="internet in premium.internetPlans" class="form-group">
+                <label class="col-sm-3 control-label premium-label">{{internet.name}}</label>
+                <div class="col-sm-1">
+                    <input type="number" title="{{ 'PREMIUM_LABEL_NEW' | translate }}" ng-model="internet.premiumNew">
+                </div>
+                <div class="col-sm-1">
+                    <input type="number" title="{{ 'PREMIUM_LABEL_ELONGATION' | translate }}" ng-model="internet.premiumElongation">
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend class="col-sm-5">{{ 'PREMIUM_TV' | translate }}</legend>
+            <div class="form-group">
+                <label class="col-sm-3 control-label premium-header">{{ 'PREMIUM_LABEL_SERVICE' | translate }}</label>
+                <label class="col-sm-1 control-label premium-header">{{ 'PREMIUM_LABEL_NEW' | translate }}</label>
+                <label class="col-sm-1 control-label premium-header">{{ 'PREMIUM_LABEL_ELONGATION' | translate }}</label>
+            </div>
+            <div ng-repeat="tv in premium.tvPlans" class="form-group">
+                <label class="col-sm-3 control-label premium-label">{{tv.name}}</label>
+                <div class="col-sm-1">
+                    <input type="number" title="{{ 'PREMIUM_LABEL_NEW' | translate }}" ng-model="tv.premiumNew">
+                </div>
+                <div class="col-sm-1">
+                    <input type="number" title="{{ 'PREMIUM_LABEL_ELONGATION' | translate }}" ng-model="tv.premiumElongation">
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend class="col-sm-5">{{ 'PREMIUM_EXTRA' | translate }}</legend>
+            <div class="form-group">
+                <label class="col-sm-3 control-label premium-header">{{ 'PREMIUM_LABEL_SERVICE' | translate }}</label>
+                <label class="col-sm-1 control-label premium-header">{{ 'PREMIUM_LABEL_NEW' | translate }}</label>
+                <label class="col-sm-1 control-label premium-header">{{ 'PREMIUM_LABEL_ELONGATION' | translate }}</label>
+            </div>
+            <div ng-repeat="extra in premium.extraPlans" class="form-group">
+                <label class="col-sm-3 control-label premium-label">{{extra.name}}</label>
+                <div class="col-sm-1">
+                    <input type="number" title="{{ 'PREMIUM_LABEL_NEW' | translate }}" ng-model="extra.premiumNew">
+                </div>
+                <div class="col-sm-1">
+                    <input type="number" title="{{ 'PREMIUM_LABEL_ELONGATION' | translate }}" ng-model="extra.premiumElongation">
+                </div>
+            </div>
+        </fieldset>
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-2 premium-footer">
+                <button type="submit" class="btn btn-default" ng-click="premium.save()" ng-disabled="premiumForm.$invalid">{{ 'BUTTON_SAVE_CHANGES' | translate }}</button>
+            </div>
+        </div>
+        <div class="alert col-sm-5 premium-result"
+             ng-class="{'alert-danger' : premium.resultSaved == false, 'alert-success' : premium.resultSaved == true}"
+             ng-show="premium.resultSaved != null"
+             >
+            <strong>{{premium.resultSaved == false ? ('MSG_ERROR' | translate) : (premium.resultSaved == true ? ('MSG_SUCCESS' | translate) : '')}}</strong>
+        </div>
+    </form>
+
+</body>
+</html>

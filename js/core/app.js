@@ -10,6 +10,7 @@
         .filter('modeFilter', ['$filter', awaxa.sentinel.filters.ModeFilter])
         .filter('statusFilter', ['$filter', awaxa.sentinel.filters.StatusFilter])
         .filter('assignmentStatusFilter', ['$filter', awaxa.sentinel.filters.AssignmentStatusFilter])
+        .filter('summaryStatusFilter', ['$filter', awaxa.sentinel.filters.SummaryStatusFilter])
         .filter('technologyFilter', ['$filter', awaxa.sentinel.filters.TechnologyFilter])
         .filter('appointmentFilter', awaxa.sentinel.filters.AppointmentFilter)
         .filter('dateFilter', awaxa.sentinel.filters.DateFilter)
@@ -43,6 +44,8 @@
         .controller('MessagesController', ['$scope', 'queryService', awaxa.sentinel.controllers.MessagesController])
         .controller('CalendarController', ['$scope', 'queryService', awaxa.sentinel.controllers.CalendarController])
         .controller('StatisticsController', ['$scope', '$filter', 'queryService', awaxa.sentinel.controllers.StatisticsController])
+        .controller('PremiumController', ['$scope', '$filter', 'queryService', 'updateService', awaxa.sentinel.controllers.PremiumController])
+        .controller('SummaryController', ['$scope', '$filter', 'queryService', 'updateService', awaxa.sentinel.controllers.SummaryController])
         .controller('TasksController', ['$scope', '$filter', 'queryService', 'updateService', 'utilityService', awaxa.sentinel.controllers.TasksController]);
 
 }());
