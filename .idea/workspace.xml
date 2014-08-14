@@ -23,10 +23,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="SummaryController.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="SummaryController.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/controllers/SummaryController.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5462653" vertical-offset="2009" max-vertical-offset="4624">
+            <state vertical-scroll-proportion="0.0" vertical-offset="2359" max-vertical-offset="4624">
               <caret line="147" column="73" selection-start-line="147" selection-start-column="73" selection-end-line="147" selection-end-column="73" />
               <folding />
             </state>
@@ -83,11 +83,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="summary.html" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="summary.html" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pages/summary.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-20.923077" vertical-offset="986" max-vertical-offset="5814">
-              <caret line="90" column="218" selection-start-line="90" selection-start-column="218" selection-end-line="90" selection-end-column="218" />
+            <state vertical-scroll-proportion="-1.8822844" vertical-offset="3179" max-vertical-offset="5814">
+              <caret line="92" column="102" selection-start-line="92" selection-start-column="102" selection-end-line="92" selection-end-column="102" />
               <folding />
             </state>
           </provider>
@@ -182,8 +182,8 @@
         <option value="$PROJECT_DIR$/css/sentinel.css" />
         <option value="$PROJECT_DIR$/js/services/UpdateService.js" />
         <option value="$PROJECT_DIR$/js/configs/LanguageConfig.js" />
-        <option value="$PROJECT_DIR$/pages/summary.html" />
         <option value="$PROJECT_DIR$/js/controllers/SummaryController.js" />
+        <option value="$PROJECT_DIR$/pages/summary.html" />
       </list>
     </option>
   </component>
@@ -1099,18 +1099,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pages/summary.html">
+    <entry file="file://$PROJECT_DIR$/js/controllers/SummaryController.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-20.923077" vertical-offset="986" max-vertical-offset="5814">
-          <caret line="90" column="218" selection-start-line="90" selection-start-column="218" selection-end-line="90" selection-end-column="218" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="2359" max-vertical-offset="4624">
+          <caret line="147" column="73" selection-start-line="147" selection-start-column="73" selection-end-line="147" selection-end-column="73" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/controllers/SummaryController.js">
+    <entry file="file://$PROJECT_DIR$/pages/summary.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5462653" vertical-offset="2009" max-vertical-offset="4624">
-          <caret line="147" column="73" selection-start-line="147" selection-start-column="73" selection-end-line="147" selection-end-column="73" />
+        <state vertical-scroll-proportion="-1.8822844" vertical-offset="3179" max-vertical-offset="5814">
+          <caret line="92" column="102" selection-start-line="92" selection-start-column="102" selection-end-line="92" selection-end-column="102" />
           <folding />
         </state>
       </provider>
