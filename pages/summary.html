@@ -85,10 +85,10 @@
                 <tr ng-repeat="item in summary.monthlyDetails | orderBy:'summaryStatus':true" ng-click="summary.onRowClick($event, item)">
                     <td>{{ item.mtId }}</td>
                     <td>{{ item.name }}</td>
-                    <td ng-class="item.servicePhoneNew ? 'newProductStyle' : ''">{{ item.servicePhoneName }}<span ng-show="currentUser.isAdmin()" class="glyphicon glyphicon-euro floatRight" title="{{item.servicePhoneIncome}}"></span></td>
-                    <td ng-class="item.serviceInternetNew ? 'newProductStyle' : ''">{{ item.serviceInternetName }}<span ng-show="currentUser.isAdmin()" class="glyphicon glyphicon-euro floatRight" title="{{item.serviceInternetIncome}}"></span></td>
-                    <td ng-class="item.serviceTVNew ? 'newProductStyle' : ''">{{ item.serviceTVName }}<span ng-show="currentUser.isAdmin()" class="glyphicon glyphicon-euro floatRight" title="{{item.serviceTVIncome}}"></span></td>
-                    <td ng-class="item.serviceHBONew ? 'newProductStyle' : ''">{{ item.serviceHBOName }}<span ng-show="currentUser.isAdmin()" class="glyphicon glyphicon-euro floatRight" title="{{item.serviceHBOIncome}}"></span></td>
+                    <td ng-class="item.servicePhoneNew ? 'newProductStyle' : ''">{{ summary.isNone(item.servicePhoneName) ? '' : item.servicePhoneName }}<span ng-show="currentUser.isAdmin() && !summary.isNone(item.servicePhoneName)" class="glyphicon glyphicon-euro floatRight" title="{{item.servicePhoneIncome}}"></span></td>
+                    <td ng-class="item.serviceInternetNew ? 'newProductStyle' : ''">{{ summary.isNone(item.serviceInternetName) ? '' : item.serviceInternetName }}<span ng-show="currentUser.isAdmin() && !summary.isNone(item.serviceInternetName)" class="glyphicon glyphicon-euro floatRight" title="{{item.serviceInternetIncome}}"></span></td>
+                    <td ng-class="item.serviceTVNew ? 'newProductStyle' : ''">{{ summary.isNone(item.serviceTVName) ? '' : item.serviceTVName }}<span ng-show="currentUser.isAdmin() && !summary.isNone(item.serviceTVName)" class="glyphicon glyphicon-euro floatRight" title="{{item.serviceTVIncome}}"></span></td>
+                    <td ng-class="item.serviceHBONew ? 'newProductStyle' : ''">{{ summary.isNone(item.serviceHBOName) ? '' : item.serviceHBOName }}<span ng-show="currentUser.isAdmin() && !summary.isNone(item.serviceHBOName)" class="glyphicon glyphicon-euro floatRight" title="{{item.serviceHBOIncome}}"></span></td>
                     <td class="centeredText"><span ng-class="item.contractMobile ? 'glyphicon-ok' : 'glyphicon-remove'" class="glyphicon"></span></td>
                     <td class="centeredText"><span ng-class="item.contractOptical ? 'glyphicon-ok' : 'glyphicon-remove'" class="glyphicon"></span></td>
                     <td ng-show="currentUser.isAdmin()">{{ item.totalIncome }}</td>

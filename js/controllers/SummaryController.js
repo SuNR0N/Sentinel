@@ -143,6 +143,11 @@
             };
         };
 
+        $scope.summary.isNone = function(item)
+        {
+            return item !== null && item.toLowerCase().indexOf('nincs') !== -1;
+        };
+
         function getAvailableOwners_onResult(result)
         {
             if (result && angular.isArray(result))
